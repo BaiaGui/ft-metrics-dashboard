@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ft_dashboard/SideBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,62 +32,87 @@ class DashboardStructure extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SideBar(),
+        const SideBar(),
         Expanded(
           child: Scaffold(
             appBar: AppBar(
-              title: Text("Dashboard"),
+              title: const Text("Dashboard"),
               backgroundColor: Colors.purple[50],
               actions: [
                 TextButton(onPressed: () {}, child: Icon(Icons.more_vert))
               ],
             ),
-            body: Container(
-              color: Colors.grey[300],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class SideBar extends StatelessWidget {
-  const SideBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return NavigationDrawer(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          height: 60,
-          padding: const EdgeInsets.all(8.0),
-          child: const Text(
-            "Avaliação das Disciplinas",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Container(
-          height: 55.0,
-          child: InkWell(
-            onTap: () {},
-            child: const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0),
-              child: Row(
-                children: [
-                  Icon(Icons.star),
-                  SizedBox(width: 10),
-                  Text("Botão"),
-                ],
+            body: SizedBox.expand(
+              child: Container(
+                color: Colors.grey[300],
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 30.0),
+                        child: Container(
+                          padding: EdgeInsets.all(30),
+                          color: Colors.blue,
+                          child: const Row(
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text("25/54"),
+                                    Text("Respondentes"),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text("25/54"),
+                                    Text("Respondentes"),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text("25/54"),
+                                    Text("Respondentes"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 30.0),
+                        child: Container(
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 30.0),
+                        child: Container(
+                          color: Colors.pink,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
