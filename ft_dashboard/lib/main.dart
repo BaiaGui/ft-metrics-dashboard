@@ -44,6 +44,7 @@ class DashboardStructure extends StatelessWidget {
             ),
             body: SizedBox.expand(
               child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15),
                 color: Colors.grey[300],
                 child: Column(
                   children: [
@@ -54,46 +55,25 @@ class DashboardStructure extends StatelessWidget {
                             vertical: 10.0, horizontal: 30.0),
                         child: Container(
                           padding: EdgeInsets.all(30),
-                          color: Colors.blue,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                           child: const Row(
-                            //mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text("25/54"),
-                                    Text("Respondentes"),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text("25/54"),
-                                    Text("Respondentes"),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Text("25/54"),
-                                    Text("Respondentes"),
-                                  ],
-                                ),
-                              ),
+                              InfoCell(
+                                  mainInfo: "25/30",
+                                  infoDescription: "respondentes"),
+                              VerticalDivider(),
+                              InfoCell(
+                                  mainInfo: "25/30",
+                                  infoDescription: "respondentes"),
+                              VerticalDivider(),
+                              InfoCell(
+                                  mainInfo: "25/30",
+                                  infoDescription: "respondentes"),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                        child: Container(
-                          color: Colors.amber,
                         ),
                       ),
                     ),
@@ -103,7 +83,23 @@ class DashboardStructure extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 30.0),
                         child: Container(
-                          color: Colors.pink,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 30.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ),
@@ -114,6 +110,35 @@ class DashboardStructure extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class InfoCell extends StatelessWidget {
+  final String mainInfo;
+  final String infoDescription;
+
+  const InfoCell(
+      {super.key, required this.mainInfo, required this.infoDescription});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        //color: Colors.amber,
+        padding: EdgeInsets.only(left: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              mainInfo,
+              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            Text(infoDescription),
+          ],
+        ),
+      ),
     );
   }
 }
