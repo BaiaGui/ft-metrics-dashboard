@@ -21,12 +21,25 @@ class SurveyInfoCell extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InfoCell(mainInfo: "25/30", infoDescription: "respondentes"),
+              InfoCell(
+                mainInfo: "25/30",
+                infoDescription: "Respondentes/Total",
+                icon: Icons.people,
+              ),
               Divider(),
-              InfoCell(mainInfo: "25/30", infoDescription: "respondentes"),
+              InfoCell(
+                mainInfo: "88,64%",
+                infoDescription: "Participação na Pesquisa",
+                icon: Icons.sd_card_alert_sharp,
+              ),
               Divider(),
-              InfoCell(mainInfo: "25/30", infoDescription: "respondentes"),
+              InfoCell(
+                mainInfo: "4,7",
+                infoDescription: "Índice Geral",
+                icon: Icons.stars,
+              ),
             ],
           ),
         ),
@@ -38,24 +51,41 @@ class SurveyInfoCell extends StatelessWidget {
 class InfoCell extends StatelessWidget {
   final String mainInfo;
   final String infoDescription;
+  final IconData icon;
 
   const InfoCell(
-      {super.key, required this.mainInfo, required this.infoDescription});
+      {super.key,
+      required this.mainInfo,
+      required this.infoDescription,
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Colors.amber,
+        //color: Colors.amber,
         //padding: EdgeInsets.only(left: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Text(infoDescription),
-            Text(
-              mainInfo,
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Icon(
+                icon,
+                size: 60,
+                color: Colors.grey[200],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(infoDescription),
+                Text(
+                  mainInfo,
+                  style: const TextStyle(
+                      fontSize: 40, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ],
         ),
