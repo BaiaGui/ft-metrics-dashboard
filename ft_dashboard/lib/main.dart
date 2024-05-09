@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ft_dashboard/SemesterChartsCell.dart';
 import 'package:ft_dashboard/SideBar.dart';
 import 'package:ft_dashboard/SurveyInfoCell.dart';
@@ -42,14 +40,18 @@ class DashboardStructure extends StatelessWidget {
               title: const Text("Dashboard"),
               backgroundColor: Colors.purple[50],
               actions: [
-                TextButton(onPressed: () {}, child: Icon(Icons.more_vert))
+                TextButton(
+                  onPressed: () {},
+                  child: const Icon(Icons.more_vert),
+                )
               ],
             ),
             body: SizedBox.expand(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 35),
-                color: Colors.grey[300],
-                child: Column(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 35),
+                color: Colors.grey[200],
+                child: const Column(
                   children: [
                     Expanded(
                       flex: 5,

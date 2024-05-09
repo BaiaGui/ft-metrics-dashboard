@@ -64,7 +64,6 @@ class InfoCell extends StatelessWidget {
     return Expanded(
       child: Container(
         //color: Colors.amber,
-        //padding: EdgeInsets.only(left: 32),
         child: Row(
           children: [
             Padding(
