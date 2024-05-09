@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ft_dashboard/SemesterChartsCell.dart';
 import 'package:ft_dashboard/SideBar.dart';
+import 'package:ft_dashboard/SurveyInfoCell.dart';
+import 'package:ft_dashboard/UI/MainChartCell.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,65 +47,20 @@ class DashboardStructure extends StatelessWidget {
             ),
             body: SizedBox.expand(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 35),
                 color: Colors.grey[300],
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                        child: Container(
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Row(
-                            children: [
-                              InfoCell(
-                                  mainInfo: "25/30",
-                                  infoDescription: "respondentes"),
-                              VerticalDivider(),
-                              InfoCell(
-                                  mainInfo: "25/30",
-                                  infoDescription: "respondentes"),
-                              VerticalDivider(),
-                              InfoCell(
-                                  mainInfo: "25/30",
-                                  infoDescription: "respondentes"),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
                       flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                      child: Row(
+                        children: [
+                          MainChartCell(),
+                          SurveyInfoCell(),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
+                    SemesterChartsCell(),
                   ],
                 ),
               ),
@@ -110,35 +68,6 @@ class DashboardStructure extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class InfoCell extends StatelessWidget {
-  final String mainInfo;
-  final String infoDescription;
-
-  const InfoCell(
-      {super.key, required this.mainInfo, required this.infoDescription});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        //color: Colors.amber,
-        padding: EdgeInsets.only(left: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              mainInfo,
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-            ),
-            Text(infoDescription),
-          ],
-        ),
-      ),
     );
   }
 }
