@@ -18,7 +18,10 @@ class SideBarBtn extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Row(
             children: [
-              const Icon(Icons.star),
+              // const Icon(
+              //   Icons.star,
+              //   size: 15,
+              // ),
               const SizedBox(width: 10),
               Text('$name'),
             ],

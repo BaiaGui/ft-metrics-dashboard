@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ft_dashboard/SemesterChartsCell.dart';
 import 'package:ft_dashboard/SideBar.dart';
 import 'package:ft_dashboard/SurveyInfoCell.dart';
@@ -31,45 +33,59 @@ class DashboardStructure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SideBar(),
-        Expanded(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text("Dashboard"),
-              backgroundColor: Colors.purple[50],
-              actions: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Icon(Icons.more_vert),
-                )
-              ],
-            ),
-            body: SizedBox.expand(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 35),
-                color: Colors.grey[200],
-                child: const Column(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Row(
+    return Scaffold(
+      body: Row(
+        children: [
+          const SideBar(),
+          Expanded(
+            flex: 5, //Proporção sidebar/dashboard (1/5)
+            child: Container(
+              color: Colors.grey[200],
+              child: Column(
+                children: [
+                  Header(),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 30),
+                      child: Column(
                         children: [
-                          MainChartCell(),
-                          SurveyInfoCell(),
+                          Expanded(
+                            flex: 5,
+                            child: Row(
+                              children: [
+                                MainChartCell(),
+                                SurveyInfoCell(),
+                              ],
+                            ),
+                          ),
+                          SemesterChartsCell(),
                         ],
                       ),
                     ),
-                    SemesterChartsCell(),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      child: Row(
+        children: [Text("Dashboard"), Icon(Icons.more_vert)],
+      ),
     );
   }
 }

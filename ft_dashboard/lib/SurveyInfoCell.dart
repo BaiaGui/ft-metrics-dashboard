@@ -15,7 +15,6 @@ class SurveyInfoCell extends StatelessWidget {
           bottom: 10.0,
         ),
         child: Container(
-          padding: const EdgeInsets.only(right: 0.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
