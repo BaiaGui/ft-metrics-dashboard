@@ -10,6 +10,7 @@ class SideBarBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(debugCheckHasMaterial(context));
     return Container(
       height: 55.0,
       child: InkWell(

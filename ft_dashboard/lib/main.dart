@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ft_dashboard/SemesterChartsCell.dart';
-import 'package:ft_dashboard/SideBar.dart';
+import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/SurveyInfoCell.dart';
+import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 
 void main() {
@@ -43,7 +44,7 @@ class DashboardStructure extends StatelessWidget {
               color: Colors.grey[200],
               child: Column(
                 children: [
-                  Header(),
+                  const Header(),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -69,22 +70,6 @@ class DashboardStructure extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class Header extends StatelessWidget {
-  const Header({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: Row(
-        children: [Text("Dashboard"), Icon(Icons.more_vert)],
       ),
     );
   }
