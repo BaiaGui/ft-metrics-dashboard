@@ -11,7 +11,7 @@ class SideBar extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: Ink(
-        color: Colors.white,
+        color: Colors.blueAccent[700],
         child: Column(
           children: [
             Container(
@@ -23,6 +23,7 @@ class SideBar extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -34,6 +35,7 @@ class SideBar extends StatelessWidget {
                   "Geral",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -48,6 +50,7 @@ class SideBar extends StatelessWidget {
                   "Cursos",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),

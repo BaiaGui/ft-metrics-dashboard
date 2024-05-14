@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:ft_dashboard/SemesterChartsCell.dart';
+import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
 import 'package:ft_dashboard/UI/SideBar.dart';
-import 'package:ft_dashboard/SurveyInfoCell.dart';
+import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 
@@ -49,7 +49,7 @@ class DashboardStructure extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 30),
-                      child: Column(
+                      child: const Column(
                         children: [
                           Expanded(
                             flex: 5,

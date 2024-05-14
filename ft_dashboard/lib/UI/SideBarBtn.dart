@@ -24,7 +24,12 @@ class SideBarBtn extends StatelessWidget {
               //   size: 15,
               // ),
               const SizedBox(width: 10),
-              Text('$name'),
+              Text(
+                '$name',
+                style: TextStyle(
+                  color: Colors.white.withAlpha(95),
+                ),
+              ),
             ],
           ),
         ),

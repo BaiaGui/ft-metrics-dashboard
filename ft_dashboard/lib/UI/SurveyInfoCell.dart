@@ -31,7 +31,7 @@ class SurveyInfoCell extends StatelessWidget {
               InfoCell(
                 mainInfo: "88,64%",
                 infoDescription: "Participação na Pesquisa",
-                icon: Icons.sd_card_alert_sharp,
+                icon: Icons.search,
               ),
               Divider(),
               InfoCell(

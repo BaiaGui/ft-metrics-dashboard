@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ft_dashboard/UI/TestChart.dart';
+import 'package:ft_dashboard/UI/MainChart.dart';
 
 class MainChartCell extends StatelessWidget {
   const MainChartCell({
@@ -30,7 +30,7 @@ class MainChartCell extends StatelessWidget {
                 child: Container(
                   //color: Colors.grey[50],
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                  child: MyChart(),
+                  child: MainChart(),
                 ),
               )
             ],

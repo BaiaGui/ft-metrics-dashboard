@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class MyChart extends StatelessWidget {
-  const MyChart({super.key});
+class MainChart extends StatelessWidget {
+  const MainChart({super.key});
 
   @override
   Widget build(BuildContext context) {

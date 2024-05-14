@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ft_dashboard/UI/SemesterChart.dart';
 
 class SemesterChartsCell extends StatelessWidget {
   const SemesterChartsCell({
@@ -19,11 +21,25 @@ class SemesterChartsCell extends StatelessWidget {
           ),
           child: Column(
             children: [
-              ChartHeader(),
+              CellHeader(),
               Expanded(
-                  child: Container(
-                color: Colors.grey[50],
-              ))
+                child: Container(
+                  //color: Colors.grey[50],
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        child: SemesterChart(),
+                      ),
+                      Expanded(
+                        child: SemesterChart(),
+                      ),
+                      Expanded(
+                        child: SemesterChart(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -32,8 +48,8 @@ class SemesterChartsCell extends StatelessWidget {
   }
 }
 
-class ChartHeader extends StatelessWidget {
-  const ChartHeader({
+class CellHeader extends StatelessWidget {
+  const CellHeader({
     super.key,
   });
 
