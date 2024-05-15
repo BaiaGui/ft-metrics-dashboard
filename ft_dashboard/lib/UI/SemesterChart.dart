@@ -131,7 +131,10 @@ class SemesterChart extends StatelessWidget {
     }
     return Text(
       text,
-      style: TextStyle(color: Colors.grey[600]),
+      style: TextStyle(
+        color: Colors.grey[600],
+        fontSize: 12,
+      ),
     );
   }
 }

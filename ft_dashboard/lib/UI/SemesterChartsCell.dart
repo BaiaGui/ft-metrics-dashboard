@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
 
@@ -23,21 +22,18 @@ class SemesterChartsCell extends StatelessWidget {
             children: [
               CellHeader(),
               Expanded(
-                child: Container(
-                  //color: Colors.grey[50],
-                  child: const Row(
-                    children: [
-                      Expanded(
-                        child: SemesterChart(),
-                      ),
-                      Expanded(
-                        child: SemesterChart(),
-                      ),
-                      Expanded(
-                        child: SemesterChart(),
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SemesterChart(),
+                    ),
+                    Expanded(
+                      child: SemesterChart(),
+                    ),
+                    Expanded(
+                      child: SemesterChart(),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -78,22 +74,22 @@ class CellHeader extends StatelessWidget {
                 vertical: 0,
                 horizontal: 10,
               ),
-              constraints: BoxConstraints(maxHeight: 35),
+              constraints: const BoxConstraints(maxHeight: 35),
               isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            dropdownMenuEntries: [
-              const DropdownMenuEntry(
+            dropdownMenuEntries: const [
+              DropdownMenuEntry(
                 value: "2024.1",
                 label: "1° Semestre/2024",
               ),
-              const DropdownMenuEntry(
+              DropdownMenuEntry(
                 value: "2024.1",
                 label: "2° Semestre/2024",
               ),
-              const DropdownMenuEntry(
+              DropdownMenuEntry(
                 value: "2024.1",
                 label: "1° Semestre/2023",
               ),
