@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub/
 /build/
 *.json
+/assets/
 # Symbolication related
 app.*.symbols
 
