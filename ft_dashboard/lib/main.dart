@@ -7,8 +7,13 @@ import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 
+import 'package:ft_dashboard/data/repository.dart';
+
 void main() {
   runApp(const MyApp());
+  var repo = Repository();
+  repo.getIndexFromAllForms();
+  //var subject = await getFormData();
 }
 
 class MyApp extends StatelessWidget {
