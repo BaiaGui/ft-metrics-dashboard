@@ -7,12 +7,12 @@ import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 
-import 'package:ft_dashboard/data/repository.dart';
+import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
-  var repo = Repository();
-  repo.getIndexFromAllForms();
+  var repo = SurveyInfoRepository();
+  await repo.getInfoCell();
   //var subject = await getFormData();
 }
 

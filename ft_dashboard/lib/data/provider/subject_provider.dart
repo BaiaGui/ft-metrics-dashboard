@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:ft_dashboard/data/models/subject.dart';
+import 'package:ft_dashboard/data/provider/models/subject.dart';
 
 const pathToFile = '../../../assets/disciplina.json';
 

@@ -1,4 +1,4 @@
-import 'package:ft_dashboard/data/models/form_question.dart';
+import 'package:ft_dashboard/data/provider/models/form_question.dart';
 
 class Form {
   final String id;

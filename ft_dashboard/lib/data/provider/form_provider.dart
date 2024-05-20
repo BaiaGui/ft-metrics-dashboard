@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:ft_dashboard/data/models/form.dart';
+import 'package:ft_dashboard/data/provider/models/form.dart';
 
 const pathToFile = '../../../assets/formulario.json';
 
