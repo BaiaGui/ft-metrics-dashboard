@@ -8,6 +8,8 @@ class Repository {
   getIndexFromAllForms() async {
     var allForms = await formProvider.getFormData();
 
+    print("qtd forms: ${allForms.length}");
+
     for (var form in allForms) {
       answerDist[0] += form.numberOfAnswersByType(0);
       answerDist[1] += form.numberOfAnswersByType(1);
