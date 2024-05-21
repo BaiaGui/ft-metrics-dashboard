@@ -52,7 +52,7 @@ class MainChart extends StatelessWidget {
             color: Colors.amber,
             isCurved: true,
             spots: [
-              const FlSpot(0, 0),
+              const FlSpot(0, 3),
               const FlSpot(1, 1.5),
               const FlSpot(2, 2.4),
               const FlSpot(3, 3.4),
@@ -64,7 +64,7 @@ class MainChart extends StatelessWidget {
             color: Colors.green,
             isCurved: true,
             spots: [
-              const FlSpot(0, 0),
+              const FlSpot(0, 2),
               const FlSpot(1, 1.5),
               const FlSpot(2, 2.4),
               const FlSpot(3, 3.4),
@@ -75,7 +75,7 @@ class MainChart extends StatelessWidget {
           LineChartBarData(
             isCurved: true,
             spots: [
-              const FlSpot(0, 0),
+              const FlSpot(0, 1),
               const FlSpot(1, 1.5),
               const FlSpot(2, 1.4),
               const FlSpot(3, 3.4),
@@ -113,5 +113,4 @@ Widget getBottomTitle(value, meta) {
       fontSize: 12,
     ),
   );
-  return Text("a");
 }

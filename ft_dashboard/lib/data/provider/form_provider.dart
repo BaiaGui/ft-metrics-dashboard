@@ -6,11 +6,24 @@ const pathToFile = '../../../assets/formulario.json';
 
 class FormProvider {
   Future<List<Form>> getFormData() async {
+    List<dynamic> jsonData = await retrieveJson();
+    return dynamicToModel(jsonData);
+  }
+
+  Future<List<Form>> getFormBySubjectClassId(String classId) async {
+    List<dynamic> jsonData = await retrieveJson();
+
+    var filteredList =
+        jsonData.where((form) => form['codTurma'] == classId).toList();
+    return dynamicToModel(filteredList);
+  }
+
+  Future<List<dynamic>> retrieveJson() async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
       List<dynamic> jsonData = jsonDecode(jsonString);
 
-      return dynamicToModel(jsonData);
+      return jsonData;
     } catch (e) {
       print("Error: $e");
       throw Exception('Failed to load data');
