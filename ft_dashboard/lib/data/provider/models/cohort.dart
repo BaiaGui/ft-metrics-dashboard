@@ -1,4 +1,4 @@
-class SubjectClass {
+class Cohort {
   final String id;
   final String code;
   final String subjectCod;
@@ -10,7 +10,7 @@ class SubjectClass {
   final String finishDate;
   final int year;
 
-  SubjectClass(
+  Cohort(
       {required this.id,
       required this.code,
       required this.subjectCod,
@@ -22,7 +22,7 @@ class SubjectClass {
       required this.finishDate,
       required this.year});
 
-  factory SubjectClass.fromJson(Map<String, dynamic> json) {
+  factory Cohort.fromJson(Map<String, dynamic> json) {
     final id = json['_id'].toString();
     final code = json['codTurma'].toString();
     final subjectCod = json['codDisc'].toString();
@@ -34,7 +34,7 @@ class SubjectClass {
     final finishDate = json['fim'].toString();
     final year = json['ano'];
 
-    return SubjectClass(
+    return Cohort(
         id: id,
         code: code,
         subjectCod: subjectCod,

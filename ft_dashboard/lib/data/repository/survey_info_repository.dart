@@ -1,12 +1,12 @@
 import 'package:ft_dashboard/data/provider/models/form.dart';
 import 'package:ft_dashboard/data/provider/form_provider.dart';
-import 'package:ft_dashboard/data/provider/models/subject_class.dart';
+import 'package:ft_dashboard/data/provider/models/cohort.dart';
 import 'package:ft_dashboard/data/provider/subject_class_provider.dart';
 import 'package:ft_dashboard/data/repository/models/survey_info.dart';
 
 class SurveyInfoRepository {
   final FormProvider formProvider = FormProvider();
-  final SubjectClassProvider classProvider = SubjectClassProvider();
+  final CohortProvider cohortProvider = CohortProvider();
 
   var answerDist = [0, 0, 0, 0, 0, 0];
 
@@ -31,17 +31,17 @@ class SurveyInfoRepository {
     return index;
   }
 
-  int getTotalEnrollments(List<SubjectClass> allClasses) {
+  int getTotalEnrollments(List<Cohort> allClasses) {
     var totalEnrollments = 0;
-    for (var subjectClass in allClasses) {
-      totalEnrollments += subjectClass.enrollments;
+    for (var Cohort in allClasses) {
+      totalEnrollments += Cohort.enrollments;
     }
     return totalEnrollments;
   }
 
   getInfoCell() async {
     final allForms = await formProvider.getFormData();
-    final allClasses = await classProvider.getSubjectClassData();
+    final allClasses = await cohortProvider.getCohortData();
     final respondents = allForms.length;
     final performanceIndex = getIndexFromForms(allForms);
     final totalEnrollments = getTotalEnrollments(allClasses);

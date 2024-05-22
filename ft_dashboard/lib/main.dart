@@ -12,8 +12,8 @@ import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
 void main() async {
   runApp(const MyApp());
-  var repo = SubjectClassProvider();
-  await repo.getSubjectClassbyCourseId('0');
+  var repo = CohortProvider();
+  await repo.getCohortByCourseId('0');
   //var subject = await getFormData();
 }
 

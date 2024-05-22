@@ -1,31 +1,31 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:ft_dashboard/data/provider/models/subject_class.dart';
+import 'package:ft_dashboard/data/provider/models/cohort.dart';
 
-const pathToSubjectClass = '../../../assets/turmas.json';
+const pathToCohort = '../../../assets/turmas.json';
 const pathToCourse = '../../../assets/cursos.json';
 
-class SubjectClassProvider {
-  Future<List<SubjectClass>> getSubjectClassData() async {
-    List<dynamic> jsonData = await retrieveJson(pathToSubjectClass);
+class CohortProvider {
+  Future<List<Cohort>> getCohortData() async {
+    List<dynamic> jsonData = await retrieveJson(pathToCohort);
     return dynamicToModel(jsonData);
   }
 
-  getSubjectClassbyCourseId(String courseId) async {
+  getCohortByCourseId(String courseId) async {
     final courses = await retrieveJson(pathToCourse);
     final rightCourse =
         courses.where((course) => course['_id'] == courseId).toList();
     final courseSubjectList = rightCourse[0]['cod_disciplinas'];
 
-    final subjectClass = await retrieveJson(pathToSubjectClass);
-    var filteredSubjectClassList = [];
-    for (var cl in subjectClass) {
-      if (courseSubjectList.contains(cl['codDisc'])) {
-        filteredSubjectClassList.add(cl);
+    final cohorts = await retrieveJson(pathToCohort);
+    var filteredCohortList = [];
+    for (var value in cohorts) {
+      if (courseSubjectList.contains(value['codDisc'])) {
+        filteredCohortList.add(value);
       }
     }
 
-    return dynamicToModel(filteredSubjectClassList);
+    return dynamicToModel(filteredCohortList);
   }
 
   Future<List<dynamic>> retrieveJson(String pathToFile) async {
@@ -40,9 +40,9 @@ class SubjectClassProvider {
     }
   }
 
-  List<SubjectClass> dynamicToModel(List<dynamic> jsonArray) {
-    List<SubjectClass> modelList =
-        jsonArray.map((item) => SubjectClass.fromJson(item)).toList();
+  List<Cohort> dynamicToModel(List<dynamic> jsonArray) {
+    List<Cohort> modelList =
+        jsonArray.map((item) => Cohort.fromJson(item)).toList();
     return modelList;
   }
 }
