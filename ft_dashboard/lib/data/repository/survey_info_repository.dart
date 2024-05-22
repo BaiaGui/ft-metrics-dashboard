@@ -47,10 +47,10 @@ class SurveyInfoRepository {
     final totalEnrollments = getTotalEnrollments(allClasses);
     final surveyParticipation = respondents / totalEnrollments;
 
-    print(respondents);
-    print(performanceIndex);
-    print(totalEnrollments);
-    print(surveyParticipation);
+    // print(respondents);
+    // print(performanceIndex);
+    // print(totalEnrollments);
+    // print(surveyParticipation);
 
     return SurveyInfo(
         respondents: respondents,

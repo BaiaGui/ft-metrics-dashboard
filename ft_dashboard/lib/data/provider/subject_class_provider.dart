@@ -2,17 +2,33 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:ft_dashboard/data/provider/models/subject_class.dart';
 
-const pathToFile = '../../../assets/turmas.json';
+const pathToSubjectClass = '../../../assets/turmas.json';
+const pathToCourse = '../../../assets/cursos.json';
 
 class SubjectClassProvider {
   Future<List<SubjectClass>> getSubjectClassData() async {
-    List<dynamic> jsonData = await retrieveJson();
+    List<dynamic> jsonData = await retrieveJson(pathToSubjectClass);
     return dynamicToModel(jsonData);
   }
 
-  getSubjectClassbyCourseId(String CourseId) {}
+  getSubjectClassbyCourseId(String courseId) async {
+    final courses = await retrieveJson(pathToCourse);
+    final rightCourse =
+        courses.where((course) => course['_id'] == courseId).toList();
+    final courseSubjectList = rightCourse[0]['cod_disciplinas'];
 
-  Future<List<dynamic>> retrieveJson() async {
+    final subjectClass = await retrieveJson(pathToSubjectClass);
+    var filteredSubjectClassList = [];
+    for (var cl in subjectClass) {
+      if (courseSubjectList.contains(cl['codDisc'])) {
+        filteredSubjectClassList.add(cl);
+      }
+    }
+
+    return dynamicToModel(filteredSubjectClassList);
+  }
+
+  Future<List<dynamic>> retrieveJson(String pathToFile) async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
       List<dynamic> jsonData = jsonDecode(jsonString);

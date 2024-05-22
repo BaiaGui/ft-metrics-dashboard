@@ -6,13 +6,14 @@ import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
+import 'package:ft_dashboard/data/provider/subject_class_provider.dart';
 
 import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
 void main() async {
   runApp(const MyApp());
-  var repo = SurveyInfoRepository();
-  await repo.getInfoCell();
+  var repo = SubjectClassProvider();
+  await repo.getSubjectClassbyCourseId('0');
   //var subject = await getFormData();
 }
 

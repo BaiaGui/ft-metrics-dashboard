@@ -64,6 +64,7 @@ flutter:
     - assets/formulario.json
     - assets/professores.json
     - assets/turmas.json
+    - assets/cursos.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
