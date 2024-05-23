@@ -30,7 +30,7 @@ class MainChart extends StatelessWidget {
               showTitles: true,
               interval: 1,
               reservedSize: 30,
-              getTitlesWidget: getBottomTitle,
+              //getTitlesWidget: getBottomTitle,
             ),
           ),
           topTitles: AxisTitles(
@@ -60,29 +60,29 @@ class MainChart extends StatelessWidget {
               const FlSpot(5, 4),
             ],
           ),
-          LineChartBarData(
-            color: Colors.green,
-            isCurved: true,
-            spots: [
-              const FlSpot(0, 2),
-              const FlSpot(1, 1.5),
-              const FlSpot(2, 2.4),
-              const FlSpot(3, 3.4),
-              const FlSpot(4, 4),
-              const FlSpot(5, 5),
-            ],
-          ),
-          LineChartBarData(
-            isCurved: true,
-            spots: [
-              const FlSpot(0, 1),
-              const FlSpot(1, 1.5),
-              const FlSpot(2, 1.4),
-              const FlSpot(3, 3.4),
-              const FlSpot(4, 2),
-              const FlSpot(5, 2.2),
-            ],
-          ),
+          // LineChartBarData(
+          //   color: Colors.green,
+          //   isCurved: true,
+          //   spots: [
+          //     const FlSpot(0, 2),
+          //     const FlSpot(1, 1.5),
+          //     const FlSpot(2, 2.4),
+          //     const FlSpot(3, 3.4),
+          //     const FlSpot(4, 4),
+          //     const FlSpot(5, 5),
+          //   ],
+          // ),
+          // LineChartBarData(
+          //   isCurved: true,
+          //   spots: [
+          //     const FlSpot(0, 1),
+          //     const FlSpot(1, 1.5),
+          //     const FlSpot(2, 1.4),
+          //     const FlSpot(3, 3.4),
+          //     const FlSpot(4, 2),
+          //     const FlSpot(5, 2.2),
+          //   ],
+          // ),
         ],
       ),
     );

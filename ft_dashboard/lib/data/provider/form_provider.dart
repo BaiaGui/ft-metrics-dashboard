@@ -10,11 +10,13 @@ class FormProvider {
     return dynamicToModel(jsonData);
   }
 
-  Future<List<Form>> getFormBySubjectClassId(String classId) async {
+  Future<List<Form>> getFormByCohortId(String cohortId) async {
     List<dynamic> jsonData = await retrieveJson();
 
     var filteredList =
-        jsonData.where((form) => form['codTurma'] == classId).toList();
+        jsonData.where((form) => form['codTurma'] == cohortId).toList();
+
+    //print("filtrei pelo id:$cohortId resultado:$filteredList");
     return dynamicToModel(filteredList);
   }
 
