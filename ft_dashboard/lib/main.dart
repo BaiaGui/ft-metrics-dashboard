@@ -6,11 +6,7 @@ import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
-import 'package:ft_dashboard/data/provider/cohort_provider.dart';
-import 'package:ft_dashboard/data/provider/form_provider.dart';
 import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
-
-import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
 void main() async {
   runApp(const TemporaryEmptyWidget());
