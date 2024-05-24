@@ -26,7 +26,7 @@ double getIndexFromForms(List<Form> allForms) {
   return index;
 }
 
-yearToXcoord(int year) {
+transformYearToXcoord(int year) {
   int year0 = 2020;
   int yearXvalue = 2 * (year - year0);
   return yearXvalue;

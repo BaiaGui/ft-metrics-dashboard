@@ -8,27 +8,30 @@ class MainChartRepository {
   final CohortProvider cohortProvider = CohortProvider();
   final FormProvider formProvider = FormProvider();
 
-  getChartLine() async {
-    //recuperar lista com todos os anos que existem na base
+  Future<List<List<int>>> getLineAllData() async {
     var cohorts = await cohortProvider.getCohortData();
+    Set<int> uniqueYears = findUniqueYears(cohorts);
+    List<List<int>> linePoints = [];
+
+    for (var year in uniqueYears) {
+      var ySem1 = await getIndexByPeriodOfTime(
+          cohorts: cohorts, year: year, semester: 1);
+      var ySem2 = await getIndexByPeriodOfTime(
+          cohorts: cohorts, year: year, semester: 2);
+
+      int xYear = transformYearToXcoord(year);
+      linePoints.add([xYear, ySem1]);
+      linePoints.add([xYear + 1, ySem2]);
+    }
+    return linePoints;
+  }
+
+  Set<int> findUniqueYears(List<Cohort> cohorts) {
     Set<int> uniqueYears = {};
-    var linePoints = [];
     for (var cohort in cohorts) {
       uniqueYears.add(cohort.year);
     }
-    print(uniqueYears);
-    //para cada item da lista calcular o index semestre 1 e 2
-    for (var year in uniqueYears) {
-      var iSemester1 = await getIndexByPeriodOfTime(
-          cohorts: cohorts, year: year, semester: 1);
-      var iSemester2 = await getIndexByPeriodOfTime(
-          cohorts: cohorts, year: year, semester: 2);
-      //para cada iteração retornar uma lista [ano_num, index]
-      int xCoord = yearToXcoord(year);
-      linePoints.add([xCoord, iSemester1]);
-      linePoints.add([xCoord + 1, iSemester2]);
-    }
-    print(linePoints);
+    return (uniqueYears);
   }
 
   getIndexByPeriodOfTime(
@@ -37,25 +40,13 @@ class MainChartRepository {
       required int semester}) async {
     var filteredCohorts = filterCohortsBySemester(cohorts, semester);
     filteredCohorts = filterCohortsByYear(filteredCohorts, year);
-    var forms = await getFormsByGroupOfCohorts(filteredCohorts);
+    var forms = await formProvider.getFormsByGroupOfCohorts(filteredCohorts);
     var index = getIndexFromForms(forms);
     print("index para forms de turma $year $semester : $index");
     return index;
   }
 
-  Future<List<Form>> getFormsByGroupOfCohorts(List<Cohort> group) async {
-    List<Form> filteredForms = [];
-
-    for (var cohort in group) {
-      print("forms para turma  ${cohort.year} ${cohort.semester} ");
-
-      var forms = await formProvider.getFormByCohortId(cohort.code);
-      filteredForms.addAll(forms);
-    }
-    return filteredForms;
-  }
-
-  //3 filtros para as turmas: ano, semestre e curso
+  // filtros para as turmas: ano, semestre
   List<Cohort> filterCohortsByYear(List<Cohort> cohorts, year) {
     return cohorts.where((cohort) => cohort.year == year).toList();
   }

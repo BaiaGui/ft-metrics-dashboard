@@ -11,7 +11,7 @@ class CohortProvider {
     return dynamicToModel(jsonData);
   }
 
-  getCohortByCourseId(String courseId) async {
+  getCohortsByCourseId(String courseId) async {
     final courses = await retrieveJson(pathToCourse);
     final rightCourse =
         courses.where((course) => course['_id'] == courseId).toList();
@@ -27,6 +27,8 @@ class CohortProvider {
 
     return dynamicToModel(filteredCohortList);
   }
+
+  //
 
   Future<List<dynamic>> retrieveJson(String pathToFile) async {
     try {

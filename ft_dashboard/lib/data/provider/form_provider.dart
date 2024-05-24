@@ -5,6 +5,18 @@ import 'package:ft_dashboard/data/provider/models/form.dart';
 const pathToFile = '../../../assets/formulario.json';
 
 class FormProvider {
+  Future<List<Form>> getFormsByGroupOfCohorts(cohorts) async {
+    List<Form> filteredForms = [];
+
+    for (var cohort in cohorts) {
+      print("forms para turma  ${cohort.year} ${cohort.semester} ");
+
+      var forms = await getFormByCohortId(cohort.code);
+      filteredForms.addAll(forms);
+    }
+    return filteredForms;
+  }
+
   Future<List<Form>> getFormData() async {
     List<dynamic> jsonData = await retrieveJson();
     return dynamicToModel(jsonData);

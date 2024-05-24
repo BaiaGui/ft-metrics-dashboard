@@ -13,9 +13,9 @@ import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
 import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(const TemporaryEmptyWidget());
   var repo = MainChartRepository();
-  await repo.getChartLine();
+  //await repo.getChartLine();
   //var subject = await getFormData();
 }
 
@@ -34,6 +34,15 @@ class MyApp extends StatelessWidget {
       ),
       home: const DashboardStructure(),
     );
+  }
+}
+
+class TemporaryEmptyWidget extends StatelessWidget {
+  const TemporaryEmptyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 
