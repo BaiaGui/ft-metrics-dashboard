@@ -7,10 +7,10 @@ class MainChartRepository {
   final CohortProvider cohortProvider = CohortProvider();
   final FormProvider formProvider = FormProvider();
 
-  Future<List<List<int>>> getLineAllData() async {
+  Future<List<List<double>>> getLineAllData() async {
     var cohorts = await cohortProvider.getCohortData();
     Set<int> uniqueYears = findUniqueYears(cohorts);
-    List<List<int>> linePoints = [];
+    List<List<double>> linePoints = [];
 
     for (var year in uniqueYears) {
       var ySem1 = await getIndexByPeriodOfTime(
@@ -18,7 +18,7 @@ class MainChartRepository {
       var ySem2 = await getIndexByPeriodOfTime(
           cohorts: cohorts, year: year, semester: 2);
 
-      int xYear = transformYearToXcoord(year);
+      double xYear = transformYearToXcoord(year);
       linePoints.add([xYear, ySem1]);
       linePoints.add([xYear + 1, ySem2]);
     }

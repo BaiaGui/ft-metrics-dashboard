@@ -9,7 +9,7 @@ import 'package:ft_dashboard/UI/MainChartCell.dart';
 import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
 
 void main() async {
-  runApp(const TemporaryEmptyWidget());
+  runApp(const MyApp());
   var repo = MainChartRepository();
   //await repo.getChartLine();
   //var subject = await getFormData();
