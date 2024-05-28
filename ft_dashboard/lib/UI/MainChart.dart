@@ -28,15 +28,11 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final spots = state.linePoints.map(
-    //   (line) {
-    //     List<FlSpot> list = [];
-    //     print(FlSpot(line[0], line[1]));
-    //     list.add(FlSpot(line[0], line[1]));
-    //     return list.toList();
-    //   },
-    // );
-    // print(spots);
+    List<FlSpot> spots = [];
+    for (var line in state.linePoints) {
+      spots.add(FlSpot(line[0], line[1]));
+    }
+
     return LineChart(
       LineChartData(
         gridData: FlGridData(
@@ -87,11 +83,7 @@ class Chart extends StatelessWidget {
           LineChartBarData(
             color: Colors.green,
             isCurved: true,
-            spots: [
-              FlSpot(state.linePoints[0][0], state.linePoints[0][1]),
-              FlSpot(state.linePoints[1][0], state.linePoints[1][1]),
-              FlSpot(state.linePoints[2][0], state.linePoints[2][1]),
-            ],
+            spots: spots,
           ),
           // LineChartBarData(
           //   isCurved: true,
