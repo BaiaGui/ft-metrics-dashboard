@@ -19,8 +19,14 @@ class MainChartRepository {
           cohorts: cohorts, year: year, semester: 2);
 
       double xYear = transformYearToXcoord(year);
-      linePoints.add([xYear, ySem1]);
-      linePoints.add([xYear + 1, ySem2]);
+      if (ySem1 >= 0) {
+        ySem1 = double.parse(ySem1.toStringAsFixed(2));
+        linePoints.add([xYear, ySem1]);
+      }
+      if (ySem2 >= 0) {
+        ySem2 = double.parse(ySem2.toStringAsFixed(2));
+        linePoints.add([xYear + 1, ySem2]);
+      }
     }
     return linePoints;
   }
@@ -42,6 +48,7 @@ class MainChartRepository {
     var forms = await formProvider.getFormsByGroupOfCohorts(filteredCohorts);
     var index = getIndexFromForms(forms);
     print("index para forms de turma $year $semester : $index");
+
     return index;
   }
 

@@ -10,7 +10,6 @@ class FormProvider {
 
     for (var cohort in cohorts) {
       print("forms para turma  ${cohort.year} ${cohort.semester} ");
-
       var forms = await getFormByCohortId(cohort.code);
       filteredForms.addAll(forms);
     }
