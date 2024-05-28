@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
+import 'package:ft_dashboard/data/utils.dart';
 
 class MainChart extends StatelessWidget {
   const MainChart({super.key});
@@ -57,7 +58,7 @@ class Chart extends StatelessWidget {
               showTitles: true,
               interval: 1,
               reservedSize: 30,
-              //getTitlesWidget: getBottomTitle,
+              getTitlesWidget: getBottomTitle,
             ),
           ),
           topTitles: AxisTitles(
@@ -103,22 +104,8 @@ class Chart extends StatelessWidget {
 }
 
 Widget getBottomTitle(value, meta) {
-  String text = "";
+  String text = transformXcoordToYear(value.toInt());
 
-  switch (value.toInt()) {
-    case 0:
-      text = "2022.1";
-    case 1:
-      text = "2022.2";
-    case 2:
-      text = "2023.1";
-    case 3:
-      text = "2023.2";
-    case 4:
-      text = "2024.1";
-    case 5:
-      text = "2024.2";
-  }
   return Text(
     text,
     style: TextStyle(

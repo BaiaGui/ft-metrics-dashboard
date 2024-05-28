@@ -31,3 +31,16 @@ transformYearToXcoord(int year) {
   int yearXvalue = 2 * (year - year0);
   return yearXvalue;
 }
+
+transformXcoordToYear(int coord) {
+  int year0 = 2020;
+  double xYear = (coord / 2) + year0;
+  if (xYear == xYear.floor()) {
+    print(xYear);
+    return "$xYear.1";
+  } else {
+    print(xYear);
+    int baseYear = xYear.floor();
+    return "$baseYear.2";
+  }
+}
