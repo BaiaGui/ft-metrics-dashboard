@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
 import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
@@ -62,19 +64,23 @@ class DashboardStructure extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 30),
-                      child: const Column(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: Row(
-                              children: [
-                                MainChartCell(),
-                                SurveyInfoCell(),
-                              ],
+                      child: BlocProvider(
+                        create: (context) =>
+                            MainChartBloc()..add(MainChartStarted()),
+                        child: const Column(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: Row(
+                                children: [
+                                  MainChartCell(),
+                                  SurveyInfoCell(),
+                                ],
+                              ),
                             ),
-                          ),
-                          SemesterChartsCell(),
-                        ],
+                            SemesterChartsCell(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

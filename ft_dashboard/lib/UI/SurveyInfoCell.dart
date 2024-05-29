@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
 
 class SurveyInfoCell extends StatelessWidget {
   const SurveyInfoCell({
@@ -19,27 +21,40 @@ class SurveyInfoCell extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InfoCell(
-                mainInfo: "25/30",
-                infoDescription: "Respondentes/Total",
-                icon: Icons.people,
-              ),
-              Divider(),
-              InfoCell(
-                mainInfo: "88,64%",
-                infoDescription: "Participação na Pesquisa",
-                icon: Icons.search,
-              ),
-              Divider(),
-              InfoCell(
-                mainInfo: "4,7",
-                infoDescription: "Índice Geral",
-                icon: Icons.stars,
-              ),
-            ],
+          child: BlocBuilder<MainChartBloc, MainChartState>(
+            builder: (context, state) {
+              final data = state.surveyInfo;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "Pesquisa mais recente",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                  InfoCell(
+                    mainInfo: "${data?.respondents}/${data?.totalEnrollments}",
+                    infoDescription: "Respondentes/Total",
+                    icon: Icons.people,
+                  ),
+                  Divider(),
+                  InfoCell(
+                    mainInfo: "${data?.surveyParticipation}%",
+                    infoDescription: "Participação na Pesquisa",
+                    icon: Icons.search,
+                  ),
+                  Divider(),
+                  InfoCell(
+                    mainInfo: "${data?.performanceIndex}",
+                    infoDescription: "Índice Geral",
+                    icon: Icons.stars,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

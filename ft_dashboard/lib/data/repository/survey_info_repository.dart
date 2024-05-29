@@ -12,11 +12,13 @@ class SurveyInfoRepository {
     final allForms = await formProvider.getFormData();
     final allCohorts = await cohortProvider.getCohortData();
     final respondents = allForms.length;
-    final performanceIndex = getIndexFromForms(allForms);
+    var performanceIndex = getIndexFromForms(allForms);
+    performanceIndex = double.parse(performanceIndex.toStringAsFixed(2));
     final totalEnrollments = getTotalEnrollments(allCohorts);
-    final surveyParticipation = respondents / totalEnrollments;
+    var surveyParticipation = (respondents / totalEnrollments) * 100;
+    surveyParticipation = double.parse(surveyParticipation.toStringAsFixed(3));
 
-    // print(respondents);
+    print("respondents: $respondents");
     // print(performanceIndex);
     // print(totalEnrollments);
     // print(surveyParticipation);
@@ -33,6 +35,7 @@ class SurveyInfoRepository {
     for (var cohort in allCohorts) {
       totalEnrollments += cohort.enrollments;
     }
+    print("total enrollments: ${totalEnrollments}");
     return totalEnrollments;
   }
 }
