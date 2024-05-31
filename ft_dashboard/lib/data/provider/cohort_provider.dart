@@ -11,24 +11,22 @@ class CohortProvider {
     return dynamicToModel(jsonData);
   }
 
-  getCohortsByCourseId(String courseId) async {
-    final courses = await retrieveJson(pathToCourse);
-    final rightCourse =
-        courses.where((course) => course['_id'] == courseId).toList();
-    final courseSubjectList = rightCourse[0]['cod_disciplinas'];
+  // getCohortsByCourseId(String courseId) async {
+  //   final courses = await retrieveJson(pathToCourse);
+  //   final rightCourse =
+  //       courses.where((course) => course['_id'] == courseId).toList();
+  //   final courseSubjectList = rightCourse[0]['cod_disciplinas'];
 
-    final cohorts = await retrieveJson(pathToCohort);
-    var filteredCohortList = [];
-    for (var value in cohorts) {
-      if (courseSubjectList.contains(value['codDisc'])) {
-        filteredCohortList.add(value);
-      }
-    }
+  //   final cohorts = await retrieveJson(pathToCohort);
+  //   var filteredCohortList = [];
+  //   for (var value in cohorts) {
+  //     if (courseSubjectList.contains(value['codDisc'])) {
+  //       filteredCohortList.add(value);
+  //     }
+  //   }
 
-    return dynamicToModel(filteredCohortList);
-  }
-
-  //
+  //   return dynamicToModel(filteredCohortList);
+  // }
 
   Future<List<dynamic>> retrieveJson(String pathToFile) async {
     try {
