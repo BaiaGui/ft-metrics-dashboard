@@ -9,11 +9,12 @@ import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
+import 'package:ft_dashboard/data/repository/semester_charts_repository.dart';
 
 void main() async {
   runApp(const MyApp());
-  var repo = MainChartRepository();
-  //await repo.getChartLine();
+  var repo = SemesterChartsRepository();
+  //await repo.getSemesterChartsData();
   //var subject = await getFormData();
 }
 

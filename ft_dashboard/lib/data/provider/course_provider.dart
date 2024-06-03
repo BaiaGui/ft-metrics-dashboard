@@ -23,8 +23,13 @@ class CourseProvider {
   }
 
   dynamicToModel(List<dynamic> jsonArray) {
-    List<Course> modelList =
-        jsonArray.map((item) => Course.fromJson(item)).toList();
-    return modelList;
+    try {
+      List<Course> modelList =
+          jsonArray.map((item) => Course.fromJson(item)).toList();
+      return modelList;
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
+    }
   }
 }

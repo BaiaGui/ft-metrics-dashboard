@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ft_dashboard/data/provider/course_provider.dart';
 
 class SemesterChartsRepository {
@@ -10,7 +12,7 @@ class SemesterChartsRepository {
     final allCourses = await courseProvider.getAllCoursesData();
     List chartsData = [];
     for (var course in allCourses) {
-      var courseValues = getCourseData(course.id);
+      var courseValues = getCourseFormData(course.id);
       chartsData.add([course.name, courseValues]);
     }
     return chartsData;
@@ -24,5 +26,5 @@ class SemesterChartsRepository {
   //- calcular proporção de resposta de todos os forms
   //- Armazenar em uma list
 
-  getCourseData(id) {}
+  getCourseFormData(id) {}
 }
