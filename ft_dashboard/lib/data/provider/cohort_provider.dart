@@ -28,6 +28,14 @@ class CohortProvider {
   //   return dynamicToModel(filteredCohortList);
   // }
 
+  Future<List<Cohort>> getCohortsByTime(int year, int semester) async {
+    var allCohorts = await getCohortData();
+    var filteredCohorts = allCohorts
+        .where((cohort) => cohort.year == year && cohort.semester == semester)
+        .toList();
+    return filteredCohorts;
+  }
+
   Future<List<dynamic>> retrieveJson(String pathToFile) async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
