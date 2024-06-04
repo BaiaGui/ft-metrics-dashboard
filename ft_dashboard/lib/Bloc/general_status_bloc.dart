@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
 import 'package:ft_dashboard/data/repository/models/survey_info.dart';
+import 'package:ft_dashboard/data/repository/semester_charts_repository.dart';
 import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
 class GeneralStatusEvent {}
@@ -8,22 +9,25 @@ class GeneralStatusEvent {}
 class GeneralStatusStarted extends GeneralStatusEvent {}
 
 class GeneralStatusState {
-  List<List<double>> linePoints;
+  List<List<double>> mainChartLinePoints;
   SurveyInfo? surveyInfo;
+  //List semesterChartsData;
 
-  GeneralStatusState(this.linePoints, this.surveyInfo);
+  GeneralStatusState(this.mainChartLinePoints, this.surveyInfo);
 }
 
 class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   final MainChartRepository mainRep = MainChartRepository();
   final SurveyInfoRepository infoRep = SurveyInfoRepository();
+  final SemesterChartsRepository semesterRep = SemesterChartsRepository();
 
   GeneralStatusBloc() : super(GeneralStatusState([], null)) {
     on<GeneralStatusStarted>(((event, emit) async {
-      final chartLine = await mainRep.getLineAllData();
+      final mainChartLinePoints = await mainRep.getLineAllData();
       final surveyInfo = await infoRep.getInfoCell();
-      print(chartLine);
-      emit(GeneralStatusState(chartLine, surveyInfo));
+      //final semesterChartsData = await semesterRep.getSemesterChartsData(year: year, semester: semester)
+      print(mainChartLinePoints);
+      emit(GeneralStatusState(mainChartLinePoints, surveyInfo));
     }));
   }
 }

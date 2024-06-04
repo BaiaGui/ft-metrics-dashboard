@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:ft_dashboard/data/provider/models/cohort.dart';
 
 const pathToCohort = '../../../assets/turmas.json';
-const pathToCourse = '../../../assets/cursos.json';
 
 class CohortProvider {
   Future<List<Cohort>> getCohortData() async {
-    List<dynamic> jsonData = await retrieveJson(pathToCohort);
-    return dynamicToModel(jsonData);
+    List<dynamic> jsonData = await _retrieveJson(pathToCohort);
+    return _dynamicToModel(jsonData);
   }
 
   // getCohortsByCourseId(String courseId) async {
@@ -36,7 +35,7 @@ class CohortProvider {
     return filteredCohorts;
   }
 
-  Future<List<dynamic>> retrieveJson(String pathToFile) async {
+  Future<List<dynamic>> _retrieveJson(String pathToFile) async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
       List<dynamic> jsonData = jsonDecode(jsonString);
@@ -48,7 +47,7 @@ class CohortProvider {
     }
   }
 
-  List<Cohort> dynamicToModel(List<dynamic> jsonArray) {
+  List<Cohort> _dynamicToModel(List<dynamic> jsonArray) {
     List<Cohort> modelList =
         jsonArray.map((item) => Cohort.fromJson(item)).toList();
     return modelList;

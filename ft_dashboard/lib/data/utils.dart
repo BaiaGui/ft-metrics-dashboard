@@ -42,3 +42,11 @@ transformXcoordToYear(int coord) {
     return "$baseYear.2";
   }
 }
+
+// Set<int> findUniqueYears(List<Cohort> cohorts) {
+//   Set<int> uniqueYears = {};
+//   for (var cohort in cohorts) {
+//     uniqueYears.add(cohort.year);
+//   }
+//   return (uniqueYears);
+// }

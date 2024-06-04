@@ -23,8 +23,8 @@ class FormProvider {
 
   Future<List<Form>> getFormData() async {
     try {
-      List<dynamic> jsonData = await retrieveJson();
-      return dynamicToModel(jsonData);
+      List<dynamic> jsonData = await _retrieveJson();
+      return _dynamicToModel(jsonData);
     } catch (e) {
       print("Error: $e");
       throw Exception('Failed to load data');
@@ -45,7 +45,7 @@ class FormProvider {
     }
   }
 
-  Future<List<dynamic>> retrieveJson() async {
+  Future<List<dynamic>> _retrieveJson() async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
       List<dynamic> jsonData = jsonDecode(jsonString);
@@ -57,7 +57,7 @@ class FormProvider {
     }
   }
 
-  List<Form> dynamicToModel(List<dynamic> jsonArray) {
+  List<Form> _dynamicToModel(List<dynamic> jsonArray) {
     try {
       List<Form> modelList =
           jsonArray.map((item) => Form.fromJson(item)).toList();

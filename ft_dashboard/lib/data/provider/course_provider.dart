@@ -7,8 +7,8 @@ final pathToFile = "../../../assets/cursos.json";
 
 class CourseProvider {
   Future<List<Course>> getAllCoursesData() async {
-    List<dynamic> jsonData = await retrieveJson();
-    return dynamicToModel(jsonData);
+    List<dynamic> jsonData = await _retrieveJson();
+    return _dynamicToModel(jsonData);
   }
 
   Future<Course> getCourseById(courseId) async {
@@ -17,7 +17,7 @@ class CourseProvider {
     return allCourses[index];
   }
 
-  Future<List<dynamic>> retrieveJson() async {
+  Future<List<dynamic>> _retrieveJson() async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);
       List<dynamic> jsonData = jsonDecode(jsonString);
@@ -28,7 +28,7 @@ class CourseProvider {
     }
   }
 
-  dynamicToModel(List<dynamic> jsonArray) {
+  _dynamicToModel(List<dynamic> jsonArray) {
     try {
       List<Course> modelList =
           jsonArray.map((item) => Course.fromJson(item)).toList();

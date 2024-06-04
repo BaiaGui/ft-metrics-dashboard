@@ -11,6 +11,16 @@ class SemesterChartsRepository {
   final CohortProvider cohortProvider = CohortProvider();
   final FormProvider formProvider = FormProvider();
 
+  //Função que retorna os dados da pesquisa mais recente (semestre do curso)
+  // getLatestSemesterData() async {
+  //   Set<int> uniqueYears = {};
+  //   final cohorts = await cohortProvider.getCohortData();
+  //   for (var cohort in cohorts) {
+  //     uniqueYears.add(cohort.year);
+  //   }
+  //   return (uniqueYears);
+  // }
+
   //retornar lista de models para cada curso que tem:
   // - lista com [6] valores,
   // - nome do curso,
@@ -18,7 +28,7 @@ class SemesterChartsRepository {
     final allCourses = await courseProvider.getAllCoursesData();
     List chartsData = [];
     for (var course in allCourses) {
-      var courseValues = await getCourseFormData(course, year, semester);
+      var courseValues = await _getCourseFormData(course, year, semester);
       chartsData.add([course.name, courseValues]);
     }
     print(chartsData);
@@ -33,7 +43,7 @@ class SemesterChartsRepository {
   //- [x] calcular proporção de resposta de todos os forms
   //- [x] Armazenar em uma list
 
-  getCourseFormData(Course course, int year, int semester) async {
+  _getCourseFormData(Course course, int year, int semester) async {
     try {
       List<Cohort> cohorts =
           await cohortProvider.getCohortsByTime(year, semester);
