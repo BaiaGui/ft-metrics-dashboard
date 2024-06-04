@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
 import 'package:ft_dashboard/UI/MainChart.dart';
 
 class MainChartCell extends StatelessWidget {

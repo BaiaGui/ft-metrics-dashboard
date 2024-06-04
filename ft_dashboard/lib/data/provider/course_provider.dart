@@ -11,6 +11,12 @@ class CourseProvider {
     return dynamicToModel(jsonData);
   }
 
+  Future<Course> getCourseById(courseId) async {
+    var allCourses = await getAllCoursesData();
+    int index = allCourses.indexWhere((course) => course.id == courseId);
+    return allCourses[index];
+  }
+
   Future<List<dynamic>> retrieveJson() async {
     try {
       String jsonString = await rootBundle.loadString(pathToFile);

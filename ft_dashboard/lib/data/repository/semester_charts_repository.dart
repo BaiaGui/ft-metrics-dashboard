@@ -4,6 +4,7 @@ import 'package:ft_dashboard/data/provider/cohort_provider.dart';
 import 'package:ft_dashboard/data/provider/course_provider.dart';
 import 'package:ft_dashboard/data/provider/form_provider.dart';
 import 'package:ft_dashboard/data/provider/models/cohort.dart';
+import 'package:ft_dashboard/data/provider/models/course.dart';
 
 class SemesterChartsRepository {
   final CourseProvider courseProvider = CourseProvider();
@@ -17,25 +18,46 @@ class SemesterChartsRepository {
     final allCourses = await courseProvider.getAllCoursesData();
     List chartsData = [];
     for (var course in allCourses) {
-      var courseValues = getCourseFormData(course.id, year, semester);
+      var courseValues = await getCourseFormData(course, year, semester);
       chartsData.add([course.name, courseValues]);
     }
+    print(chartsData);
     return chartsData;
   }
 
   //Função que dado um curso Id, ano e semestre
   //retorna proporção de respostas do curso e período
-  //- pegar todos as turmas do período
-  //- Filtrar turma pelo curso
-  //- pegar todos os forms de cada turma
-  //- calcular proporção de resposta de todos os forms
-  //- Armazenar em uma list
+  //- [x] pegar todos as turmas do período
+  //- [x] Filtrar turma pelo curso
+  //- [ ] pegar todos os forms de cada turma
+  //- [ ] calcular proporção de resposta de todos os forms
+  //- [ ] Armazenar em uma list
 
-  getCourseFormData(courseId, year, semester) async {
-    List<Cohort> cohorts =
-        await cohortProvider.getCohortsByTime(year, semester);
-    print(cohorts);
-    // var allCourses = await courseProvider.getAllCoursesData();
-    //   cohorts = cohorts.where((cohort) => cohort.subjectCod )
+  getCourseFormData(Course course, int year, int semester) async {
+    try {
+      List<Cohort> cohorts =
+          await cohortProvider.getCohortsByTime(year, semester);
+
+      var courseCohorts = cohorts
+          .where((cohort) => course.subjects.contains(cohort.subjectCod))
+          .toList();
+      print(
+          "número de turmas para o curso ${course.name} em $year.$semester: ${courseCohorts.length}");
+      var courseForms =
+          await formProvider.getFormsByGroupOfCohorts(courseCohorts);
+
+      List<int> proportion = [0, 0, 0, 0, 0, 0];
+      courseForms.forEach((form) {
+        for (var i = 0; i < proportion.length; i++) {
+          proportion[i] += form.numberOfAnswersByType(i);
+        }
+      });
+      print(
+          "proporção de respostas do curso ${course.name} em $year.$semester: $proportion");
+      return proportion;
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
+    }
   }
 }

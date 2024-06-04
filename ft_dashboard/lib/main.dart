@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
@@ -8,7 +6,6 @@ import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
-import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
 import 'package:ft_dashboard/data/repository/semester_charts_repository.dart';
 
 void main() async {

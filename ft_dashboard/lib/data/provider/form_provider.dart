@@ -6,29 +6,43 @@ const pathToFile = '../../../assets/formulario.json';
 
 class FormProvider {
   Future<List<Form>> getFormsByGroupOfCohorts(cohorts) async {
-    List<Form> filteredForms = [];
+    try {
+      List<Form> filteredForms = [];
 
-    for (var cohort in cohorts) {
-      print("forms para turma  ${cohort.year} ${cohort.semester} ");
-      var forms = await getFormByCohortId(cohort.code);
-      filteredForms.addAll(forms);
+      for (var cohort in cohorts) {
+        print("forms para turma  ${cohort.year} ${cohort.semester} ");
+        var forms = await getFormByCohortId(cohort.code);
+        filteredForms.addAll(forms);
+      }
+      return filteredForms;
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
     }
-    return filteredForms;
   }
 
   Future<List<Form>> getFormData() async {
-    List<dynamic> jsonData = await retrieveJson();
-    return dynamicToModel(jsonData);
+    try {
+      List<dynamic> jsonData = await retrieveJson();
+      return dynamicToModel(jsonData);
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
+    }
   }
 
   Future<List<Form>> getFormByCohortId(String cohortId) async {
-    List<dynamic> jsonData = await retrieveJson();
+    try {
+      List<Form> allForms = await getFormData();
 
-    var filteredList =
-        jsonData.where((form) => form['codTurma'] == cohortId).toList();
+      var filteredList =
+          allForms.where((form) => form.cohortCod == cohortId).toList();
 
-    //print("filtrei pelo id:$cohortId resultado:$filteredList");
-    return dynamicToModel(filteredList);
+      return filteredList;
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
+    }
   }
 
   Future<List<dynamic>> retrieveJson() async {
@@ -44,8 +58,13 @@ class FormProvider {
   }
 
   List<Form> dynamicToModel(List<dynamic> jsonArray) {
-    List<Form> modelList =
-        jsonArray.map((item) => Form.fromJson(item)).toList();
-    return modelList;
+    try {
+      List<Form> modelList =
+          jsonArray.map((item) => Form.fromJson(item)).toList();
+      return modelList;
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load data');
+    }
   }
 }
