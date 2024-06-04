@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
+import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 
 class SurveyInfoCell extends StatelessWidget {
   const SurveyInfoCell({
@@ -21,7 +21,7 @@ class SurveyInfoCell extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: BlocBuilder<MainChartBloc, MainChartState>(
+          child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
             builder: (context, state) {
               final data = state.surveyInfo;
               return Column(

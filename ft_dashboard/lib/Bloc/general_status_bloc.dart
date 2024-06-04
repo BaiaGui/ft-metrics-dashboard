@@ -3,27 +3,27 @@ import 'package:ft_dashboard/data/repository/main_chart_repository.dart';
 import 'package:ft_dashboard/data/repository/models/survey_info.dart';
 import 'package:ft_dashboard/data/repository/survey_info_repository.dart';
 
-class MainChartEvent {}
+class GeneralStatusEvent {}
 
-class MainChartStarted extends MainChartEvent {}
+class GeneralStatusStarted extends GeneralStatusEvent {}
 
-class MainChartState {
+class GeneralStatusState {
   List<List<double>> linePoints;
   SurveyInfo? surveyInfo;
 
-  MainChartState(this.linePoints, this.surveyInfo);
+  GeneralStatusState(this.linePoints, this.surveyInfo);
 }
 
-class MainChartBloc extends Bloc<MainChartEvent, MainChartState> {
+class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   final MainChartRepository mainRep = MainChartRepository();
   final SurveyInfoRepository infoRep = SurveyInfoRepository();
 
-  MainChartBloc() : super(MainChartState([], null)) {
-    on<MainChartStarted>(((event, emit) async {
+  GeneralStatusBloc() : super(GeneralStatusState([], null)) {
+    on<GeneralStatusStarted>(((event, emit) async {
       final chartLine = await mainRep.getLineAllData();
       final surveyInfo = await infoRep.getInfoCell();
       print(chartLine);
-      emit(MainChartState(chartLine, surveyInfo));
+      emit(GeneralStatusState(chartLine, surveyInfo));
     }));
   }
 }

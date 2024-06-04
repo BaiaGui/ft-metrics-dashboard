@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ft_dashboard/Bloc/main_chart_bloc.dart';
+import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/data/utils.dart';
 
 class MainChart extends StatelessWidget {
@@ -9,7 +9,7 @@ class MainChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainChartBloc, MainChartState>(
+    return BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
         builder: (context, state) {
       if (!state.linePoints.isEmpty) {
         return Chart(

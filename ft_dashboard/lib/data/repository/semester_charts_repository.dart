@@ -29,9 +29,9 @@ class SemesterChartsRepository {
   //retorna proporção de respostas do curso e período
   //- [x] pegar todos as turmas do período
   //- [x] Filtrar turma pelo curso
-  //- [ ] pegar todos os forms de cada turma
-  //- [ ] calcular proporção de resposta de todos os forms
-  //- [ ] Armazenar em uma list
+  //- [x] pegar todos os forms de cada turma
+  //- [x] calcular proporção de resposta de todos os forms
+  //- [x] Armazenar em uma list
 
   getCourseFormData(Course course, int year, int semester) async {
     try {
