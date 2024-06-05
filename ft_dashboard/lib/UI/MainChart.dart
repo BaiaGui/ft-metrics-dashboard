@@ -30,7 +30,7 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> spots = [];
-    for (var line in state.linePoints) {
+    for (var line in state.mainChartLinePoints) {
       spots.add(FlSpot(line[0], line[1]));
     }
 
