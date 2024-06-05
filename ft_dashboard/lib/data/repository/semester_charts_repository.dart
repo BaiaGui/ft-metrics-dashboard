@@ -12,14 +12,23 @@ class SemesterChartsRepository {
   final FormProvider formProvider = FormProvider();
 
   //Função que retorna os dados da pesquisa mais recente (semestre do curso)
-  // getLatestSemesterData() async {
-  //   Set<int> uniqueYears = {};
-  //   final cohorts = await cohortProvider.getCohortData();
-  //   for (var cohort in cohorts) {
-  //     uniqueYears.add(cohort.year);
-  //   }
-  //   return (uniqueYears);
-  // }
+  getLatestSemesterData() async {
+    List<int> latestDate = await _findLatestDate();
+    return getSemesterChartsData(year: latestDate[0], semester: latestDate[1]);
+  }
+
+  Future<List<int>> _findLatestDate() async {
+    Set<String> uniqueYears = {};
+    final cohorts = await cohortProvider.getCohortData();
+    for (var cohort in cohorts) {
+      uniqueYears.add("${cohort.year}.${cohort.semester}");
+    }
+    print(uniqueYears.last);
+    var latestDate = uniqueYears.last;
+    var date = latestDate.split('.');
+    print(date);
+    return [int.parse(latestDate[0]), int.parse(latestDate[1])];
+  }
 
   //retornar lista de models para cada curso que tem:
   // - lista com [6] valores,
