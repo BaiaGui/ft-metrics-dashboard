@@ -11,7 +11,7 @@ class MainChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
         builder: (context, state) {
-      if (!state.mainChartLinePoints.isEmpty) {
+      if (state.mainChartLinePoints.isNotEmpty) {
         return Chart(
           state: state,
         );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
 
 class SemesterChartsCell extends StatelessWidget {
@@ -22,19 +24,31 @@ class SemesterChartsCell extends StatelessWidget {
             children: [
               CellHeader(),
               Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SemesterChart(
-                          name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
-                    ),
-                    // Expanded(
-                    //   child: SemesterChart(),
-                    // ),
-                    // Expanded(
-                    //   child: SemesterChart(),
-                    // ),
-                  ],
+                child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+                  builder: (context, state) {
+                    List<Widget> charts = state.semesterChartsData
+                        .map(
+                          (chartData) => Expanded(
+                              child: SemesterChart(
+                                  name: chartData[0], values: chartData[1])),
+                        )
+                        .toList();
+                    return Row(
+                      children: charts,
+                      // [
+                      //   Expanded(
+                      //     child: SemesterChart(
+                      //         name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
+                      //   ),
+                      //   // Expanded(
+                      //   //   child: SemesterChart(),
+                      //   // ),
+                      //   // Expanded(
+                      //   //   child: SemesterChart(),
+                      //   // ),
+                      // ],
+                    );
+                  },
                 ),
               ),
             ],

@@ -65,7 +65,7 @@ class SemesterChartsRepository {
       var courseForms =
           await formProvider.getFormsByGroupOfCohorts(courseCohorts);
 
-      List<int> proportion = [0, 0, 0, 0, 0, 0];
+      List<double> proportion = [0, 0, 0, 0, 0, 0];
       courseForms.forEach((form) {
         for (var i = 0; i < proportion.length; i++) {
           proportion[i] += form.numberOfAnswersByType(i);
