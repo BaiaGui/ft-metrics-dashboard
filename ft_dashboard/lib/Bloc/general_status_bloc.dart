@@ -11,9 +11,10 @@ class GeneralStatusStarted extends GeneralStatusEvent {}
 class GeneralStatusState {
   List<List<double>> mainChartLinePoints;
   SurveyInfo? surveyInfo;
-  //List semesterChartsData;
+  List semesterChartsData;
 
-  GeneralStatusState(this.mainChartLinePoints, this.surveyInfo);
+  GeneralStatusState(
+      this.mainChartLinePoints, this.surveyInfo, this.semesterChartsData);
 }
 
 class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
@@ -21,13 +22,14 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   final SurveyInfoRepository infoRep = SurveyInfoRepository();
   final SemesterChartsRepository semesterRep = SemesterChartsRepository();
 
-  GeneralStatusBloc() : super(GeneralStatusState([], null)) {
+  GeneralStatusBloc() : super(GeneralStatusState([], null, [])) {
     on<GeneralStatusStarted>(((event, emit) async {
       final mainChartLinePoints = await mainRep.getLineAllData();
       final surveyInfo = await infoRep.getInfoCell();
-      //final semesterChartsData = await semesterRep.getSemesterChartsData(year: year, semester: semester)
+      final semesterChartsData = await semesterRep.getLatestSemesterData();
       print(mainChartLinePoints);
-      emit(GeneralStatusState(mainChartLinePoints, surveyInfo));
+      emit(GeneralStatusState(
+          mainChartLinePoints, surveyInfo, semesterChartsData));
     }));
   }
 }

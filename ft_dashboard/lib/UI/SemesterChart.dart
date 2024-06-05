@@ -3,10 +3,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SemesterChart extends StatelessWidget {
-  const SemesterChart({super.key});
+  String name;
+  List<double> values;
+
+  SemesterChart({super.key, required this.name, required this.values});
 
   @override
   Widget build(BuildContext context) {
+    List<BarChartGroupData> chartBars = [];
+
+    for (var i = 0; i < values.length; i++) {
+      var bar = BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+            toY: values[i],
+            width: 42,
+            borderRadius: BorderRadius.zero,
+          ),
+        ],
+      );
+      chartBars.add(bar);
+      print(chartBars);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: BarChart(
@@ -17,7 +37,7 @@ class SemesterChart extends StatelessWidget {
             topTitles: AxisTitles(
               axisNameSize: 40,
               axisNameWidget: Text(
-                "Curso",
+                '$name',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -45,68 +65,7 @@ class SemesterChart extends StatelessWidget {
               );
             },
           ),
-          barGroups: [
-            BarChartGroupData(
-              x: 0,
-              barRods: [
-                BarChartRodData(
-                  toY: 5,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 1,
-              barRods: [
-                BarChartRodData(
-                  toY: 3,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 2,
-              barRods: [
-                BarChartRodData(
-                  toY: 2,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 3,
-              barRods: [
-                BarChartRodData(
-                  toY: 4,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 4,
-              barRods: [
-                BarChartRodData(
-                  toY: 3,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 5,
-              barRods: [
-                BarChartRodData(
-                  toY: 5,
-                  width: 42,
-                  borderRadius: BorderRadius.zero,
-                ),
-              ],
-            ),
-          ],
+          barGroups: chartBars,
         ),
       ),
     );

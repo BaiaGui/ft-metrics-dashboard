@@ -25,14 +25,15 @@ class SemesterChartsCell extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: SemesterChart(),
+                      child: SemesterChart(
+                          name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
                     ),
-                    Expanded(
-                      child: SemesterChart(),
-                    ),
-                    Expanded(
-                      child: SemesterChart(),
-                    ),
+                    // Expanded(
+                    //   child: SemesterChart(),
+                    // ),
+                    // Expanded(
+                    //   child: SemesterChart(),
+                    // ),
                   ],
                 ),
               ),
