@@ -11,7 +11,7 @@ import 'package:ft_dashboard/data/repository/semester_charts_repository.dart';
 void main() async {
   runApp(const MyApp());
   var repo = SemesterChartsRepository();
-  await repo.getLatestSemesterData();
+  //await repo.getLatestSemesterData();
   //var subject = await getFormData();
 }
 

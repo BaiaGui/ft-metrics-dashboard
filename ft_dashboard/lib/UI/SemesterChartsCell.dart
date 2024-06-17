@@ -80,7 +80,8 @@ class CellHeader extends StatelessWidget {
             ),
           ),
           DropdownMenu(
-            enableFilter: true,
+            initialSelection: "2024.1",
+            //enableFilter: true,
             textStyle: const TextStyle(
               fontSize: 12,
             ),
@@ -95,6 +96,9 @@ class CellHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
+            onSelected: (value) {
+              print("mudei");
+            },
             dropdownMenuEntries: const [
               DropdownMenuEntry(
                 value: "2024.1",

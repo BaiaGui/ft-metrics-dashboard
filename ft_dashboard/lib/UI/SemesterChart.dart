@@ -24,7 +24,6 @@ class SemesterChart extends StatelessWidget {
         ],
       );
       chartBars.add(bar);
-      print(chartBars);
     }
 
     return Padding(

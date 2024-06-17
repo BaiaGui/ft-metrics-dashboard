@@ -26,7 +26,8 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
     on<GeneralStatusStarted>(((event, emit) async {
       final mainChartLinePoints = await mainRep.getLineAllData();
       final surveyInfo = await infoRep.getInfoCell();
-      final semesterChartsData = await semesterRep.getLatestSemesterData();
+      final semesterChartsData =
+          await semesterRep.getLatestCourseProportionCharts();
       print(mainChartLinePoints);
       emit(GeneralStatusState(
           mainChartLinePoints, surveyInfo, semesterChartsData));

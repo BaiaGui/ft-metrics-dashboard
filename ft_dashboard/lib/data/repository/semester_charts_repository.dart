@@ -12,9 +12,10 @@ class SemesterChartsRepository {
   final FormProvider formProvider = FormProvider();
 
   //Função que retorna os dados da pesquisa mais recente (semestre do curso)
-  getLatestSemesterData() async {
+  getLatestCourseProportionCharts() async {
     List<int> latestDate = await _findLatestDate();
-    return getSemesterChartsData(year: latestDate[0], semester: latestDate[1]);
+    return getCoursesProportionChartsByTime(
+        year: latestDate[0], semester: latestDate[1]);
   }
 
   Future<List<int>> _findLatestDate() async {
@@ -27,17 +28,21 @@ class SemesterChartsRepository {
     var latestDate = uniqueYears.last;
     var date = latestDate.split('.');
     print(date);
-    return [int.parse(latestDate[0]), int.parse(latestDate[1])];
+    final year = int.parse(date[0]);
+    final semester = int.parse(date[1]);
+    return [year, semester];
   }
 
   //retornar lista de models para cada curso que tem:
   // - lista com [6] valores,
   // - nome do curso,
-  getSemesterChartsData({required int year, required int semester}) async {
+  getCoursesProportionChartsByTime(
+      {required int year, required int semester}) async {
     final allCourses = await courseProvider.getAllCoursesData();
     List chartsData = [];
     for (var course in allCourses) {
-      var courseValues = await _getCourseFormData(course, year, semester);
+      var courseValues =
+          await _getCourseAnswerProportionByTime(course, year, semester);
       chartsData.add([course.name, courseValues]);
     }
     print(chartsData);
@@ -52,7 +57,8 @@ class SemesterChartsRepository {
   //- [x] calcular proporção de resposta de todos os forms
   //- [x] Armazenar em uma list
 
-  _getCourseFormData(Course course, int year, int semester) async {
+  Future<List<double>> _getCourseAnswerProportionByTime(
+      Course course, int year, int semester) async {
     try {
       List<Cohort> cohorts =
           await cohortProvider.getCohortsByTime(year, semester);

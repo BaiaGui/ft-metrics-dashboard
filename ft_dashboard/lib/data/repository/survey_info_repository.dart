@@ -18,7 +18,7 @@ class SurveyInfoRepository {
     var surveyParticipation = (respondents / totalEnrollments) * 100;
     surveyParticipation = double.parse(surveyParticipation.toStringAsFixed(3));
 
-    print("respondents: $respondents");
+    //print("respondents: $respondents");
     // print(performanceIndex);
     // print(totalEnrollments);
     // print(surveyParticipation);
