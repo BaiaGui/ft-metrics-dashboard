@@ -18,14 +18,20 @@ class SemesterChartsRepository {
         year: latestDate[0], semester: latestDate[1]);
   }
 
-  Future<List<int>> _findLatestDate() async {
-    Set<String> uniqueYears = {};
+  Future<Set<String>> _findAvailableDates() async {
+    Set<String> availableDates = {};
     final cohorts = await cohortProvider.getCohortData();
     for (var cohort in cohorts) {
-      uniqueYears.add("${cohort.year}.${cohort.semester}");
+      availableDates.add("${cohort.year}.${cohort.semester}");
     }
-    print(uniqueYears.last);
-    var latestDate = uniqueYears.last;
+    print("available dates: $availableDates");
+    return availableDates;
+  }
+
+  Future<List<int>> _findLatestDate() async {
+    final availableDates = await _findAvailableDates();
+    print(availableDates.last);
+    var latestDate = availableDates.last;
     var date = latestDate.split('.');
     print(date);
     final year = int.parse(date[0]);
