@@ -18,7 +18,7 @@ class SemesterChartsRepository {
         year: latestDate[0], semester: latestDate[1]);
   }
 
-  Future<Set<String>> _findAvailableDates() async {
+  Future<Set<String>> findAvailableDates() async {
     Set<String> availableDates = {};
     final cohorts = await cohortProvider.getCohortData();
     for (var cohort in cohorts) {
@@ -29,7 +29,7 @@ class SemesterChartsRepository {
   }
 
   Future<List<int>> _findLatestDate() async {
-    final availableDates = await _findAvailableDates();
+    final availableDates = await findAvailableDates();
     print(availableDates.last);
     var latestDate = availableDates.last;
     var date = latestDate.split('.');

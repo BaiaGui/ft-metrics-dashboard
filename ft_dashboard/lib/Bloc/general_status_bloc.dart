@@ -12,25 +12,31 @@ class GeneralStatusState {
   List<List<double>> mainChartLinePoints;
   SurveyInfo? surveyInfo;
   List semesterChartsData;
+  Set<String> availableDates;
 
   GeneralStatusState(
-      this.mainChartLinePoints, this.surveyInfo, this.semesterChartsData);
+      [this.mainChartLinePoints = const [],
+      this.surveyInfo,
+      this.semesterChartsData = const [],
+      this.availableDates = const {}]);
 }
 
 class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
+  GeneralStatusBloc() : super(GeneralStatusState()) {
+    on<GeneralStatusStarted>(_getGeneralStatusData);
+  }
+}
+
+_getGeneralStatusData(event, emit) async {
   final MainChartRepository mainRep = MainChartRepository();
   final SurveyInfoRepository infoRep = SurveyInfoRepository();
   final SemesterChartsRepository semesterRep = SemesterChartsRepository();
 
-  GeneralStatusBloc() : super(GeneralStatusState([], null, [])) {
-    on<GeneralStatusStarted>(((event, emit) async {
-      final mainChartLinePoints = await mainRep.getLineAllData();
-      final surveyInfo = await infoRep.getInfoCell();
-      final semesterChartsData =
-          await semesterRep.getLatestCourseProportionCharts();
-      print(mainChartLinePoints);
-      emit(GeneralStatusState(
-          mainChartLinePoints, surveyInfo, semesterChartsData));
-    }));
-  }
+  final mainChartLinePoints = await mainRep.getLineAllData();
+  final surveyInfo = await infoRep.getInfoCell();
+  final semesterChartsData =
+      await semesterRep.getLatestCourseProportionCharts();
+  final availableDates = await semesterRep.findAvailableDates();
+  emit(GeneralStatusState(
+      mainChartLinePoints, surveyInfo, semesterChartsData, availableDates));
 }

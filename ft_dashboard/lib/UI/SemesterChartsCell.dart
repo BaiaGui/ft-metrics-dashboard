@@ -79,41 +79,44 @@ class CellHeader extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-          DropdownMenu(
-            initialSelection: "2024.1",
-            //enableFilter: true,
-            textStyle: const TextStyle(
-              fontSize: 12,
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 10,
+          BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+              builder: (context, state) {
+            List<DropdownMenuEntry> menuOptions = state.availableDates
+                .map(
+                  (date) => DropdownMenuEntry(
+                    value: date,
+                    label: date,
+                  ),
+                )
+                .toList();
+            String latestDate = "";
+            if (state.availableDates.isNotEmpty) {
+              latestDate = state.availableDates.last;
+              print("latestDate: $latestDate");
+            }
+            return DropdownMenu(
+              initialSelection: latestDate,
+              //enableFilter: true,
+              textStyle: const TextStyle(
+                fontSize: 12,
               ),
-              constraints: const BoxConstraints(maxHeight: 35),
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+              inputDecorationTheme: InputDecorationTheme(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 0,
+                  horizontal: 10,
+                ),
+                constraints: const BoxConstraints(maxHeight: 35),
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-            ),
-            onSelected: (value) {
-              print("mudei");
-            },
-            dropdownMenuEntries: const [
-              DropdownMenuEntry(
-                value: "2024.1",
-                label: "1° Semestre/2024",
-              ),
-              DropdownMenuEntry(
-                value: "2024.1",
-                label: "2° Semestre/2024",
-              ),
-              DropdownMenuEntry(
-                value: "2024.1",
-                label: "1° Semestre/2023",
-              ),
-            ],
-          ),
+              onSelected: (value) {
+                print("mudei");
+              },
+              dropdownMenuEntries: menuOptions,
+            );
+          }),
         ],
       ),
     );
