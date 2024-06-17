@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
+import 'package:ft_dashboard/Bloc/semester_charts_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
 
 class SemesterChartsCell extends StatelessWidget {
@@ -20,38 +21,41 @@ class SemesterChartsCell extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Column(
-            children: [
-              CellHeader(),
-              Expanded(
-                child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
-                  builder: (context, state) {
-                    List<Widget> charts = state.semesterChartsData
-                        .map(
-                          (chartData) => Expanded(
-                              child: SemesterChart(
-                                  name: chartData[0], values: chartData[1])),
-                        )
-                        .toList();
-                    return Row(
-                      children: charts,
-                      // [
-                      //   Expanded(
-                      //     child: SemesterChart(
-                      //         name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
-                      //   ),
-                      //   // Expanded(
-                      //   //   child: SemesterChart(),
-                      //   // ),
-                      //   // Expanded(
-                      //   //   child: SemesterChart(),
-                      //   // ),
-                      // ],
-                    );
-                  },
+          child: BlocProvider(
+            create: (context) => SemesterChartBLoc(),
+            child: Column(
+              children: [
+                CellHeader(),
+                Expanded(
+                  child: BlocBuilder<SemesterChartBLoc, SemesterChartState>(
+                    builder: (context, state) {
+                      List<Widget> charts = state.semesterChartsData
+                          .map(
+                            (chartData) => Expanded(
+                                child: SemesterChart(
+                                    name: chartData[0], values: chartData[1])),
+                          )
+                          .toList();
+                      return Row(
+                        children: charts,
+                        // [
+                        //   Expanded(
+                        //     child: SemesterChart(
+                        //         name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
+                        //   ),
+                        //   // Expanded(
+                        //   //   child: SemesterChart(),
+                        //   // ),
+                        //   // Expanded(
+                        //   //   child: SemesterChart(),
+                        //   // ),
+                        // ],
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -112,7 +116,10 @@ class CellHeader extends StatelessWidget {
                 ),
               ),
               onSelected: (value) {
-                print("mudei");
+                print("mudei: $value");
+                context
+                    .read<SemesterChartBLoc>()
+                    .add(SemesterChartChangedSemester(value));
               },
               dropdownMenuEntries: menuOptions,
             );

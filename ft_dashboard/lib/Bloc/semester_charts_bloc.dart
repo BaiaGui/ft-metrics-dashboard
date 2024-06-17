@@ -15,7 +15,10 @@ class SemesterChartChangedSemester extends SemesterChartEvent {
   }
 }
 
-class SemesterChartState {}
+class SemesterChartState {
+  List semesterChartsData;
+  SemesterChartState([this.semesterChartsData = const []]);
+}
 
 class SemesterChartBLoc extends Bloc<SemesterChartEvent, SemesterChartState> {
   SemesterChartBLoc() : super(SemesterChartState()) {
@@ -28,5 +31,5 @@ _getChartsDataBySemester(
   final SemesterChartsRepository semesterRep = SemesterChartsRepository();
   final List chartsData = await semesterRep.getCoursesProportionChartsByTime(
       year: event.year, semester: event.semester);
-  emit(chartsData);
+  emit(SemesterChartState(chartsData));
 }
