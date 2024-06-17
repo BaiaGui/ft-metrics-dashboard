@@ -42,7 +42,7 @@ class SemesterChartsRepository {
   //retornar lista de models para cada curso que tem:
   // - lista com [6] valores,
   // - nome do curso,
-  getCoursesProportionChartsByTime(
+  Future<List> getCoursesProportionChartsByTime(
       {required int year, required int semester}) async {
     final allCourses = await courseProvider.getAllCoursesData();
     List chartsData = [];
