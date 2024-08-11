@@ -80,7 +80,7 @@ class SemesterChartsRepository {
       List<double> proportion = [0, 0, 0, 0, 0, 0];
       courseForms.forEach((form) {
         for (var i = 0; i < proportion.length; i++) {
-          proportion[i] += form.numberOfAnswersByType(i);
+          proportion[i] += form.answerTypeQuantity(i);
         }
       });
       print(

@@ -1,5 +1,38 @@
 import 'package:ft_dashboard/data/provider/models/form.dart';
 
+double getIndexByQuestionCategory(List<Form> allForms, category) {
+  if (allForms.isEmpty) {
+    return -1;
+  }
+
+  var answerDist = [0, 0, 0, 0, 0, 0];
+  for (var form in allForms) {
+    answerDist[0] +=
+        form.numberOfAnswersByType(answerType: 0, questionCategory: category);
+    answerDist[1] +=
+        form.numberOfAnswersByType(answerType: 1, questionCategory: category);
+    answerDist[2] +=
+        form.numberOfAnswersByType(answerType: 2, questionCategory: category);
+    answerDist[3] +=
+        form.numberOfAnswersByType(answerType: 3, questionCategory: category);
+    answerDist[4] +=
+        form.numberOfAnswersByType(answerType: 4, questionCategory: category);
+    answerDist[5] +=
+        form.numberOfAnswersByType(answerType: 5, questionCategory: category);
+  }
+  var questionTypeSum = 0;
+  var numberOfAnswers = 0;
+  for (var i = 0; i < 6; i++) {
+    questionTypeSum += answerDist[i] * i;
+    numberOfAnswers += answerDist[i];
+  }
+
+  final numberOfValidAnswers = numberOfAnswers - answerDist[0];
+  final index = (questionTypeSum / numberOfValidAnswers - 1) / 4;
+  return index;
+}
+
+//Temporary old version
 double getIndexFromForms(List<Form> allForms) {
   if (allForms.isEmpty) {
     return -1;
@@ -7,12 +40,12 @@ double getIndexFromForms(List<Form> allForms) {
 
   var answerDist = [0, 0, 0, 0, 0, 0];
   for (var form in allForms) {
-    answerDist[0] += form.numberOfAnswersByType(0);
-    answerDist[1] += form.numberOfAnswersByType(1);
-    answerDist[2] += form.numberOfAnswersByType(2);
-    answerDist[3] += form.numberOfAnswersByType(3);
-    answerDist[4] += form.numberOfAnswersByType(4);
-    answerDist[5] += form.numberOfAnswersByType(5);
+    answerDist[0] += form.answerTypeQuantity(0);
+    answerDist[1] += form.answerTypeQuantity(1);
+    answerDist[2] += form.answerTypeQuantity(2);
+    answerDist[3] += form.answerTypeQuantity(3);
+    answerDist[4] += form.answerTypeQuantity(4);
+    answerDist[5] += form.answerTypeQuantity(5);
   }
   var questionTypeSum = 0;
   var numberOfAnswers = 0;

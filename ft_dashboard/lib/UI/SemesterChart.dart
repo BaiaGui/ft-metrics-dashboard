@@ -53,7 +53,7 @@ class SemesterChart extends StatelessWidget {
               ),
             ),
             leftTitles: AxisTitles(
-                sideTitles: SideTitles(interval: 5, showTitles: true)),
+                sideTitles: SideTitles(interval: 100, showTitles: true)),
           ),
           gridData: FlGridData(
             drawVerticalLine: false,

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:ft_dashboard/data/provider/models/form.dart';
 
-const pathToFile = '../../../assets/formulario.json';
+const pathToJsonFile = '../../../assets/formulario.json';
 
 class FormProvider {
   Future<List<Form>> getFormsByGroupOfCohorts(cohorts) async {
@@ -47,7 +47,7 @@ class FormProvider {
 
   Future<List<dynamic>> _retrieveJson() async {
     try {
-      String jsonString = await rootBundle.loadString(pathToFile);
+      String jsonString = await rootBundle.loadString(pathToJsonFile);
       List<dynamic> jsonData = jsonDecode(jsonString);
 
       return jsonData;

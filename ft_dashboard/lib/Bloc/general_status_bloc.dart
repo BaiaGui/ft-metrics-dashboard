@@ -32,7 +32,7 @@ _getGeneralStatusData(event, emit) async {
   final SurveyInfoRepository infoRep = SurveyInfoRepository();
   final SemesterChartsRepository semesterRep = SemesterChartsRepository();
 
-  final mainChartLinePoints = await mainRep.getLineAllData();
+  final mainChartLinePoints = await mainRep.getChartLineByFormCategory(1);
   final surveyInfo = await infoRep.getInfoCell();
   final semesterChartsData =
       await semesterRep.getLatestCourseProportionCharts();

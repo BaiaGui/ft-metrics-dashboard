@@ -30,8 +30,23 @@ class Form {
         questions: questions);
   }
 
-//  Função: calcular quantidade de respostas de um tipo (0, 1, 2, ...)
-  int numberOfAnswersByType(int type) {
+  int numberOfAnswersByType({required questionCategory, required answerType}) {
+    var filteredQuestions = questions
+        .where((question) => question.category == questionCategory)
+        .toList();
+    var answersQuantity = 0;
+    for (var question in filteredQuestions) {
+      if (question.answer == '$answerType') {
+        answersQuantity++;
+      }
+    }
+    return answersQuantity;
+  }
+
+//  Função: calcular quantidade de respostas de um tipo (0, 1, 2, ...) OLD VERSION
+  int answerTypeQuantity(
+    int type,
+  ) {
     var answersQuantity = 0;
     for (var question in questions) {
       if (question.answer == '$type') {
