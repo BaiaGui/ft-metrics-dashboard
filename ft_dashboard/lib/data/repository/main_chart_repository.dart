@@ -7,6 +7,15 @@ class MainChartRepository {
   final CohortProvider cohortProvider = CohortProvider();
   final FormProvider formProvider = FormProvider();
 
+  getAllLines() async {
+    final line1 = await getChartLineByFormCategory(1);
+    final line2 = await getChartLineByFormCategory(2);
+    final line3 = await getChartLineByFormCategory(3);
+
+    print("line1: $line1");
+    return [line1, line2, line3];
+  }
+
   Future<List<List<double>>> getChartLineByFormCategory(int category) async {
     var cohorts = await cohortProvider.getCohortData();
     Set<int> uniqueYears = findUniqueYears(cohorts);

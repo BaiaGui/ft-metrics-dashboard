@@ -11,11 +11,12 @@ class MainChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
         builder: (context, state) {
-      if (state.mainChartLinePoints.isNotEmpty) {
+      if (state.line1.isNotEmpty) {
         return Chart(
           state: state,
         );
       } else {
+        //loanding state
         return Placeholder();
       }
     });
@@ -29,10 +30,12 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<FlSpot> spots = [];
-    for (var line in state.mainChartLinePoints) {
-      spots.add(FlSpot(line[0], line[1]));
-    }
+    //Category 1:  Infraestrutura e Suporte
+    final line1 = getLine(state.line1);
+    //Category 2: Participação do Estudante
+    final line2 = getLine(state.line2);
+    //Category 3: Atuação Docente
+    final line3 = getLine(state.line3);
 
     return LineChart(
       LineChartData(
@@ -79,25 +82,21 @@ class Chart extends StatelessWidget {
           LineChartBarData(
             color: Colors.amber,
             isCurved: true,
-            spots: [],
+            spots: line1,
           ),
           LineChartBarData(
             color: Colors.green,
             isCurved: true,
-            spots: spots,
+            spots: line2,
           ),
-          // LineChartBarData(
-          //   isCurved: true,
-          //   spots: [
-          //     const FlSpot(0, 1),
-          //     const FlSpot(1, 1.5),
-          //     const FlSpot(2, 1.4),
-          //     const FlSpot(3, 3.4),
-          //     const FlSpot(4, 2),
-          //     const FlSpot(5, 2.2),
-          //   ],
-          // ),
+          LineChartBarData(
+            color: Colors.blue,
+            isCurved: true,
+            spots: line3,
+          ),
         ],
+        maxY: 1,
+        minY: 0.5,
       ),
     );
   }
@@ -113,4 +112,13 @@ Widget getBottomTitle(value, meta) {
       fontSize: 12,
     ),
   );
+}
+
+List<FlSpot> getLine(line) {
+  List<FlSpot> coords = [];
+  for (var coord in line) {
+    coords.add(FlSpot(coord[0], coord[1]));
+  }
+  print("essas são as coordenadas da linha: $coords");
+  return coords;
 }

@@ -16,7 +16,7 @@ class SurveyInfoRepository {
     performanceIndex = double.parse(performanceIndex.toStringAsFixed(2));
     final totalEnrollments = getTotalEnrollments(allCohorts);
     var surveyParticipation = (respondents / totalEnrollments) * 100;
-    surveyParticipation = double.parse(surveyParticipation.toStringAsFixed(3));
+    surveyParticipation = double.parse(surveyParticipation.toStringAsFixed(2));
 
     //print("respondents: $respondents");
     // print(performanceIndex);
