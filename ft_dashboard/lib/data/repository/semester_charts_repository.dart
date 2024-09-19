@@ -18,16 +18,6 @@ class SemesterChartsRepository {
         year: latestDate[0], semester: latestDate[1]);
   }
 
-  Future<Set<String>> findAvailableDates() async {
-    Set<String> availableDates = {};
-    final cohorts = await cohortProvider.getCohortData();
-    for (var cohort in cohorts) {
-      availableDates.add("${cohort.year}.${cohort.semester}");
-    }
-    print("available dates: $availableDates");
-    return availableDates;
-  }
-
   Future<List<int>> _findLatestDate() async {
     final availableDates = await findAvailableDates();
     print(availableDates.last);
@@ -39,7 +29,17 @@ class SemesterChartsRepository {
     return [year, semester];
   }
 
-  //retornar lista de models para cada curso que tem:
+  Future<Set<String>> findAvailableDates() async {
+    Set<String> availableDates = {};
+    final cohorts = await cohortProvider.getCohortData();
+    for (var cohort in cohorts) {
+      availableDates.add("${cohort.year}.${cohort.semester}");
+    }
+    print("available dates: $availableDates");
+    return availableDates;
+  }
+
+  //(Main function) retornar lista de models para cada curso que tem:
   // - lista com [6] valores,
   // - nome do curso,
   Future<List> getCoursesProportionChartsByTime(
@@ -66,16 +66,7 @@ class SemesterChartsRepository {
   Future<List<double>> _getCourseAnswerProportionByTime(
       Course course, int year, int semester) async {
     try {
-      List<Cohort> cohorts =
-          await cohortProvider.getCohortsByTime(year, semester);
-
-      var courseCohorts = cohorts
-          .where((cohort) => course.subjects.contains(cohort.subjectCod))
-          .toList();
-      print(
-          "número de turmas para o curso ${course.name} em $year.$semester: ${courseCohorts.length}");
-      var courseForms =
-          await formProvider.getFormsByGroupOfCohorts(courseCohorts);
+      var courseForms = await _getCourseForms(course, year, semester);
 
       List<double> proportion = [0, 0, 0, 0, 0, 0];
       courseForms.forEach((form) {
@@ -83,12 +74,28 @@ class SemesterChartsRepository {
           proportion[i] += form.answerTypeQuantity(i);
         }
       });
+
       print(
           "proporção de respostas do curso ${course.name} em $year.$semester: $proportion");
+
       return proportion;
     } catch (e) {
-      print("Error: $e");
-      throw Exception('Failed to load data');
+      print("SemesterChartsRepository: $e");
+      throw Exception('Failed to get course answer proportion');
     }
+  }
+
+  _getCourseForms(course, year, semester) async {
+    List<Cohort> cohorts =
+        await cohortProvider.getCohortsByTime(year, semester);
+
+    var courseCohorts = cohorts
+        .where((cohort) => course.subjects.contains(cohort.subjectCod))
+        .toList();
+    //print(
+    //"número de turmas para o curso ${course.name} em $year.$semester: ${courseCohorts.length}");
+    var courseForms =
+        await formProvider.getFormsByGroupOfCohorts(courseCohorts);
+    return courseForms;
   }
 }
