@@ -37,7 +37,7 @@ async function getFormsByTime(year, semester) {
             from: "forms",
             localField: "codTurma",
             foreignField: "codTurma",
-            as: "forms",
+            as: "form",
           },
         },
         //stage 3: filter properties
@@ -46,37 +46,29 @@ async function getFormsByTime(year, semester) {
             codTurma: 1,
             ano: 1,
             semestre: 1,
-            forms: 1,
+            form: 1,
           },
         },
         //TEPORARY STAGES: LIMITING NUMBER OF DOCUMENTS TO VERIFY COUNT ALGORITHM
         {
-          $unwind:
+          $unwind: {
+            path: "$form",
+          },
+        },
+        {
+          $replaceRoot:
             /**
-             * path: Path to the array field.
-             * includeArrayIndex: Optional name for index.
-             * preserveNullAndEmptyArrays: Optional
-             *   toggle to unwind null and empty values.
+             * replacementDocument: A document or string.
              */
             {
-              path: "$forms",
+              newRoot: "$form",
             },
         },
         {
-          $limit:
-            /**
-             * Provide the number of documents to limit.
-             */
-            5,
+          $limit: 3,
         },
       ])
       .toArray();
-
-    // let filteredForms = [];
-    // for (let i = 0; i < formGroup.length; i++) {
-    //   console.log();
-    //   filteredForms = [...filteredForms, ...formGroup[i].forms];
-    // }
 
     return formGroup;
   } catch (e) {
@@ -98,16 +90,14 @@ function calculateIndexByCategory(formData, category) {}
  * a função considera o NÚMERO da resposta. Ou seja, 1 = DT, 2 = DP, ...
  *
  */
-function getAnswerProportion(forms) {
+function getAnswerProportion(form) {
   let answerProportion = [0, 0, 0, 0, 0, 0];
-  for (let i = 0; i < forms.length; i++) {
-    //console.log(forms[i]);
-    //countFormAnswer(forms[i]);
-    for (let j = 0; j < forms[i].questoes.length - 2; j++) {
-      let answer = forms[i].questoes[j].resposta;
-      answerProportion[answer]++;
-    }
-    console.log(answerProportion);
+  for (let i = 0; i < form.questoes.length; i++) {
+    // for (let j = 0; j < forms[i].questoes.length - 2; j++) {
+    //   let answer = forms[i].questoes[j].resposta;
+    //   answerProportion[answer]++;
+    // }
+    //console.log(form.questoes);
   }
 }
 
