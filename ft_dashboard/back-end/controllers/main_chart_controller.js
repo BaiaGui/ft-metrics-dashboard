@@ -14,8 +14,10 @@ class MainChartController {
   }
 
   async getIndex(req, res) {
-    let year = 2022;
-    let semester = 2;
+    let { year, semester } = req.body;
+
+    // let year = 2023;
+    // let semester = 1;
     let answerProportion = await getAnswerProportionByTime(year, semester);
     let indexInfra = calculateIndexByCategory(answerProportion[0]);
     let indexStudent = calculateIndexByCategory(answerProportion[1]);
@@ -184,7 +186,7 @@ async function getAnswerProportionByTime(year, semester) {
         },
       ])
       .toArray();
-
+    console.log("formGroup:" + formGroup);
     return formGroup;
   } catch (e) {
     console.log("Main Chart Controller: Error retrieving forms:" + e);
@@ -192,6 +194,7 @@ async function getAnswerProportionByTime(year, semester) {
 }
 
 function calculateIndexByCategory(answerProportion) {
+  console.log(`answerProp: ${answerProportion}`);
   let { count_0, count_1, count_2, count_3, count_4, count_5 } = answerProportion.typeCount;
   let sum = 5 * count_5 + 4 * count_4 + 3 * count_3 + 2 * count_2 + 1 * count_1;
   let validAnswers = count_1 + count_2 + count_3 + count_4 + count_5;
