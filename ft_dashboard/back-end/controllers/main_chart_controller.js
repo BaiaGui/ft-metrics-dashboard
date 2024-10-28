@@ -7,9 +7,14 @@ const OPEN_QUESTIONS = [25, 26];
 
 class MainChartController {
   async findYearsInDB(req, res) {
-    const collection = db.collection("cohorts");
-    const uniqueYears = await collection.distinct("ano");
-    res.send(uniqueYears);
+    try {
+      const collection = db.collection("cohorts");
+      const uniqueYears = await collection.distinct("ano");
+      res.send(uniqueYears);
+    } catch (e) {
+      console.log("MainChartController::Error getting unique years:" + e);
+      res.status(e.code || 500).json({ message: e.message });
+    }
   }
 
   async getIndex(req, res) {
@@ -35,6 +40,18 @@ class MainChartController {
       });
     } catch (e) {
       console.log("MainChartController::Error getting index:" + e);
+      res.status(e.code || 500).json({ message: e.message });
+    }
+  }
+
+  async getAllCourses(req, res) {
+    try {
+      const collection = db.collection("courses");
+      const courses = await collection.find({}).toArray();
+      console.log(courses);
+      res.send(courses);
+    } catch (e) {
+      console.log("MainChartController::Error getting courses:" + e);
       res.status(e.code || 500).json({ message: e.message });
     }
   }

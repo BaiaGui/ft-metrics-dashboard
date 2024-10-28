@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   res.send("hi!");
 });
 
-router.get("/index", mainChartController.getIndex);
+router.get("/index", mainChartController.getAllCourses);
 //router.get("/index");
 
 module.exports = router;
