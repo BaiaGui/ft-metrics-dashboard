@@ -17,6 +17,59 @@ class MainChartController {
     }
   }
 
+  async findLatestDate(req, res) {
+    try {
+      const collection = db.collection("cohorts");
+      //minimalist way
+      //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
+      const latestDate = await collection
+        .aggregate([
+          {
+            $group: {
+              _id: {
+                ano: "$ano",
+                semestre: "$semestre",
+              },
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$_id",
+            },
+          },
+          {
+            $sort: {
+              ano: -1,
+              semestre: -1,
+            },
+          },
+          {
+            $project: {
+              latestDate: {
+                $concat: [
+                  {
+                    $toString: "$ano",
+                  },
+                  ".",
+                  {
+                    $toString: "$semestre",
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $limit: 1,
+          },
+        ])
+        .toArray();
+      res.send(latestDate[0]);
+    } catch (e) {
+      console.log("MainChartController::Error getting latest date:" + e);
+      res.status(e.code || 500).json({ message: e.message });
+    }
+  }
+
   async getIndex(req, res) {
     try {
       let { year, semester } = req.body;
@@ -27,9 +80,9 @@ class MainChartController {
       }
 
       let answerProportion = await getAnswerProportionByTime(year, semester);
-      let indexInfra = calculateIndexByCategory(answerProportion[0]);
-      let indexStudent = calculateIndexByCategory(answerProportion[1]);
-      let indexTeacher = calculateIndexByCategory(answerProportion[2]);
+      let indexInfra = calculateIndex(answerProportion[0]);
+      let indexStudent = calculateIndex(answerProportion[1]);
+      let indexTeacher = calculateIndex(answerProportion[2]);
 
       res.send({
         year: year,
@@ -54,6 +107,21 @@ class MainChartController {
       console.log("MainChartController::Error getting courses:" + e);
       res.status(e.code || 500).json({ message: e.message });
     }
+  }
+
+  async getInfo(req, res) {
+    //get most recent year and semester of the db
+    //getNumber of enrolled in cohorts -> pesquisa mais recente
+    //getNumber of forms -> most recent
+    //calculate rate (forms/enrolled)
+    //calculateIndex(allFormsEver) -> Most recent
+
+    res.send({
+      num_respondents: 1,
+      num_enrolled: 1,
+      participation_rate: "1%",
+      general_index: 0.8,
+    });
   }
 }
 
@@ -218,7 +286,7 @@ async function getAnswerProportionByTime(year, semester) {
   return formGroup;
 }
 
-function calculateIndexByCategory(answerProportion) {
+function calculateIndex(answerProportion) {
   let { count_0, count_1, count_2, count_3, count_4, count_5 } = answerProportion.typeCount;
   let sum = 5 * count_5 + 4 * count_4 + 3 * count_3 + 2 * count_2 + 1 * count_1;
   let validAnswers = count_1 + count_2 + count_3 + count_4 + count_5;
@@ -226,5 +294,7 @@ function calculateIndexByCategory(answerProportion) {
 
   return index;
 }
+
+function findNumberEnrolled() {}
 
 module.exports = new MainChartController();
