@@ -1,128 +1,121 @@
-const db = require("../db_conn");
-//Define here category questions range -> [initial question, final question]
-const INFRASTRUCTURE = [1, 7];
-const STUDENT_PARTICIPATION = [8, 14];
-const TEACHER_PERFORMANCE = [15, 24];
-const OPEN_QUESTIONS = [25, 26];
+const db = require("../../db_conn");
 
-class MainChartController {
-  async findYearsInDB(req, res) {
-    try {
-      const collection = db.collection("cohorts");
-      const uniqueYears = await collection.distinct("ano");
-      res.send(uniqueYears);
-    } catch (e) {
-      console.log("MainChartController::Error getting unique years:" + e);
-      res.status(e.code || 500).json({ message: e.message });
-    }
+async function findYearsInDB(req, res) {
+  try {
+    const collection = db.collection("cohorts");
+    const uniqueYears = await collection.distinct("ano");
+    res.send(uniqueYears);
+  } catch (e) {
+    console.log("MainChartController::Error getting unique years:" + e);
+    res.status(e.code || 500).json({ message: e.message });
   }
+}
 
-  async findLatestDate(req, res) {
-    try {
-      const collection = db.collection("cohorts");
-      //minimalist way
-      //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
-      const latestDate = await collection
-        .aggregate([
-          {
-            $group: {
-              _id: {
-                ano: "$ano",
-                semestre: "$semestre",
-              },
+async function findLatestDate(req, res) {
+  try {
+    const collection = db.collection("cohorts");
+    //minimalist way
+    //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
+    const latestDate = await collection
+      .aggregate([
+        {
+          $group: {
+            _id: {
+              ano: "$ano",
+              semestre: "$semestre",
             },
           },
-          {
-            $replaceRoot: {
-              newRoot: "$_id",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$_id",
+          },
+        },
+        {
+          $sort: {
+            ano: -1,
+            semestre: -1,
+          },
+        },
+        {
+          $project: {
+            latestDate: {
+              $concat: [
+                {
+                  $toString: "$ano",
+                },
+                ".",
+                {
+                  $toString: "$semestre",
+                },
+              ],
             },
           },
-          {
-            $sort: {
-              ano: -1,
-              semestre: -1,
-            },
-          },
-          {
-            $project: {
-              latestDate: {
-                $concat: [
-                  {
-                    $toString: "$ano",
-                  },
-                  ".",
-                  {
-                    $toString: "$semestre",
-                  },
-                ],
-              },
-            },
-          },
-          {
-            $limit: 1,
-          },
-        ])
-        .toArray();
-      res.send(latestDate[0]);
-    } catch (e) {
-      console.log("MainChartController::Error getting latest date:" + e);
-      res.status(e.code || 500).json({ message: e.message });
-    }
+        },
+        {
+          $limit: 1,
+        },
+      ])
+      .toArray();
+    res.send(latestDate[0]);
+  } catch (e) {
+    console.log("MainChartController::Error getting latest date:" + e);
+    res.status(e.code || 500).json({ message: e.message });
   }
+}
 
-  async getIndex(req, res) {
-    try {
-      let { year, semester } = req.body;
-      if (!year || !semester) {
-        const error = new Error("Year or Semester not defined");
-        error.code = 400;
-        throw error;
-      }
-
-      let answerProportion = await getAnswerProportionByTime(year, semester);
-      let indexInfra = calculateIndex(answerProportion[0]);
-      let indexStudent = calculateIndex(answerProportion[1]);
-      let indexTeacher = calculateIndex(answerProportion[2]);
-
-      res.send({
-        year: year,
-        semester: semester,
-        indexInfra,
-        indexStudent,
-        indexTeacher,
-      });
-    } catch (e) {
-      console.log("MainChartController::Error getting index:" + e);
-      res.status(e.code || 500).json({ message: e.message });
+async function getIndex(req, res) {
+  try {
+    let { year, semester } = req.body;
+    if (!year || !semester) {
+      const error = new Error("Year or Semester not defined");
+      error.code = 400;
+      throw error;
     }
-  }
 
-  async getAllCourses(req, res) {
-    try {
-      const collection = db.collection("courses");
-      const courses = await collection.find({}).toArray();
-      console.log(courses);
-      res.send(courses);
-    } catch (e) {
-      console.log("MainChartController::Error getting courses:" + e);
-      res.status(e.code || 500).json({ message: e.message });
-    }
-  }
-
-  async getInfo(req, res) {
-    //get most recent year and semester of the db
-    //getNumber of enrolled in cohorts -> pesquisa mais recente
-    //getNumber of forms -> most recent
-    //calculate rate (forms/enrolled)
-    //calculateIndex(allFormsEver) -> Most recent
+    let answerProportion = await getAnswerProportionByTime(year, semester);
+    let indexInfra = calculateIndex(answerProportion[0]);
+    let indexStudent = calculateIndex(answerProportion[1]);
+    let indexTeacher = calculateIndex(answerProportion[2]);
 
     res.send({
-      num_respondents: 1,
-      num_enrolled: 1,
-      participation_rate: "1%",
-      general_index: 0.8,
+      year: year,
+      semester: semester,
+      indexInfra,
+      indexStudent,
+      indexTeacher,
     });
+  } catch (e) {
+    console.log("MainChartController::Error getting index:" + e);
+    res.status(e.code || 500).json({ message: e.message });
   }
+}
+
+async function getAllCourses(req, res) {
+  try {
+    const collection = db.collection("courses");
+    const courses = await collection.find({}).toArray();
+    console.log(courses);
+    res.send(courses);
+  } catch (e) {
+    console.log("MainChartController::Error getting courses:" + e);
+    res.status(e.code || 500).json({ message: e.message });
+  }
+}
+
+async function getInfo(req, res) {
+  //get most recent year and semester of the db (ok)
+  //getNumber of enrolled in cohorts -> pesquisa mais recente
+  //getNumber of forms -> most recent
+  //calculate rate (forms/enrolled)
+  //calculateIndex(allFormsEver) -> Most recent
+
+  res.send({
+    num_respondents: 1,
+    num_enrolled: 1,
+    participation_rate: "1%",
+    general_index: 0.8,
+  });
 }
 
 async function getAnswerProportionByTime(year, semester) {
@@ -297,4 +290,7 @@ function calculateIndex(answerProportion) {
 
 function findNumberEnrolled() {}
 
-module.exports = new MainChartController();
+module.exports = {
+  findLatestDate,
+  getIndex,
+};
