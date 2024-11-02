@@ -1,66 +1,12 @@
-const db = require("../../db_conn");
+const indexesService = require("../services/indexesService");
 
 async function findYearsInDB(req, res) {
   try {
-    const collection = db.collection("cohorts");
-    const uniqueYears = await collection.distinct("ano");
+    const uniqueYears = await indexesService.findYearsInDB();
     res.send(uniqueYears);
   } catch (e) {
-    console.log("MainChartController::Error getting unique years:" + e);
-    res.status(e.code || 500).json({ message: e.message });
-  }
-}
-
-async function findLatestDate(req, res) {
-  try {
-    const collection = db.collection("cohorts");
-    //minimalist way
-    //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
-    const latestDate = await collection
-      .aggregate([
-        {
-          $group: {
-            _id: {
-              ano: "$ano",
-              semestre: "$semestre",
-            },
-          },
-        },
-        {
-          $replaceRoot: {
-            newRoot: "$_id",
-          },
-        },
-        {
-          $sort: {
-            ano: -1,
-            semestre: -1,
-          },
-        },
-        {
-          $project: {
-            latestDate: {
-              $concat: [
-                {
-                  $toString: "$ano",
-                },
-                ".",
-                {
-                  $toString: "$semestre",
-                },
-              ],
-            },
-          },
-        },
-        {
-          $limit: 1,
-        },
-      ])
-      .toArray();
-    res.send(latestDate[0]);
-  } catch (e) {
-    console.log("MainChartController::Error getting latest date:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("Indexes::Error getting years in DB:" + e);
+    res.status(e.status || 500).json({ message: e.message || e });
   }
 }
 
@@ -68,229 +14,17 @@ async function getIndex(req, res) {
   try {
     let { year, semester } = req.body;
     if (!year || !semester) {
-      const error = new Error("Year or Semester not defined");
-      error.code = 400;
-      throw error;
+      throw { status: 400, message: "Year or Semester not defined" };
     }
-
-    let answerProportion = await getAnswerProportionByTime(year, semester);
-    let indexInfra = calculateIndex(answerProportion[0]);
-    let indexStudent = calculateIndex(answerProportion[1]);
-    let indexTeacher = calculateIndex(answerProportion[2]);
-
-    res.send({
-      year: year,
-      semester: semester,
-      indexInfra,
-      indexStudent,
-      indexTeacher,
-    });
+    const indexes = await indexesService.getIndex(year, semester);
+    res.send(indexes);
   } catch (e) {
-    console.log("MainChartController::Error getting index:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("Indexes::Error getting index:" + e.message);
+    res.status(e.status || 500).json({ message: e.message || e });
   }
 }
-
-async function getAllCourses(req, res) {
-  try {
-    const collection = db.collection("courses");
-    const courses = await collection.find({}).toArray();
-    console.log(courses);
-    res.send(courses);
-  } catch (e) {
-    console.log("MainChartController::Error getting courses:" + e);
-    res.status(e.code || 500).json({ message: e.message });
-  }
-}
-
-async function getInfo(req, res) {
-  //get most recent year and semester of the db (ok)
-  //getNumber of enrolled in cohorts -> pesquisa mais recente
-  //getNumber of forms -> most recent
-  //calculate rate (forms/enrolled)
-  //calculateIndex(allFormsEver) -> Most recent
-
-  res.send({
-    num_respondents: 1,
-    num_enrolled: 1,
-    participation_rate: "1%",
-    general_index: 0.8,
-  });
-}
-
-async function getAnswerProportionByTime(year, semester) {
-  const cohorts = db.collection("cohorts");
-  const formGroup = await cohorts
-    .aggregate([
-      //stage 1: find cohorts that match requirements
-      {
-        $match: {
-          ano: year,
-          semestre: semester,
-        },
-      },
-      //stage 2: get related form data
-      {
-        $lookup: {
-          from: "forms",
-          localField: "codTurma",
-          foreignField: "codTurma",
-          as: "form",
-        },
-      },
-      //stage 3: filter properties
-      {
-        $project: {
-          codTurma: 1,
-          ano: 1,
-          semestre: 1,
-          form: 1,
-        },
-      },
-      {
-        $unwind: {
-          path: "$form",
-        },
-      },
-      {
-        $replaceRoot: {
-          newRoot: "$form",
-        },
-      },
-      {
-        $unwind: {
-          path: "$questoes",
-        },
-      },
-      /**
-       * IMPORTANTE!
-       * Para calcular o TIPO de resposta (concordo parcialmente, discordo totalmente, ...),
-       * a função considera o NÚMERO da resposta. Ou seja, 1 = DT, 2 = DP, ...
-       *
-       */
-      {
-        $bucket: {
-          groupBy: {
-            $toInt: "$questoes.numero_pergunta",
-          },
-          boundaries: [1, 8, 15, 25],
-          default: "Others",
-          output: {
-            category_answers: {
-              $push: "$questoes.resposta",
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          _id: "$_id",
-          typeCount: {
-            $reduce: {
-              input: "$category_answers",
-              initialValue: {
-                count_0: 0,
-                count_1: 0,
-                count_2: 0,
-                count_3: 0,
-                count_4: 0,
-                count_5: 0,
-              },
-              in: {
-                count_0: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "0"],
-                    },
-                    {
-                      $add: ["$$value.count_0", 1],
-                    },
-                    "$$value.count_0",
-                  ],
-                },
-                count_1: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "1"],
-                    },
-                    {
-                      $add: ["$$value.count_1", 1],
-                    },
-                    "$$value.count_1",
-                  ],
-                },
-                count_2: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "2"],
-                    },
-                    {
-                      $add: ["$$value.count_2", 1],
-                    },
-                    "$$value.count_2",
-                  ],
-                },
-                count_3: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "3"],
-                    },
-                    {
-                      $add: ["$$value.count_3", 1],
-                    },
-                    "$$value.count_3",
-                  ],
-                },
-                count_4: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "4"],
-                    },
-                    {
-                      $add: ["$$value.count_4", 1],
-                    },
-                    "$$value.count_4",
-                  ],
-                },
-                count_5: {
-                  $cond: [
-                    {
-                      $eq: ["$$this", "5"],
-                    },
-                    {
-                      $add: ["$$value.count_5", 1],
-                    },
-                    "$$value.count_5",
-                  ],
-                },
-              },
-            },
-          },
-        },
-      },
-    ])
-    .toArray();
-
-  if (!formGroup.length) {
-    const error = new Error("Data not found. Verify request values");
-    error.code = 400;
-    throw error;
-  }
-  return formGroup;
-}
-
-function calculateIndex(answerProportion) {
-  let { count_0, count_1, count_2, count_3, count_4, count_5 } = answerProportion.typeCount;
-  let sum = 5 * count_5 + 4 * count_4 + 3 * count_3 + 2 * count_2 + 1 * count_1;
-  let validAnswers = count_1 + count_2 + count_3 + count_4 + count_5;
-  let index = (sum / validAnswers - 1) / 4;
-
-  return index;
-}
-
-function findNumberEnrolled() {}
 
 module.exports = {
-  findLatestDate,
+  findYearsInDB,
   getIndex,
 };

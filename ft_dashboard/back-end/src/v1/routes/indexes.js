@@ -3,7 +3,7 @@ const indexesController = require("../controllers/indexesController");
 
 const router = express.Router();
 
-router.get("/", indexesController.findLatestDate);
-router.get("/index", indexesController.findLatestDate);
+router.get("/years", indexesController.findYearsInDB);
+router.get("/index", indexesController.getIndex);
 
 module.exports = router;
