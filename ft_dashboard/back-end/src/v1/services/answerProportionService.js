@@ -1,16 +1,5 @@
-const db = require("../../db_conn");
+const answerProportionData = require("../data/answerProportionData");
 
-async function getAllCourses(req, res) {
-  try {
-    const collection = db.collection("courses");
-    const courses = await collection.find({}).toArray();
+async function answerProportions() {}
 
-    return courses;
-  } catch (e) {
-    throw { status: 400, message: e };
-  }
-}
-
-module.exports = {
-  getAllCourses,
-};
+module.exports = {};
