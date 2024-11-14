@@ -12,9 +12,7 @@ async function answerProportions(courseId, year, semester) {
   return answerProportionData.getCourseProportion(courseId, year, semester);
 }
 
-async function allAnswerProportions() {
-  let year = 2023;
-  let semester = 2;
+async function allAnswerProportions(year, semester) {
   const courses = await answerProportionData.getAllCourses();
   let proportionGroup = [];
 
@@ -25,7 +23,6 @@ async function allAnswerProportions() {
       course: course.nomeCurso,
       proportion: proportion,
     });
-    console.log("proportion:" + proportion);
   }
 
   return { proportionGroup };

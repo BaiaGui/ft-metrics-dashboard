@@ -2,7 +2,11 @@ const answerProportionService = require("../services/answerProportionService");
 
 async function getCourseProportion(req, res) {
   try {
-    let courses = await answerProportionService.allAnswerProportions();
+    const { year, semester } = req.body;
+    if (!year || !semester) {
+      throw { status: 400, message: "Year or Semester not defined" };
+    }
+    let courses = await answerProportionService.allAnswerProportions(year, semester);
     res.send(courses);
   } catch (e) {
     console.log("MainChartController::Error getting courses:" + e);
