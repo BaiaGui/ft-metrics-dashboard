@@ -1,8 +1,8 @@
 const answerProportionService = require("../services/answerProportionService");
 
-async function getAllCourses(req, res) {
+async function getCourseProportion(req, res) {
   try {
-    let courses = answerProportionService.getAllCourses();
+    let courses = await answerProportionService.allAnswerProportions();
     res.send(courses);
   } catch (e) {
     console.log("MainChartController::Error getting courses:" + e);
@@ -11,5 +11,5 @@ async function getAllCourses(req, res) {
 }
 
 module.exports = {
-  getAllCourses,
+  getCourseProportion,
 };

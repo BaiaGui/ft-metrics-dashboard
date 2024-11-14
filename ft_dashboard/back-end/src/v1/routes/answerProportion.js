@@ -3,7 +3,7 @@ const answerProportionController = require("../controllers/answerProportionContr
 
 const router = express.Router();
 
-router.get("/", answerProportionController.getAllCourses);
-//router.get("/index", answerProportionController.findLatestDate);
+router.get("/", answerProportionController.getCourseProportion);
+//router.get("/all", answerProportionController);
 
 module.exports = router;
