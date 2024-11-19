@@ -17,7 +17,6 @@ async function allAnswerProportions(year, semester) {
   let proportionGroup = [];
 
   for (let course of courses) {
-    console.log("course:" + course);
     let proportion = await answerProportionData.getCourseProportion(course._id, year, semester);
     proportionGroup.push({
       course: course.nomeCurso,

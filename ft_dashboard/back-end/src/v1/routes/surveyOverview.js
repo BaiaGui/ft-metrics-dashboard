@@ -4,6 +4,6 @@ const surveyOverviewController = require("../controllers/surveyOverviewControlle
 const router = express.Router();
 
 //router.get("/", surveyOverviewController.);
-//router.get("/general", surveyOverviewController.findLatestDate);
+router.get("/general", surveyOverviewController.getGeneralInfo);
 
 module.exports = router;

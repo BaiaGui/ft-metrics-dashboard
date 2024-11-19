@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/dashboard/indexes", indexes);
-//app.use("dashboard/surveyOverview", surveyOverview);
+app.use("/dashboard/surveyOverview", surveyOverview);
 app.use("/dashboard/answerProportion", answerProportion);
 
 const port = 3000;
