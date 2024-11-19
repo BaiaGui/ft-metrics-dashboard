@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: FT Dashboard
+  description: API para recuperação de dados de feedback de curso semestral da Faculdade de Tecnologia (FT)
+  version: 1.0.0
+
+servers:
+  - url: http://api.example.com/v1
+    description: Production
+  - url: http://localhost:3000
+    description: Local
+
+paths:
+  /dashboard/indexes/index:
+    get:
+      summary: Retorna o cálculo do index dado ano e semestre para cada categoria de pesquisa.
+      description: Baseado em um ano e semestre irá retornar o index geral desse período para cada categoria da pesquisa
+      tags:
+        - Dashboard
+      parameters:
+        - in: query
+          name: year
+          description: Ano
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: semester
+          description: Semestre
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200": # status code
+          description: JSON com o valor do index calculado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  year:
+                    type: integer
+                    example: 2022
+                  semester:
+                    type: integer
+                    example: 2
+                  indexInfra:
+                    type: string
+                    example: 0.85
+                  indexStudent:
+                    type: string
+                    example: 0.74
+                  indexTeacher:
+                    type: string
+                    example: 0.86
+  /dashboard/answerProportion/:
+    get:
+      summary: Retorna a proporção de tipos de resposta para todos os cursos da base dado ano, semestre.
+      description: Caso nenhum parâmetro seja passado, irá retornar o período mais recente disponível
+      tags:
+        - Dashboard
+      parameters:
+        - in: query
+          name: year
+          description: Ano do dado
+          schema:
+            type: integer
+        - in: query
+          name: semester
+          description: Semestre
+          schema:
+            type: integer
+      responses:
+        "200": # status code
+          description: JSON com o a proporção de resposta de cada curso. O id corresponde ao tipo de resposta, ou seja, id:0 = tipo 0 (Não sei avaliar)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  proportionGroup:
+                    type: array
+                    items:
+                      type: object
+                    example:
+                      [
+                        {
+                          "course": "Sistemas de Informação",
+                          "proportion":
+                            [
+                              { "_id": "0", "count": 125 },
+                              { "_id": "1", "count": 341 },
+                              { "_id": "2", "count": 700 },
+                              { "_id": "3", "count": 842 },
+                              { "_id": "4", "count": 2515 },
+                              { "_id": "5", "count": 4002 },
+                            ],
+                        },
+                      ]
+  /dashboard/surveyInfo/general:
+    get:
+      summary: Retorna dados gerais sobre uma pesquisa realizada
+      description: Dado ano e semestre retorna dados gerais como total de respostas, taxa de participação e índice geral do período. Caso nenhum parâmetro seja passado, retorna dados do período mais recente disponível
+      tags:
+        - Dashboard
+      parameters:
+        - in: query
+          name: year
+          description: Ano do dado
+          schema:
+            type: integer
+        - in: query
+          name: semester
+          description: Semestre
+          schema:
+            type: integer
+      responses:
+        "200": # status code
+          description: JSON com dados gerais da pesquisa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  time:
+                    type: string
+                    example: 2024.2
+                  totalEnrolled:
+                    type: integer
+                    example: 5432
+                  totalRespondents:
+                    type: integer
+                    example: 3654
+                  surveyParticipation:
+                    type: string
+                    example: 0.854
+                  averageIndex:
+                    type: string
+                    example: 0.76
