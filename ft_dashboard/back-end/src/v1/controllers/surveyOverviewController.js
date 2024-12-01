@@ -1,7 +1,7 @@
 const surveyOverviewService = require("../services/surveyOverviewService");
 
 async function getGeneralInfo(req, res) {
-  const { year, semester } = req.body;
+  const { year, semester } = req.query;
   try {
     let info = await surveyOverviewService.overviewByTime(year, semester);
     res.send(info);

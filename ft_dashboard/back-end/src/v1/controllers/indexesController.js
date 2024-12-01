@@ -12,11 +12,11 @@ const indexesService = require("../services/indexesService");
 
 async function getIndex(req, res) {
   try {
-    let { year, semester } = req.body;
+    let { year, semester, course } = req.query;
     if (!year || !semester) {
       throw { status: 400, message: "Year or Semester not defined" };
     }
-    const indexes = await indexesService.getIndex(year, semester);
+    const indexes = await indexesService.getIndex(year, semester, course);
     res.send(indexes);
   } catch (e) {
     console.log("Indexes::Error getting index:" + e.message);

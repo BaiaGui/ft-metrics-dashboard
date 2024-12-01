@@ -26,8 +26,8 @@ async function getCourseProportion(course, year, semester) {
         {
           $match: {
             "curso._id": course,
-            "ano": year,
-            "semestre": semester,
+            "ano": parseInt(year),
+            "semestre": parseInt(semester),
           },
         },
         {

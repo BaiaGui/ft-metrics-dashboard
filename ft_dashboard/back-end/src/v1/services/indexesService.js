@@ -1,8 +1,8 @@
 const indexesData = require("../data/indexesData");
 
-async function getIndex(year, semester) {
+async function getIndex(year, semester, course) {
   try {
-    let answerProportion = await indexesData.getAnswerProportionByTime(year, semester);
+    let answerProportion = await indexesData.getAnswerProportionByTime(year, semester, course);
     let indexInfra = calculateIndex(answerProportion[0]);
     let indexStudent = calculateIndex(answerProportion[1]);
     let indexTeacher = calculateIndex(answerProportion[2]);
@@ -14,6 +14,8 @@ async function getIndex(year, semester) {
       indexStudent,
       indexTeacher,
     };
+
+    if (course) indexes.course = course;
 
     return indexes;
   } catch (e) {

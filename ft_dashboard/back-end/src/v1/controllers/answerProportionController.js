@@ -2,7 +2,9 @@ const answerProportionService = require("../services/answerProportionService");
 
 async function getCourseProportion(req, res) {
   try {
-    const { year, semester } = req.body;
+    const { year, semester } = req.query;
+    console.log("year: " + year);
+    console.log("semester:" + semester);
     if (!year || !semester) {
       throw { status: 400, message: "Year or Semester not defined" };
     }

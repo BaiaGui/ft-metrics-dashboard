@@ -66,8 +66,8 @@ async function findTotalEnrolled(year, semester) {
       .aggregate([
         {
           $match: {
-            ano: year,
-            semestre: semester,
+            ano: parseInt(year),
+            semestre: parseInt(semester),
           },
         },
         {
@@ -96,8 +96,8 @@ async function findTotalRespondents(year, semester) {
       .aggregate([
         {
           $match: {
-            ano: year,
-            semestre: semester,
+            ano: parseInt(year),
+            semestre: parseInt(semester),
           },
         },
         {
