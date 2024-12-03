@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/data/utils.dart';
+import 'package:ft_dashboard/model/main_chart_model.dart';
 
 class MainChart extends StatelessWidget {
   const MainChart({super.key});
@@ -11,9 +12,10 @@ class MainChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
         builder: (context, state) {
-      if (state.line1.isNotEmpty) {
+      MainChartModel? mainChartData = state.mainChartData;
+      if (mainChartData != null) {
         return Chart(
-          state: state,
+          state: mainChartData,
         );
       } else {
         //loanding state
@@ -24,18 +26,18 @@ class MainChart extends StatelessWidget {
 }
 
 class Chart extends StatelessWidget {
-  const Chart({super.key, this.state});
+  const Chart({super.key, required this.state});
 
-  final state;
+  final MainChartModel state;
 
   @override
   Widget build(BuildContext context) {
     //Category 1:  Infraestrutura e Suporte
-    final line1 = getLine(state.line1);
+    final line1 = getLine(state.infrastructureLine);
     //Category 2: Participação do Estudante
-    final line2 = getLine(state.line2);
+    final line2 = getLine(state.studentLine);
     //Category 3: Atuação Docente
-    final line3 = getLine(state.line3);
+    final line3 = getLine(state.teacherLine);
 
     return LineChart(
       LineChartData(
@@ -117,7 +119,8 @@ Widget getBottomTitle(value, meta) {
 List<FlSpot> getLine(line) {
   List<FlSpot> coords = [];
   for (var coord in line) {
-    coords.add(FlSpot(coord[0], coord[1]));
+    double xYear = transformYearStringToIntXcoord(coord[0]);
+    coords.add(FlSpot(xYear, coord[1]));
   }
   print("essas são as coordenadas da linha: $coords");
   return coords;

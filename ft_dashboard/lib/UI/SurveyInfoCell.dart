@@ -23,7 +23,7 @@ class SurveyInfoCell extends StatelessWidget {
           ),
           child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
             builder: (context, state) {
-              final data = state.surveyInfo;
+              final data = state.surveyData;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -36,7 +36,8 @@ class SurveyInfoCell extends StatelessWidget {
                     ),
                   ),
                   InfoCell(
-                    mainInfo: "${data?.respondents}/${data?.totalEnrollments}",
+                    mainInfo:
+                        "${data?.totalRespondents}/${data?.totalEnrolled}",
                     infoDescription: "Respondentes/Total",
                     icon: Icons.people,
                   ),
@@ -48,7 +49,7 @@ class SurveyInfoCell extends StatelessWidget {
                   ),
                   Divider(),
                   InfoCell(
-                    mainInfo: "${data?.performanceIndex}",
+                    mainInfo: "${data?.averageIndex}",
                     infoDescription: "Índice Geral",
                     icon: Icons.stars,
                   ),

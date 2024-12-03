@@ -4,18 +4,35 @@ import 'package:ft_dashboard/model/semeter_chart_model.dart';
 import 'package:ft_dashboard/model/survey_overview_model.dart';
 
 class DashboardDataProvider {
-  static DashboardDataProvider provider =
-      DashboardDataProvider._createInstance();
-  DashboardDataProvider._createInstance();
+  // static DashboardDataProvider provider =
+  //     DashboardDataProvider._createInstance();
+  // DashboardDataProvider._createInstance();
 
   final Dio _dio = Dio();
   String baseURL = "https://dashboard-api-zocb.onrender.com";
 
   Future<MainChartModel> getIndex(year, semester) async {
     try {
-      Response response = await _dio
-          .get("$baseURL/dashboard/indexes?year=$year&semester=$semester");
-      return MainChartModel.fromMap(response.data);
+      //Response response = await _dio
+      //  .get("$baseURL/dashboard/indexes?year=$year&semester=$semester");
+      dynamic responseData = {
+        "indexInfra": [
+          ["2022.2", 0.85],
+          ["2023.1", 0.85],
+          ["2023.2", 0.85],
+        ],
+        "indexStudent": [
+          ["2022.2", 0.75],
+          ["2023.1", 0.75],
+          ["2023.2", 0.75],
+        ],
+        "indexTeacher": [
+          ["2022.2", 0.65],
+          ["2023.1", 0.65],
+          ["2023.2", 0.65],
+        ],
+      };
+      return MainChartModel.fromMap(responseData);
     } catch (e) {
       throw Exception('Index request error: $e');
     }
@@ -27,7 +44,7 @@ class DashboardDataProvider {
           "$baseURL/dashboard/surveyOverview?year=$year&semester=$semester");
       return SurveyOverviewModel.fromMap(response.data);
     } catch (e) {
-      throw Exception('Index request error: $e');
+      throw Exception('Survey info request error: $e');
     }
   }
 
@@ -37,7 +54,7 @@ class DashboardDataProvider {
           "$baseURL/dashboard/answerProportion?year=$year&semester=$semester");
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
-      throw Exception('\n\n\nIndex request error: $e\n\n\n');
+      throw Exception('\n\n\n Semester data request error: $e\n\n\n');
     }
   }
 }

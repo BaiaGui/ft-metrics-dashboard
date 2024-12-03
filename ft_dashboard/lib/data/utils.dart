@@ -76,6 +76,20 @@ transformXcoordToYear(int coord) {
   }
 }
 
+transformYearStringToIntXcoord(String year) {
+  var splitedYearSemester = year.split('.');
+  int numYear = int.parse(splitedYearSemester[0]);
+  String semester = splitedYearSemester[1];
+  int year0 = 2020;
+  int yearXvalue = 2 * (numYear - year0);
+
+  if (semester == '1') {
+    return yearXvalue;
+  } else {
+    return yearXvalue + 1;
+  }
+}
+
 // Set<int> findUniqueYears(List<Cohort> cohorts) {
 //   Set<int> uniqueYears = {};
 //   for (var cohort in cohorts) {
