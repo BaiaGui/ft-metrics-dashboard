@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ft_dashboard/data/repository/dashboard_repository.dart';
 import 'package:ft_dashboard/model/main_chart_model.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 import 'package:ft_dashboard/model/survey_overview_model.dart';
+import 'package:ft_dashboard/repository/dashboard_repository.dart';
 
 class GeneralStatusEvent {}
 
 class GeneralStatusStarted extends GeneralStatusEvent {}
+
+class GeneralStatusChangedTime extends GeneralStatusEvent {}
 
 class GeneralStatusState {
   List<String>? availableDates = ["2022.1", "2022.2"];

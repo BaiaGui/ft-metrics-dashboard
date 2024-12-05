@@ -2,8 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
-import 'package:ft_dashboard/data/utils.dart';
 import 'package:ft_dashboard/model/main_chart_model.dart';
+import 'package:ft_dashboard/utils/utils.dart';
 
 class MainChart extends StatelessWidget {
   const MainChart({super.key});

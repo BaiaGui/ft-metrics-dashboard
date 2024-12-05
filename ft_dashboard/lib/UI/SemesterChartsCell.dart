@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
-import 'package:ft_dashboard/Bloc/semester_charts_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 
@@ -130,8 +129,8 @@ class CellHeader extends StatelessWidget {
               onSelected: (value) {
                 print("mudei: $value");
                 context
-                    .read<SemesterChartBLoc>()
-                    .add(SemesterChartChangedSemester(value));
+                    .read<GeneralStatusBloc>()
+                    .add(GeneralStatusChangedTime());
               },
               dropdownMenuEntries: menuOptions,
             );

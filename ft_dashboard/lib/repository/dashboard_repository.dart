@@ -1,7 +1,7 @@
-import 'package:ft_dashboard/data/provider/api_provider.dart';
 import 'package:ft_dashboard/model/main_chart_model.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 import 'package:ft_dashboard/model/survey_overview_model.dart';
+import 'package:ft_dashboard/provider/api_provider.dart';
 
 class DashboardRepository {
   final DashboardDataProvider _dashboardProvider;
