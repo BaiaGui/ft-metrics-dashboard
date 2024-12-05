@@ -11,62 +11,47 @@ class SemesterChartsCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 5,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10.0),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            children: [
-              CellHeader(),
-              Expanded(
-                child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
-                  builder: (context, state) {
-                    print(state.semesterChartsData);
-                    List<Widget> charts = [Placeholder()];
-                    List<SemesterChartModel>? chartsData =
-                        state.semesterChartsData;
-                    if (chartsData != null) {
-                      charts = chartsData
-                          .map(
-                            (chartData) => Expanded(
-                                child: SemesterChart(
-                                    name: chartData.chartName,
-                                    values: chartData.proportions)),
-                          )
-                          .toList();
-                    } else {
-                      charts = [
-                        const Placeholder(),
-                        const Placeholder(),
-                        const Placeholder(),
-                      ];
-                    }
-                    return Row(
-                      children: charts,
-                      //  [
-                      // Expanded(
-                      //   child: SemesterChart(
-                      //       name: "SI", values: [0.5, 1, 2, 3, 4, 5]),
-                      // ),
-                      // Expanded(
-                      //   child: SemesterChart(),
-                      // ),
-                      // Expanded(
-                      //   child: SemesterChart(),
-                      // ),
-                      //],
-                    );
-                  },
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            CellHeader(),
+            Container(
+              child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+                builder: (context, state) {
+                  print(state.semesterChartsData);
+                  List<Widget> charts = [Placeholder()];
+                  List<SemesterChartModel>? chartsData =
+                      state.semesterChartsData;
+                  if (chartsData != null) {
+                    charts = chartsData
+                        .map(
+                          (chartData) => SemesterChart(
+                              name: chartData.chartName,
+                              values: chartData.proportions),
+                        )
+                        .toList();
+                  } else {
+                    charts = [
+                      const Placeholder(),
+                      const Placeholder(),
+                      const Placeholder(),
+                      const Placeholder(),
+                    ];
+                  }
+                  return Wrap(
+                    children: charts,
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

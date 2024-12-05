@@ -13,6 +13,7 @@ class MainChartCell extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: 10.0, bottom: 10.0),
         child: Container(
+          height: 500,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,

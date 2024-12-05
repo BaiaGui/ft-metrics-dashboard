@@ -27,44 +27,49 @@ class SemesterChart extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: BarChart(
-        BarChartData(
-          borderData:
-              FlBorderData(border: Border.all(color: Colors.grey[300]!)),
-          titlesData: FlTitlesData(
-            topTitles: AxisTitles(
-              axisNameSize: 40,
-              axisNameWidget: Text(
-                '$name',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: Container(
+        width: 400,
+        height: 400,
+        child: BarChart(
+          BarChartData(
+            borderData:
+                FlBorderData(border: Border.all(color: Colors.grey[300]!)),
+            titlesData: FlTitlesData(
+              topTitles: AxisTitles(
+                axisNameSize: 40,
+                axisNameWidget: Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                sideTitles: const SideTitles(
+                  reservedSize: 300,
                 ),
               ),
-              sideTitles: SideTitles(
-                reservedSize: 300,
+              rightTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: getBottomTitles,
+                ),
               ),
+              leftTitles: const AxisTitles(
+                  sideTitles: SideTitles(interval: 100, showTitles: true)),
             ),
-            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: getBottomTitles,
-              ),
+            gridData: FlGridData(
+              drawVerticalLine: false,
+              getDrawingHorizontalLine: (value) {
+                return FlLine(
+                  color: Colors.grey[300],
+                  strokeWidth: 1,
+                );
+              },
             ),
-            leftTitles: AxisTitles(
-                sideTitles: SideTitles(interval: 100, showTitles: true)),
+            barGroups: chartBars,
           ),
-          gridData: FlGridData(
-            drawVerticalLine: false,
-            getDrawingHorizontalLine: (value) {
-              return FlLine(
-                color: Colors.grey[300],
-                strokeWidth: 1,
-              );
-            },
-          ),
-          barGroups: chartBars,
         ),
       ),
     );
