@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SemesterChart extends StatelessWidget {
-  String name;
-  List<double> values;
+  final String name;
+  final List<double> values;
 
-  SemesterChart({super.key, required this.name, required this.values});
+  const SemesterChart({super.key, required this.name, required this.values});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,8 @@ class SemesterChart extends StatelessWidget {
                 ),
               ),
               leftTitles: const AxisTitles(
-                  sideTitles: SideTitles(interval: 100, showTitles: true)),
+                sideTitles: SideTitles(showTitles: true, reservedSize: 50),
+              ),
             ),
             gridData: FlGridData(
               drawVerticalLine: false,
