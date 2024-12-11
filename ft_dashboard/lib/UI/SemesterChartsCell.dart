@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
@@ -21,35 +23,28 @@ class SemesterChartsCell extends StatelessWidget {
         ),
         child: Column(
           children: [
-            CellHeader(),
-            Container(
-              child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
-                builder: (context, state) {
-                  print(state.semesterChartsData);
-                  List<Widget> charts = [Placeholder()];
-                  List<SemesterChartModel>? chartsData =
-                      state.semesterChartsData;
-                  if (chartsData != null) {
-                    charts = chartsData
-                        .map(
-                          (chartData) => SemesterChart(
-                              name: chartData.chartName,
-                              values: chartData.proportions),
-                        )
-                        .toList();
-                  } else {
-                    charts = [
-                      const Placeholder(),
-                      const Placeholder(),
-                      const Placeholder(),
-                      const Placeholder(),
-                    ];
-                  }
+            const CellHeader(),
+            BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+              builder: (context, state) {
+                List<SemesterChartModel>? chartsData = state.semesterChartsData;
+                if (chartsData != null) {
+                  List<Widget> charts = [];
+
+                  charts = chartsData
+                      .map(
+                        (chartData) => SemesterChart(
+                            name: chartData.chartName,
+                            values: chartData.proportions),
+                      )
+                      .toList();
+
                   return Wrap(
                     children: charts,
                   );
-                },
-              ),
+                } else {
+                  return const InfoSkeletons();
+                }
+              },
             ),
           ],
         ),
@@ -65,63 +60,105 @@ class CellHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+    return const Padding(
+      padding: EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             "Cursos",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
-          BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
-              builder: (context, state) {
-            List<String>? availableDates = state.availableDates;
-            List<DropdownMenuEntry> menuOptions = state.availableDates!
-                .map(
-                  (date) => DropdownMenuEntry(
-                    value: date,
-                    label: date,
-                  ),
-                )
-                .toList();
-            String latestDate = "";
-            if (availableDates != null) {
-              latestDate = availableDates.last;
-              print("latestDate: $latestDate");
-            }
-            return DropdownMenu(
-              initialSelection: latestDate,
-              //enableFilter: true,
-              textStyle: const TextStyle(
-                fontSize: 12,
-              ),
-              inputDecorationTheme: InputDecorationTheme(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 10,
-                ),
-                constraints: const BoxConstraints(maxHeight: 35),
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onSelected: (value) {
-                print("mudei: $value");
-                context
-                    .read<GeneralStatusBloc>()
-                    .add(GeneralStatusChangedTime());
-              },
-              dropdownMenuEntries: menuOptions,
-            );
-          }),
+          // BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+          //     builder: (context, state) {
+          //   List<String>? availableDates = state.availableDates;
+          //   List<DropdownMenuEntry> menuOptions = state.availableDates!
+          //       .map(
+          //         (date) => DropdownMenuEntry(
+          //           value: date,
+          //           label: date,
+          //         ),
+          //       )
+          //       .toList();
+          //   String latestDate = "";
+          //   if (availableDates != null) {
+          //     latestDate = availableDates.last;
+          //     print("latestDate: $latestDate");
+          //   }
+          //   return DropdownMenu(
+          //     initialSelection: latestDate,
+          //     //enableFilter: true,
+          //     textStyle: const TextStyle(
+          //       fontSize: 12,
+          //     ),
+          //     inputDecorationTheme: InputDecorationTheme(
+          //       contentPadding: const EdgeInsets.symmetric(
+          //         vertical: 0,
+          //         horizontal: 10,
+          //       ),
+          //       constraints: const BoxConstraints(maxHeight: 35),
+          //       isDense: true,
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(8),
+          //       ),
+          //     ),
+          //     onSelected: (value) {
+          //       print("mudei: $value");
+          //       context
+          //           .read<GeneralStatusBloc>()
+          //           .add(GeneralStatusChangedTime());
+          //     },
+          //     dropdownMenuEntries: menuOptions,
+          //   );
+          // }),
         ],
       ),
+    );
+  }
+}
+
+class InfoSkeletons extends StatelessWidget {
+  const InfoSkeletons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 500,
+              height: 300,
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 500,
+              height: 300,
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 500,
+              height: 300,
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

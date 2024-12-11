@@ -25,37 +25,41 @@ class SurveyInfoCell extends StatelessWidget {
           child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
             builder: (context, state) {
               final data = state.surveyData;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "Pesquisa mais recente",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              if (data != null) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        "Pesquisa mais recente",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
-                  ),
-                  InfoCell(
-                    mainInfo:
-                        "${data?.totalRespondents}/${data?.totalEnrolled}",
-                    infoDescription: "Respondentes/Total",
-                    icon: Icons.people,
-                  ),
-                  Divider(),
-                  InfoCell(
-                    mainInfo: "${data?.surveyParticipation}%",
-                    infoDescription: "Participação na Pesquisa",
-                    icon: Icons.search,
-                  ),
-                  Divider(),
-                  InfoCell(
-                    mainInfo: "${data?.averageIndex}",
-                    infoDescription: "Índice Geral",
-                    icon: Icons.stars,
-                  ),
-                ],
-              );
+                    InfoCell(
+                      mainInfo:
+                          "${data?.totalRespondents}/${data?.totalEnrolled}",
+                      infoDescription: "Respondentes/Total",
+                      icon: Icons.people,
+                    ),
+                    Divider(),
+                    InfoCell(
+                      mainInfo: "${data?.surveyParticipation}%",
+                      infoDescription: "Participação na Pesquisa",
+                      icon: Icons.search,
+                    ),
+                    Divider(),
+                    InfoCell(
+                      mainInfo: "${data?.averageIndex}",
+                      infoDescription: "Índice Geral",
+                      icon: Icons.stars,
+                    ),
+                  ],
+                );
+              } else {
+                return ChartSkeletons();
+              }
             },
           ),
         ),
@@ -105,6 +109,53 @@ class InfoCell extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ChartSkeletons extends StatelessWidget {
+  const ChartSkeletons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[200],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class LoadingSkeleton extends StatelessWidget {
+  const LoadingSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[200],
     );
   }
 }
