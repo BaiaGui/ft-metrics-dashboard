@@ -33,11 +33,71 @@ class MainChartCell extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
                   child: MainChart(),
                 ),
-              )
+              ),
+              ChartLegend(),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ChartLegend extends StatelessWidget {
+  const ChartLegend({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 10,
+              height: 10,
+              color: Colors.amber,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Infraestrutura e Suporte às aulas")
+          ],
+        ),
+        SizedBox(
+          width: 25,
+        ),
+        Row(
+          children: [
+            Container(
+              width: 10,
+              height: 10,
+              color: Colors.green,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Participação do Estudante")
+          ],
+        ),
+        SizedBox(
+          width: 25,
+        ),
+        Row(
+          children: [
+            Container(
+              width: 10,
+              height: 10,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Atuação Docente"),
+          ],
+        )
+      ],
     );
   }
 }
