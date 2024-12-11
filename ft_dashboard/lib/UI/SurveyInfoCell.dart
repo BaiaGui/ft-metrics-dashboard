@@ -29,7 +29,7 @@ class SurveyInfoCell extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
                         "Pesquisa mais recente",
@@ -43,13 +43,13 @@ class SurveyInfoCell extends StatelessWidget {
                       infoDescription: "Respondentes/Total",
                       icon: Icons.people,
                     ),
-                    Divider(),
+                    const Divider(),
                     InfoCell(
                       mainInfo: "${data?.surveyParticipation}%",
                       infoDescription: "Participação na Pesquisa",
                       icon: Icons.search,
                     ),
-                    Divider(),
+                    const Divider(),
                     InfoCell(
                       mainInfo: "${data?.averageIndex}",
                       infoDescription: "Índice Geral",
@@ -58,7 +58,7 @@ class SurveyInfoCell extends StatelessWidget {
                   ],
                 );
               } else {
-                return ChartSkeletons();
+                return const ChartSkeletons();
               }
             },
           ),
@@ -122,7 +122,7 @@ class ChartSkeletons extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
               color: Colors.grey[200],
             ),
@@ -130,7 +130,7 @@ class ChartSkeletons extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
               color: Colors.grey[200],
             ),
@@ -138,7 +138,7 @@ class ChartSkeletons extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
               color: Colors.grey[200],
             ),

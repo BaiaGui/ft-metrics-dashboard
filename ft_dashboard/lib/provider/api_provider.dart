@@ -9,7 +9,8 @@ class DashboardDataProvider {
   // DashboardDataProvider._createInstance();
 
   final Dio _dio = Dio();
-  String baseURL = "https://dashboard-api-zocb.onrender.com";
+  //String baseURL = "https://dashboard-api-zocb.onrender.com";
+  String baseURL = "http://localhost:3000";
 
   Future<MainChartModel> getIndex(year, semester) async {
     try {
