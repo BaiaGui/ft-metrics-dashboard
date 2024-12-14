@@ -1,13 +1,13 @@
 const db = require("../../db_conn");
 
-async function getAnswerProportionByTime(year, semester, course) {
+async function getAnswerProportionByTime(year, semester) {
   //TODO: validate if params are int
   try {
     let query = {
       year: year,
       semester: semester,
     };
-    if (course) query.course = course;
+    //if (course) query.course = course;
 
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
@@ -172,8 +172,42 @@ async function getAnswerProportionByTime(year, semester, course) {
 async function findYearsInDB() {
   try {
     const collection = db.collection("cohorts");
-    const uniqueYears = await collection.distinct("ano");
-    return { uniqueYears };
+    const uniqueYears = await collection
+      .aggregate([
+        {
+          $project: {
+            _id: 0,
+            uniqueYears: {
+              $concat: [
+                {
+                  $toString: "$ano",
+                },
+                ".",
+                {
+                  $toString: "$semestre",
+                },
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            uniqueTime: {
+              $addToSet: "$uniqueYears",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            uniqueTime: 1,
+          },
+        },
+      ])
+      .toArray();
+    //returns an array of 'year.semester'
+    return uniqueYears[0].uniqueTime;
   } catch (e) {
     throw { status: 400, message: e.message };
   }

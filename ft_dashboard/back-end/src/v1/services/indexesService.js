@@ -1,8 +1,29 @@
 const indexesData = require("../data/indexesData");
 
-async function getIndex(year, semester, course) {
+async function getAllIndexes() {
+  let uniqueYears = await indexesData.findYearsInDB();
+  let indexInfra = [];
+  let indexStudent = [];
+  let indexTeacher = [];
+  for (let year of uniqueYears) {
+    let yearSemester = year.split(".");
+    let index = await getIndex(yearSemester[0], yearSemester[1]);
+    console.log(index);
+    indexInfra.push([year, index.indexInfra.toFixed(2)]);
+    indexStudent.push([year, index.indexInfra.toFixed(2)]);
+    indexTeacher.push([year, index.indexInfra.toFixed(2)]);
+  }
+
+  return {
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  };
+}
+
+async function getIndex(year, semester) {
   try {
-    let answerProportion = await indexesData.getAnswerProportionByTime(year, semester, course);
+    let answerProportion = await indexesData.getAnswerProportionByTime(year, semester);
     let indexInfra = calculateIndex(answerProportion[0]);
     let indexStudent = calculateIndex(answerProportion[1]);
     let indexTeacher = calculateIndex(answerProportion[2]);
@@ -15,7 +36,7 @@ async function getIndex(year, semester, course) {
       indexTeacher,
     };
 
-    if (course) indexes.course = course;
+    //if (course) indexes.course = course;
 
     return indexes;
   } catch (e) {
@@ -34,5 +55,5 @@ function calculateIndex(answerProportion) {
 }
 
 module.exports = {
-  getIndex,
+  getAllIndexes,
 };
