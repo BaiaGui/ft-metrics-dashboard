@@ -1,7 +1,7 @@
 class MainChartModel {
-  List<List<dynamic>> infrastructureLine = [];
-  List<List<dynamic>> teacherLine = [];
-  List<List<dynamic>> studentLine = [];
+  List<dynamic> infrastructureLine = [];
+  List<dynamic> teacherLine = [];
+  List<dynamic> studentLine = [];
   // double? infrastructureLine;
   // double? teacherLine;
   // double? studentLine;

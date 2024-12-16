@@ -12,28 +12,27 @@ class DashboardDataProvider {
   //String baseURL = "https://dashboard-api-zocb.onrender.com";
   String baseURL = "http://localhost:3000";
 
-  Future<MainChartModel> getIndex(year, semester) async {
+  Future<MainChartModel> getIndex() async {
     try {
-      //Response response = await _dio
-      //  .get("$baseURL/dashboard/indexes?year=$year&semester=$semester");
-      dynamic responseData = {
-        "indexInfra": [
-          ["2022.2", 0.85],
-          ["2023.1", 0.85],
-          ["2023.2", 0.85],
-        ],
-        "indexStudent": [
-          ["2022.2", 0.75],
-          ["2023.1", 0.75],
-          ["2023.2", 0.75],
-        ],
-        "indexTeacher": [
-          ["2022.2", 0.65],
-          ["2023.1", 0.65],
-          ["2023.2", 0.65],
-        ],
-      };
-      return MainChartModel.fromMap(responseData);
+      Response response = await _dio.get("$baseURL/dashboard/indexes");
+      // dynamic responseData = {
+      //   "indexInfra": [
+      //     ["2022.2", 0.85],
+      //     ["2023.1", 0.85],
+      //     ["2023.2", 0.85],
+      //   ],
+      //   "indexStudent": [
+      //     ["2022.2", 0.75],
+      //     ["2023.1", 0.75],
+      //     ["2023.2", 0.75],
+      //   ],
+      //   "indexTeacher": [
+      //     ["2022.2", 0.65],
+      //     ["2023.1", 0.65],
+      //     ["2023.2", 0.65],
+      //   ],
+      // };
+      return MainChartModel.fromMap(response.data);
     } catch (e) {
       throw Exception('Index request error: $e');
     }

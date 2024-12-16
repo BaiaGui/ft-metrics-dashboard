@@ -9,7 +9,8 @@ class DashboardRepository {
       : _dashboardProvider = dashboardProvider ?? DashboardDataProvider();
 
   Future<MainChartModel> getIndex() async {
-    final mainChart = await _dashboardProvider.getIndex(2022, 2);
+    final mainChart = await _dashboardProvider.getIndex();
+    print("response do main chart:$mainChart");
     return mainChart;
   }
 

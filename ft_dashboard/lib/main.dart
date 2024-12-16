@@ -7,7 +7,6 @@ import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
 import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
-import 'package:ft_dashboard/UI/Header.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 
 void main() async {

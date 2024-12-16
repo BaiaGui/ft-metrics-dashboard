@@ -201,7 +201,12 @@ async function findYearsInDB() {
         {
           $project: {
             _id: 0,
-            uniqueTime: 1,
+            uniqueTime: {
+              $sortArray: {
+                input: "$uniqueTime",
+                sortBy: 1,
+              },
+            },
           },
         },
       ])

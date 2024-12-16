@@ -8,12 +8,15 @@ async function getAllIndexes() {
   for (let year of uniqueYears) {
     let yearSemester = year.split(".");
     let index = await getIndex(yearSemester[0], yearSemester[1]);
-    console.log(index);
-    indexInfra.push([year, index.indexInfra.toFixed(2)]);
-    indexStudent.push([year, index.indexInfra.toFixed(2)]);
-    indexTeacher.push([year, index.indexInfra.toFixed(2)]);
+    indexInfra.push([year, parseFloat(index.indexInfra.toFixed(5))]);
+    indexStudent.push([year, parseFloat(index.indexStudent.toFixed(5))]);
+    indexTeacher.push([year, parseFloat(index.indexTeacher.toFixed(5))]);
   }
-
+  console.log({
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  });
   return {
     indexInfra,
     indexStudent,
@@ -56,4 +59,5 @@ function calculateIndex(answerProportion) {
 
 module.exports = {
   getAllIndexes,
+  getIndex,
 };
