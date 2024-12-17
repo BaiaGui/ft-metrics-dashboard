@@ -15,23 +15,7 @@ class DashboardDataProvider {
   Future<MainChartModel> getIndex() async {
     try {
       Response response = await _dio.get("$baseURL/dashboard/indexes");
-      // dynamic responseData = {
-      //   "indexInfra": [
-      //     ["2022.2", 0.85],
-      //     ["2023.1", 0.85],
-      //     ["2023.2", 0.85],
-      //   ],
-      //   "indexStudent": [
-      //     ["2022.2", 0.75],
-      //     ["2023.1", 0.75],
-      //     ["2023.2", 0.75],
-      //   ],
-      //   "indexTeacher": [
-      //     ["2022.2", 0.65],
-      //     ["2023.1", 0.65],
-      //     ["2023.2", 0.65],
-      //   ],
-      // };
+
       return MainChartModel.fromMap(response.data);
     } catch (e) {
       throw Exception('Index request error: $e');
@@ -55,6 +39,16 @@ class DashboardDataProvider {
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
       throw Exception('\n\n\n Semester data request error: $e\n\n\n');
+    }
+  }
+
+  Future<List<String>> getAvailableYears() async {
+    try {
+      Response response = await _dio.get("$baseURL/data/years");
+      final responseMap = response.data;
+      return (responseMap['uniqueYears'] as List).cast<String>();
+    } catch (e) {
+      throw Exception('Error on getting available years: $e');
     }
   }
 }

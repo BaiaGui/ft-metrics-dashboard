@@ -1,7 +1,9 @@
 const indexesData = require("../data/indexesData");
+//todo: change this name:
+const basicDataData = require("../data/basicDataData");
 
 async function getAllIndexes() {
-  let uniqueYears = await indexesData.findYearsInDB();
+  let uniqueYears = await basicDataData.findYearsInDB();
   let indexInfra = [];
   let indexStudent = [];
   let indexTeacher = [];

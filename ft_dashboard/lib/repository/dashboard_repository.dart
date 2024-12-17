@@ -10,7 +10,6 @@ class DashboardRepository {
 
   Future<MainChartModel> getIndex() async {
     final mainChart = await _dashboardProvider.getIndex();
-    print("response do main chart:$mainChart");
     return mainChart;
   }
 
@@ -22,5 +21,10 @@ class DashboardRepository {
   Future<List<SemesterChartModel>> getSemesterCharts() async {
     final mainChart = await _dashboardProvider.getAnswerProportions(2022, 2);
     return mainChart;
+  }
+
+  Future<List<String>> getAvailableYears() async {
+    final availableYears = await _dashboardProvider.getAvailableYears();
+    return availableYears;
   }
 }
