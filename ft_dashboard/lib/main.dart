@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ft_dashboard/Bloc/general_status_bloc.dart';
+import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
 import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
 import 'package:ft_dashboard/UI/SideBar.dart';
@@ -38,10 +38,10 @@ class DashboardStructure extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => GeneralStatusBloc()..add(GeneralStatusStarted()),
-        child: Row(
+        child: const Row(
           children: [
-            const SideBar(),
-            const Expanded(
+            SideBar(),
+            Expanded(
               flex: 5,
               child: DashboardContent(),
             ),
@@ -64,16 +64,16 @@ class DashboardContent extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
             color: Colors.grey[200],
-            child: SingleChildScrollView(
+            child: const SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(
                     height: 450,
                     child: Row(
-                      children: const [MainChartCell(), SurveyInfoCell()],
+                      children: [MainChartCell(), SurveyInfoCell()],
                     ),
                   ),
-                  const SemesterChartsCell(),
+                  SemesterChartsCell(),
                 ],
               ),
             ),
@@ -100,14 +100,14 @@ class DashboardHeader extends StatelessWidget {
           ),
         ),
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             "Dashboard",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const DashboardDropdown(),
+          DashboardDropdown(),
         ],
       ),
     );
@@ -123,12 +123,14 @@ class DashboardDropdown extends StatelessWidget {
       builder: (context, state) {
         final availableDates = state.availableDates ?? [];
         final latestDate = availableDates.isNotEmpty ? availableDates.last : "";
+        final selectedDate = state.referenceDate ?? latestDate;
         final menuOptions = availableDates
             .map((date) => DropdownMenuEntry(value: date, label: date))
             .toList();
+        print("latest date: $selectedDate");
 
         return DropdownMenu(
-          initialSelection: latestDate,
+          initialSelection: selectedDate,
           textStyle: const TextStyle(fontSize: 12),
           inputDecorationTheme: InputDecorationTheme(
             contentPadding:
@@ -140,7 +142,9 @@ class DashboardDropdown extends StatelessWidget {
             ),
           ),
           onSelected: (value) {
-            context.read<GeneralStatusBloc>().add(GeneralStatusChangedTime());
+            context
+                .read<GeneralStatusBloc>()
+                .add(GeneralStatusChangedTime(value));
           },
           dropdownMenuEntries: menuOptions,
         );

@@ -13,13 +13,15 @@ class DashboardRepository {
     return mainChart;
   }
 
-  Future<SurveyOverviewModel> getSurveyOverview() async {
-    final mainChart = await _dashboardProvider.getSurveyOverview(2022, 2);
+  Future<SurveyOverviewModel> getSurveyOverview(year, semester) async {
+    final mainChart =
+        await _dashboardProvider.getSurveyOverview(year, semester);
     return mainChart;
   }
 
-  Future<List<SemesterChartModel>> getSemesterCharts() async {
-    final mainChart = await _dashboardProvider.getAnswerProportions(2022, 2);
+  Future<List<SemesterChartModel>> getSemesterCharts(year, semester) async {
+    final mainChart =
+        await _dashboardProvider.getAnswerProportions(year, semester);
     return mainChart;
   }
 
