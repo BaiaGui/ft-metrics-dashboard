@@ -15,7 +15,7 @@ async function getGeneralCourseInfo(req, res) {
   const { year, semester } = req.query;
   const courseId = req.params.courseId;
   try {
-    let info = await surveyOverviewService.overviewByTime(year, semester, courseId);
+    let info = await surveyOverviewService.overviewByCourse(year, semester, courseId);
     res.send(info);
   } catch (e) {
     console.log("SurveyOverview::Error getting course survey info:" + e.message);
