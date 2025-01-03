@@ -26,25 +26,69 @@ async function getAllIndexes() {
   };
 }
 
-async function getIndex(year, semester) {
-  try {
-    let answerProportion = await indexesData.getAnswerProportionByTime(year, semester);
-    let indexInfra = calculateIndex(answerProportion[0]);
-    let indexStudent = calculateIndex(answerProportion[1]);
-    let indexTeacher = calculateIndex(answerProportion[2]);
+async function getCourseIndexes(courseId) {
+  let uniqueYears = await basicDataData.findYearsInDB();
+  let indexInfra = [];
+  let indexStudent = [];
+  let indexTeacher = [];
+  for (let year of uniqueYears) {
+    let yearSemester = year.split(".");
+    let index = await getIndex(yearSemester[0], yearSemester[1], courseId);
+    indexInfra.push([year, parseFloat(index.indexInfra.toFixed(5))]);
+    indexStudent.push([year, parseFloat(index.indexStudent.toFixed(5))]);
+    indexTeacher.push([year, parseFloat(index.indexTeacher.toFixed(5))]);
+  }
+  console.log({
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  });
+  return {
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  };
+}
 
-    let indexes = {
-      year: year,
-      semester: semester,
+async function getIndex(year, semester, courseId, subGroup, subject) {
+  try {
+    let answerProportion;
+
+    // Verifica quais parâmetros estão definidos e ajusta a lógica
+    if (year && semester && courseId && subGroup && subject) {
+      answerProportion = await indexesData.getAnswerProportionBySubject(year, semester, courseId, subGroup, subject);
+    } else if (year && semester && courseId && subGroup) {
+      answerProportion = await indexesData.getAnswerProportionBySubGroup(year, semester, courseId, subGroup);
+    } else if (year && semester && courseId) {
+      answerProportion = await indexesData.getAnswerProportionByCourse(year, semester, courseId);
+    } else if (year && semester) {
+      answerProportion = await indexesData.getAnswerProportionByTime(year, semester);
+    } else {
+      throw new Error("Incorrect parameters on getIndex function");
+    }
+
+    // Calcula os índices
+    const indexInfra = calculateIndex(answerProportion[0]);
+    const indexStudent = calculateIndex(answerProportion[1]);
+    const indexTeacher = calculateIndex(answerProportion[2]);
+
+    // Monta o resultado
+    const indexes = {
+      year,
+      semester,
       indexInfra,
       indexStudent,
       indexTeacher,
     };
 
-    //if (course) indexes.course = course;
+    // Adiciona parâmetros opcionais ao resultado
+    if (courseId) indexes.course = courseId;
+    if (subGroup) indexes.subGroup = subGroup;
+    if (subject) indexes.subject = subject;
 
     return indexes;
   } catch (e) {
+    console.error("Erro ao calcular os índices:", e);
     throw e;
   }
 }
@@ -61,5 +105,6 @@ function calculateIndex(answerProportion) {
 
 module.exports = {
   getAllIndexes,
+  getCourseIndexes,
   getIndex,
 };

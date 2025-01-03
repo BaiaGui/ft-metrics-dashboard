@@ -5,5 +5,6 @@ const router = express.Router();
 
 //router.get("/", surveyOverviewController.);
 router.get("/", surveyOverviewController.getGeneralInfo);
+router.get("/:courseId", surveyOverviewController.getGeneralCourseInfo);
 
 module.exports = router;

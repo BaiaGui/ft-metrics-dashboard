@@ -1,14 +1,16 @@
 const surveyOverviewData = require("../data/surveyOverviewData");
 const indexesService = require("./indexesService");
 
-async function overviewByTime(year, semester) {
-  let lYear = year;
-  let lSemester = semester;
+async function overviewByTime(selectedYear, selectedSemester) {
+  let year, semester;
   try {
-    if (!year || !semester) {
+    if (selectedYear && selectedSemester) {
+      year = selectedYear;
+      semester = selectedSemester;
+    } else {
       latestDate = await surveyOverviewData.findLatestDate();
-      lYear = latestDate.year;
-      lSemester = latestDate.semester;
+      year = latestDate.year;
+      semester = latestDate.semester;
     }
     const totalEnrolled = await surveyOverviewData.findTotalEnrolled(lYear, lSemester);
     const totalRespondents = await surveyOverviewData.findTotalRespondents(lYear, lSemester);

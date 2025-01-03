@@ -4,6 +4,7 @@ async function answerProportions(courseId, year, semester) {
   const courses = answerProportionData.getAllCourses();
   courses.forEach((course) => {
     let proportion = {
+      courseId: course._id,
       course: course.nomeCurso,
       proportion: answerProportionData.getCourseProportion(courseId, year, semester),
     };
