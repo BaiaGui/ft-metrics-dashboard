@@ -4,6 +4,6 @@ const answerProportionController = require("../controllers/answerProportionContr
 const router = express.Router();
 
 router.get("/", answerProportionController.getCourseProportion);
-//router.get("/all", answerProportionController);
+router.get("/:courseId", answerProportionController.getSubjectGroupProportion);
 
 module.exports = router;
