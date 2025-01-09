@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/bloc/events/general_status_event.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
 import 'package:ft_dashboard/UI/SemesterChartsCell.dart';
 import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
+import 'package:ft_dashboard/bloc/states/general_status_state.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -123,7 +125,7 @@ class DashboardDropdown extends StatelessWidget {
       builder: (context, state) {
         final availableDates = state.availableDates ?? [];
         final latestDate = availableDates.isNotEmpty ? availableDates.last : "";
-        final selectedDate = state.referenceDate ?? latestDate;
+        final selectedDate = state.selectedDate ?? latestDate;
         final menuOptions = availableDates
             .map((date) => DropdownMenuEntry(value: date, label: date))
             .toList();

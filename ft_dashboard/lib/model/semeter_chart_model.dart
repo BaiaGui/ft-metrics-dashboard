@@ -1,11 +1,12 @@
 class SemesterChartModel {
+  String dataSourceId = "";
   String chartName = "";
   List<double> proportions = [];
 
   SemesterChartModel.fromMap(map) {
     List<dynamic> proportion = map["proportion"];
-
-    chartName = map["course"];
+    dataSourceId = map["dataId"];
+    chartName = map["description"];
     proportions = [
       proportion[0]["count"],
       proportion[1]["count"],

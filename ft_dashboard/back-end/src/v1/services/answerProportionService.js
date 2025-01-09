@@ -20,7 +20,8 @@ async function getCourseProportionsByTime(year, semester) {
   for (let course of courses) {
     let proportion = await answerProportionData.getCourseProportion(course._id, year, semester);
     proportionGroup.push({
-      course: course.nomeCurso,
+      dataId: course._id,
+      description: course.nomeCurso,
       proportion: proportion,
     });
   }
@@ -37,7 +38,8 @@ async function getGroupProportionsByCourse(year, semester, courseId) {
   for (let group of groups) {
     let proportion = await answerProportionData.getGroupProportion(group._id, year, semester);
     proportionGroup.push({
-      group: group.descrição,
+      dataId: group._id,
+      description: group.descrição,
       proportion: proportion,
     });
   }

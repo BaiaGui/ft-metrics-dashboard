@@ -1,12 +1,22 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/bloc/events/general_status_event.dart';
+import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
 class SemesterChart extends StatelessWidget {
+  final String? dateTime;
+  final String dataSourceId;
   final String name;
   final List<double> values;
 
-  const SemesterChart({super.key, required this.name, required this.values});
+  const SemesterChart(
+      {super.key,
+      required this.dataSourceId,
+      this.dateTime,
+      required this.name,
+      required this.values});
 
   @override
   Widget build(BuildContext context) {
@@ -26,50 +36,58 @@ class SemesterChart extends StatelessWidget {
       chartBars.add(bar);
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: Container(
-        width: 400,
-        height: 400,
-        child: BarChart(
-          BarChartData(
-            borderData:
-                FlBorderData(border: Border.all(color: Colors.grey[300]!)),
-            titlesData: FlTitlesData(
-              topTitles: AxisTitles(
-                axisNameSize: 40,
-                axisNameWidget: Text(
-                  name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+    return InkWell(
+      onTap: () {
+        print("cliquei");
+        context
+            .read<GeneralStatusBloc>()
+            .add(CourseSelectedEvent(dateTime, dataSourceId));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Container(
+          width: 400,
+          height: 400,
+          child: BarChart(
+            BarChartData(
+              borderData:
+                  FlBorderData(border: Border.all(color: Colors.grey[300]!)),
+              titlesData: FlTitlesData(
+                topTitles: AxisTitles(
+                  axisNameSize: 40,
+                  axisNameWidget: Text(
+                    name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  sideTitles: const SideTitles(
+                    reservedSize: 300,
                   ),
                 ),
-                sideTitles: const SideTitles(
-                  reservedSize: 300,
+                rightTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: getBottomTitles,
+                  ),
+                ),
+                leftTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: true, reservedSize: 50),
                 ),
               ),
-              rightTitles:
-                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  getTitlesWidget: getBottomTitles,
-                ),
+              gridData: FlGridData(
+                drawVerticalLine: false,
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: Colors.grey[300],
+                    strokeWidth: 1,
+                  );
+                },
               ),
-              leftTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: true, reservedSize: 50),
-              ),
+              barGroups: chartBars,
             ),
-            gridData: FlGridData(
-              drawVerticalLine: false,
-              getDrawingHorizontalLine: (value) {
-                return FlLine(
-                  color: Colors.grey[300],
-                  strokeWidth: 1,
-                );
-              },
-            ),
-            barGroups: chartBars,
           ),
         ),
       ),

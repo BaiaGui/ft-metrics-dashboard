@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
+import 'package:ft_dashboard/bloc/states/general_status_state.dart';
 
 class SurveyInfoCell extends StatelessWidget {
   const SurveyInfoCell({
@@ -25,14 +26,20 @@ class SurveyInfoCell extends StatelessWidget {
           child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
             builder: (context, state) {
               final data = state.surveyData;
+              var referenceDate = state.availableDates?.last;
+              if (state.availableDates != null) {
+                referenceDate =
+                    state.selectedDate ?? state.availableDates?.last;
+              }
+
               if (data != null) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        "Pesquisa mais recente",
+                        "Informações da Pesquisa de $referenceDate",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),

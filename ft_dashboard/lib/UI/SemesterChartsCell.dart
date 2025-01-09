@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
+import 'package:ft_dashboard/bloc/states/general_status_state.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 
 class SemesterChartsCell extends StatelessWidget {
@@ -33,6 +34,8 @@ class SemesterChartsCell extends StatelessWidget {
                   charts = chartsData
                       .map(
                         (chartData) => SemesterChart(
+                            dateTime: state.selectedDate,
+                            dataSourceId: chartData.dataSourceId,
                             name: chartData.chartName,
                             values: chartData.proportions),
                       )
