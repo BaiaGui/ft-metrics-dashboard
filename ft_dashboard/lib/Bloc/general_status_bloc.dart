@@ -16,26 +16,8 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   _getInitialStatusData(event, emit) async {
     //TODO: Remove hardcoded values
     try {
-      final DashboardRepository dashRep = DashboardRepository();
-
-      final allDashboardData = await Future.wait([
-        dashRep.getIndex(),
-        dashRep.getSurveyOverview(2022, 2),
-        dashRep.getSemesterCharts(2022, 2),
-        dashRep.getAvailableYears(),
-      ]);
-
-      final mainChartData = allDashboardData[0] as MainChartModel;
-      final surveyData = allDashboardData[1] as SurveyOverviewModel;
-      final semesterChartsData =
-          allDashboardData[2] as List<SemesterChartModel>;
-      final availableYears = allDashboardData[3] as List<String>;
-
-      emit(GeneralStatusState(
-          mainChartData: mainChartData,
-          surveyData: surveyData,
-          semesterChartsData: semesterChartsData,
-          availableDates: availableYears));
+      final dashboardData = await _getDashboardData(2022, 2);
+      emit(dashboardData);
     } catch (e) {
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
     }
@@ -45,40 +27,21 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
     emit(GeneralStatusState());
     var [year, semester] = event.year.split(".");
     try {
-      final DashboardRepository dashRep = DashboardRepository();
-
-      final allDashboardData = await Future.wait([
-        dashRep.getIndex(),
-        dashRep.getSurveyOverview(year, semester),
-        dashRep.getSemesterCharts(year, semester),
-        dashRep.getAvailableYears(),
-      ]);
-
-      final mainChartData = allDashboardData[0] as MainChartModel;
-      final surveyData = allDashboardData[1] as SurveyOverviewModel;
-      final semesterChartsData =
-          allDashboardData[2] as List<SemesterChartModel>;
-      final availableYears = allDashboardData[3] as List<String>;
-
-      emit(GeneralStatusState(
-          mainChartData: mainChartData,
-          surveyData: surveyData,
-          semesterChartsData: semesterChartsData,
-          availableDates: availableYears,
-          selectedDate: event.year));
+      final dashboardData = await _getDashboardData(year, semester);
+      emit(dashboardData);
     } catch (e) {
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
     }
   }
 
   _getCourseData(event, emit) async {
-    print("Cheguei no bloc do curso");
-    //emit(GeneralStatusState());
-
-    var [year, semester] = event.dataSourceId.split(".");
-    var courseId = event.dataId;
     try {
-      if (event.dataId == null || event.dataSourceId == null) {
+      emit(GeneralStatusState());
+
+      var [year, semester] = event.dataTime.split(".");
+      var courseId = event.dataSourceId;
+
+      if (event.dataSourceId == null || event.dataTime == null) {
         throw Exception('Invalid course data provided');
       }
       final DashboardRepository dashRep = DashboardRepository();
@@ -89,7 +52,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
         dashRep.getCourseGroupsCharts(year, semester, courseId),
         dashRep.getAvailableYears(),
       ]);
-      print("após o wait");
+
       final mainChartData = allDashboardData[0] as MainChartModel;
       final surveyData = allDashboardData[1] as SurveyOverviewModel;
       final semesterChartsData =
@@ -101,32 +64,33 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
           surveyData: surveyData,
           semesterChartsData: semesterChartsData,
           availableDates: availableYears,
-          selectedDate: event.year));
+          selectedDate: event.dataSourceId));
     } catch (e) {
       print('Error in _getCourseData: $e');
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
     }
   }
 
-  // _getDashboardData(year, semester) async {
-  //   final DashboardRepository dashRep = DashboardRepository();
-  //   final allDashboardData = await Future.wait([
-  //     dashRep.getIndex(),
-  //     dashRep.getSurveyOverview(year, semester),
-  //     dashRep.getSemesterCharts(year, semester),
-  //     dashRep.getAvailableYears(),
-  //   ]);
+  _getDashboardData(year, semester) async {
+    final DashboardRepository dashRep = DashboardRepository();
+    final allDashboardData = await Future.wait([
+      dashRep.getIndex(),
+      dashRep.getSurveyOverview(year, semester),
+      dashRep.getSemesterCharts(year, semester),
+      dashRep.getAvailableYears(),
+    ]);
 
-  //   final mainChartData = allDashboardData[0] as MainChartModel;
-  //   final surveyData = allDashboardData[1] as SurveyOverviewModel;
-  //   final semesterChartsData = allDashboardData[2] as List<SemesterChartModel>;
-  //   final availableYears = allDashboardData[3] as List<String>;
+    final mainChartData = allDashboardData[0] as MainChartModel;
+    final surveyData = allDashboardData[1] as SurveyOverviewModel;
+    final semesterChartsData = allDashboardData[2] as List<SemesterChartModel>;
+    final availableYears = allDashboardData[3] as List<String>;
 
-  //   return GeneralStatusState(
-  //     mainChartData: mainChartData,
-  //     surveyData: surveyData,
-  //     semesterChartsData: semesterChartsData,
-  //     availableDates: availableYears,
-  //   );
-  // }
+    return GeneralStatusState(
+      mainChartData: mainChartData,
+      surveyData: surveyData,
+      semesterChartsData: semesterChartsData,
+      availableDates: availableYears,
+      selectedDate: "$year.$semester",
+    );
+  }
 }

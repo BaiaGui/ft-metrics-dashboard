@@ -83,7 +83,7 @@ class DashboardDataProvider {
           "$baseURL/dashboard/answerProportion/$courseId?year=$year&semester=$semester");
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
-      throw Exception('\n\n\n Semester data request error: $e\n\n\n');
+      throw Exception('\n\n\n Group data request error: $e\n\n\n');
     }
   }
 }

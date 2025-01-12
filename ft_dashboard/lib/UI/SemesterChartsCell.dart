@@ -28,13 +28,14 @@ class SemesterChartsCell extends StatelessWidget {
             BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
               builder: (context, state) {
                 List<SemesterChartModel>? chartsData = state.semesterChartsData;
-                if (chartsData != null) {
+                if (chartsData != null && state.selectedDate != null) {
                   List<Widget> charts = [];
+                  String date = state.selectedDate!;
 
                   charts = chartsData
                       .map(
                         (chartData) => SemesterChart(
-                            dateTime: state.selectedDate,
+                            dataTime: date,
                             dataSourceId: chartData.dataSourceId,
                             name: chartData.chartName,
                             values: chartData.proportions),

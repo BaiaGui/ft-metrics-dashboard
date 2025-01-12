@@ -9,8 +9,8 @@ class GeneralStatusChangedTime extends GeneralStatusEvent {
 }
 
 class CourseSelectedEvent extends GeneralStatusEvent {
-  final String? dateTime;
+  final String? dataTime;
   final String? dataSourceId;
 
-  CourseSelectedEvent(this.dateTime, this.dataSourceId);
+  CourseSelectedEvent(this.dataTime, this.dataSourceId);
 }

@@ -6,7 +6,7 @@ import 'package:ft_dashboard/bloc/events/general_status_event.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
 class SemesterChart extends StatelessWidget {
-  final String? dateTime;
+  final String dataTime;
   final String dataSourceId;
   final String name;
   final List<double> values;
@@ -14,7 +14,7 @@ class SemesterChart extends StatelessWidget {
   const SemesterChart(
       {super.key,
       required this.dataSourceId,
-      this.dateTime,
+      required this.dataTime,
       required this.name,
       required this.values});
 
@@ -39,9 +39,10 @@ class SemesterChart extends StatelessWidget {
     return InkWell(
       onTap: () {
         print("cliquei");
+        print("the date of this chart is: $dataTime");
         context
             .read<GeneralStatusBloc>()
-            .add(CourseSelectedEvent(dateTime, dataSourceId));
+            .add(CourseSelectedEvent(dataTime, dataSourceId));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
