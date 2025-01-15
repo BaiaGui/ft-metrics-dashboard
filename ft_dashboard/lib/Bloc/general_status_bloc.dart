@@ -46,12 +46,15 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       }
       final DashboardRepository dashRep = DashboardRepository();
 
-      final allDashboardData = await Future.wait([
-        dashRep.getCourseIndex(courseId),
-        dashRep.getCourseSurveyOverview(year, semester, courseId),
-        dashRep.getCourseGroupsCharts(year, semester, courseId),
-        dashRep.getAvailableYears(),
-      ]);
+      // final allDashboardData = await Future.wait([
+      //   dashRep.getCourseIndex(courseId),
+      //   dashRep.getCourseSurveyOverview(year, semester, courseId),
+      //   dashRep.getCourseGroupsCharts(year, semester, courseId),
+      //   dashRep.getAvailableYears(),
+      // ]);
+
+      final allDashboardData =
+          await dashRep.getDashboardData(year, semester, courseId);
 
       final mainChartData = allDashboardData[0] as MainChartModel;
       final surveyData = allDashboardData[1] as SurveyOverviewModel;
@@ -73,12 +76,13 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
 
   _getDashboardData(year, semester) async {
     final DashboardRepository dashRep = DashboardRepository();
-    final allDashboardData = await Future.wait([
-      dashRep.getIndex(),
-      dashRep.getSurveyOverview(year, semester),
-      dashRep.getSemesterCharts(year, semester),
-      dashRep.getAvailableYears(),
-    ]);
+    // final allDashboardData = await Future.wait([
+    //   dashRep.getIndex(),
+    //   dashRep.getSurveyOverview(year, semester),
+    //   dashRep.getSemesterCharts(year, semester),
+    //   dashRep.getAvailableYears(),
+    // ]);
+    final allDashboardData = await dashRep.getDashboardData(year, semester);
 
     final mainChartData = allDashboardData[0] as MainChartModel;
     final surveyData = allDashboardData[1] as SurveyOverviewModel;
