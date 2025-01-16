@@ -8,11 +8,17 @@ class GeneralStatusState {
   SurveyOverviewModel? surveyData;
   List<SemesterChartModel>? semesterChartsData;
   String? selectedDate;
+  String? selectedCourseId;
+  String? selectedGroupId;
+  String? selectedSubjectId;
 
   GeneralStatusState(
       {this.mainChartData,
       this.surveyData,
       this.semesterChartsData,
       this.availableDates,
-      this.selectedDate});
+      this.selectedDate,
+      this.selectedCourseId,
+      this.selectedGroupId,
+      this.selectedSubjectId});
 }

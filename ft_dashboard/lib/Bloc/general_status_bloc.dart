@@ -16,7 +16,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   _getInitialStatusData(event, emit) async {
     //TODO: Remove hardcoded values
     try {
-      final dashboardData = await _getDashboardData(2022, 2);
+      final dashboardData = await _getDashboardData("2022", "2");
       emit(dashboardData);
     } catch (e) {
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
@@ -24,10 +24,19 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   }
 
   _getDataFromPeriod(event, emit) async {
-    emit(GeneralStatusState());
-    var [year, semester] = event.year.split(".");
     try {
-      final dashboardData = await _getDashboardData(year, semester);
+      final curState = state;
+      var [year, semester] = event.year.split(".");
+      print("current state: ${curState.selectedCourseId}");
+
+      emit(GeneralStatusState());
+      final dashboardData = await _getDashboardData(
+          year,
+          semester,
+          curState.selectedCourseId,
+          curState.selectedGroupId,
+          curState.selectedSubjectId);
+      print("state enviado: ${dashboardData.selectedCourseId}");
       emit(dashboardData);
     } catch (e) {
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
@@ -44,57 +53,45 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       if (event.dataSourceId == null || event.dataTime == null) {
         throw Exception('Invalid course data provided');
       }
-      final DashboardRepository dashRep = DashboardRepository();
 
-      // final allDashboardData = await Future.wait([
-      //   dashRep.getCourseIndex(courseId),
-      //   dashRep.getCourseSurveyOverview(year, semester, courseId),
-      //   dashRep.getCourseGroupsCharts(year, semester, courseId),
-      //   dashRep.getAvailableYears(),
-      // ]);
+      final dashboardData = await _getDashboardData(year, semester, courseId);
 
-      final allDashboardData =
-          await dashRep.getDashboardData(year, semester, courseId);
-
-      final mainChartData = allDashboardData[0] as MainChartModel;
-      final surveyData = allDashboardData[1] as SurveyOverviewModel;
-      final semesterChartsData =
-          allDashboardData[2] as List<SemesterChartModel>;
-      final availableYears = allDashboardData[3] as List<String>;
-
-      emit(GeneralStatusState(
-          mainChartData: mainChartData,
-          surveyData: surveyData,
-          semesterChartsData: semesterChartsData,
-          availableDates: availableYears,
-          selectedDate: event.dataSourceId));
+      emit(dashboardData);
     } catch (e) {
       print('Error in _getCourseData: $e');
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
     }
   }
 
-  _getDashboardData(year, semester) async {
+  Future<GeneralStatusState> _getDashboardData(
+    String year,
+    String semester, [
+    String? courseId,
+    String? groupId,
+    String? subjectId,
+  ]) async {
     final DashboardRepository dashRep = DashboardRepository();
-    // final allDashboardData = await Future.wait([
-    //   dashRep.getIndex(),
-    //   dashRep.getSurveyOverview(year, semester),
-    //   dashRep.getSemesterCharts(year, semester),
-    //   dashRep.getAvailableYears(),
-    // ]);
-    final allDashboardData = await dashRep.getDashboardData(year, semester);
+    print(
+        "getting data from $year.$semester with courseId: $courseId, groupId: $groupId, subjectId: $subjectId");
+    final allDashboardData = await dashRep.getDashboardData(
+        year, semester, courseId, groupId, subjectId);
 
     final mainChartData = allDashboardData[0] as MainChartModel;
     final surveyData = allDashboardData[1] as SurveyOverviewModel;
     final semesterChartsData = allDashboardData[2] as List<SemesterChartModel>;
     final availableYears = allDashboardData[3] as List<String>;
-
+    final date = "$year.$semester";
+    print(
+        " mainChartData: $mainChartData,\n surveyData: $surveyData,\n semesterChartsData: $semesterChartsData,\n availableDates: $availableYears,\n selectedDate: $date,\n selectedCourseId: $courseId,\n selectedGroupId: $groupId,\n selectedSubjectId: $subjectId,");
     return GeneralStatusState(
       mainChartData: mainChartData,
       surveyData: surveyData,
       semesterChartsData: semesterChartsData,
       availableDates: availableYears,
-      selectedDate: "$year.$semester",
+      selectedDate: date,
+      selectedCourseId: courseId,
+      selectedGroupId: groupId,
+      selectedSubjectId: subjectId,
     );
   }
 }
