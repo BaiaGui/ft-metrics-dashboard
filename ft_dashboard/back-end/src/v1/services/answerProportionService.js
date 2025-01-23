@@ -47,8 +47,27 @@ async function getGroupProportionsByCourse(year, semester, courseId) {
   return { proportionGroup };
 }
 
+async function getSubjectsProportionsByGroup(year, semester, courseId, groupId) {
+  const subjects = await answerProportionData.getSubjectsbyGroup(groupId);
+  console.log("DISCIPLINAS DO GRUPO " + groupId);
+  console.log(subjects);
+  let proportionGroup = [];
+
+  for (let subject of subjects) {
+    let proportion = await answerProportionData.getSubjectProportion(subject._id, year, semester);
+    proportionGroup.push({
+      dataId: subject._id,
+      description: subject.descrição,
+      proportion: proportion,
+    });
+  }
+
+  return { proportionGroup };
+}
+
 module.exports = {
   //answerProportions,
   getCourseProportionsByTime,
   getGroupProportionsByCourse,
+  getSubjectsProportionsByGroup,
 };

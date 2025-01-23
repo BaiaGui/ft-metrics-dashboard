@@ -23,7 +23,21 @@ async function getGeneralCourseInfo(req, res) {
   }
 }
 
+async function getGeneralGroupInfo(req, res) {
+  const { year, semester } = req.query;
+  const courseId = req.params.courseId;
+  const groupId = req.params.groupId;
+  try {
+    let info = await surveyOverviewService.overviewByGroup(year, semester, courseId, groupId);
+    res.send(info);
+  } catch (e) {
+    console.log("SurveyOverview::Error getting group survey info:" + e.message);
+    res.status(e.status || 500).json({ message: e.message || e });
+  }
+}
+
 module.exports = {
   getGeneralInfo,
   getGeneralCourseInfo,
+  getGeneralGroupInfo,
 };

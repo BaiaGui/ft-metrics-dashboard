@@ -49,7 +49,31 @@ async function getCourseIndexes(courseId) {
     indexTeacher,
   };
 }
+async function getSubjectGroupIndexes(courseId, groupId) {
+  let uniqueYears = await basicDataData.findYearsInDB();
+  let indexInfra = [];
+  let indexStudent = [];
+  let indexTeacher = [];
+  for (let year of uniqueYears) {
+    let yearSemester = year.split(".");
+    let index = await getIndex(yearSemester[0], yearSemester[1], courseId, groupId);
+    indexInfra.push([year, parseFloat(index.indexInfra.toFixed(5))]);
+    indexStudent.push([year, parseFloat(index.indexStudent.toFixed(5))]);
+    indexTeacher.push([year, parseFloat(index.indexTeacher.toFixed(5))]);
+  }
+  console.log({
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  });
+  return {
+    indexInfra,
+    indexStudent,
+    indexTeacher,
+  };
+}
 
+//------------------
 async function getIndex(year, semester, courseId, subGroup, subject) {
   try {
     let answerProportion;
@@ -107,4 +131,5 @@ module.exports = {
   getAllIndexes,
   getCourseIndexes,
   getIndex,
+  getSubjectGroupIndexes,
 };

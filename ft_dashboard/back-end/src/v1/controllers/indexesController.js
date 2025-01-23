@@ -21,7 +21,20 @@ async function getCourseIndex(req, res) {
   }
 }
 
+async function getSubjectGroupIndex(req, res) {
+  try {
+    const courseId = req.params.courseId;
+    const groupId = req.params.groupId;
+    const indexes = await indexesService.getSubjectGroupIndexes(courseId, groupId);
+    res.send(indexes);
+  } catch (e) {
+    console.log("Indexes::Error getting course index:" + e.message);
+    res.status(e.status || 500).json({ message: e.message || e });
+  }
+}
+
 module.exports = {
   getIndex,
   getCourseIndex,
+  getSubjectGroupIndex,
 };
