@@ -224,9 +224,142 @@ async function getGroupProportion(groupId, year, semester) {
   }
 }
 
+//-------------------------------------------------------
+async function getSubjectsbyGroup(groupId) {
+  try {
+    const collection = db.collection("subject_group");
+    const subjects = await collection
+      .aggregate([
+        {
+          $lookup: {
+            from: "subjects",
+            localField: "materias",
+            foreignField: "codDisc",
+            as: "matches",
+          },
+        },
+        {
+          $match: {
+            _id: groupId,
+          },
+        },
+        {
+          $unwind: {
+            path: "$matches",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$matches",
+          },
+        },
+      ])
+      .toArray();
+    return subjects;
+  } catch (e) {
+    throw { status: 400, message: e };
+  }
+}
+
+async function getSubjectProportion(groupId, year, semester) {
+  try {
+    const collection = db.collection("cohorts");
+    const groupProportion = await collection
+      .aggregate([
+        {
+          $lookup: {
+            from: "subject_group",
+            localField: "codDisc",
+            foreignField: "materias",
+            as: "grupos",
+          },
+        },
+        {
+          $match: {
+            "grupos._id": groupId,
+            "ano": parseInt(year),
+            "semestre": parseInt(semester),
+          },
+        },
+        {
+          $project: {
+            codTurma: 1,
+          },
+        },
+        {
+          $lookup: {
+            from: "forms",
+            localField: "codTurma",
+            foreignField: "codTurma",
+            as: "forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$forms",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$questoes",
+          },
+        },
+        {
+          $group: {
+            _id: "$questoes.resposta",
+            count: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $match: {
+            $or: [
+              {
+                _id: "0",
+              },
+              {
+                _id: "1",
+              },
+              {
+                _id: "2",
+              },
+              {
+                _id: "3",
+              },
+              {
+                _id: "4",
+              },
+              {
+                _id: "5",
+              },
+            ],
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ])
+      .toArray();
+
+    return groupProportion;
+  } catch (e) {
+    throw { status: 400, message: e };
+  }
+}
+
 module.exports = {
   getCourses,
   getCourseProportion,
   getGroupsbyCourse,
   getGroupProportion,
+  getSubjectsbyGroup,
+  getSubjectProportion,
 };

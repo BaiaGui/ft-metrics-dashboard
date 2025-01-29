@@ -250,10 +250,123 @@ async function findRespondentsInCourseByTime(year, semester, courseId) {
   }
 }
 
+async function findEnrolledInGroupByTime(year, semester, courseId, groupId) {
+  try {
+    const collection = db.collection("cohorts");
+    const totalEnrolled = await collection
+      .aggregate([
+        {
+          $lookup: {
+            from: "subject_group",
+            localField: "codDisc",
+            foreignField: "materias",
+            as: "groupData",
+          },
+        },
+        {
+          $match: {
+            "ano": parseInt(year),
+            "semestre": parseInt(semester),
+            "groupData._id": groupId,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $concat: [
+                {
+                  $toString: "$ano",
+                },
+                ".",
+                {
+                  $toString: "$semestre",
+                },
+              ],
+            },
+            totalEnrolled: {
+              $sum: "$matriculas",
+            },
+          },
+        },
+      ])
+      .toArray();
+    return totalEnrolled[0].totalEnrolled;
+  } catch (e) {
+    console.log("MainChartController::Error getting total enrolled:" + e);
+    res.status(e.code || 500).json({ message: e.message });
+  }
+}
+
+async function findRespondentsInGroupByTime(year, semester, courseId, groupId) {
+  try {
+    const collection = db.collection("cohorts");
+    const totalRespondents = await collection
+      .aggregate([
+        {
+          $lookup: {
+            from: "subject_group",
+            localField: "codDisc",
+            foreignField: "materias",
+            as: "groupData",
+          },
+        },
+        {
+          $match: {
+            "ano": parseInt(year),
+            "semestre": parseInt(semester),
+            "groupData.curso_id": groupId,
+          },
+        },
+        {
+          $lookup: {
+            from: "forms",
+            localField: "codTurma",
+            foreignField: "codTurma",
+            as: "forms",
+          },
+        },
+        {
+          $project: {
+            ano: "$ano",
+            semestre: "$semestre",
+            respondents: {
+              $size: "$forms",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $concat: [
+                {
+                  $toString: "$ano",
+                },
+                ".",
+                {
+                  $toString: "$semestre",
+                },
+              ],
+            },
+            totalRespondents: {
+              $sum: "$respondents",
+            },
+          },
+        },
+      ])
+      .toArray();
+    return totalRespondents[0].totalRespondents;
+  } catch (e) {
+    console.log("SurveyOverview::Error getting total respondents:" + e);
+    res.status(e.code || 500).json({ message: e.message });
+  }
+}
+
 module.exports = {
   findLatestDate,
   findTotalEnrolled,
   findTotalRespondents,
   findEnrolledInCourseByTime,
   findRespondentsInCourseByTime,
+  findEnrolledInGroupByTime,
+  findRespondentsInGroupByTime,
 };
