@@ -187,6 +187,83 @@ async function getGroupProportion(groupId, year, semester) {
           },
         },
         {
+          $facet: {
+            counts: [
+              {
+                $match: {},
+              },
+            ],
+            fixed: [
+              {
+                $project: {
+                  responses: [
+                    {
+                      _id: "0",
+                      count: 0,
+                    },
+                    {
+                      _id: "1",
+                      count: 0,
+                    },
+                    {
+                      _id: "2",
+                      count: 0,
+                    },
+                    {
+                      _id: "3",
+                      count: 0,
+                    },
+                    {
+                      _id: "4",
+                      count: 0,
+                    },
+                    {
+                      _id: "5",
+                      count: 0,
+                    },
+                  ],
+                },
+              },
+              {
+                $unwind: "$responses",
+              },
+              {
+                $replaceRoot: {
+                  newRoot: "$responses",
+                },
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            combined: {
+              $concatArrays: ["$counts", "$fixed"],
+            },
+          },
+        },
+        {
+          $unwind: "$combined",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$combined",
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            count: {
+              $max: "$count",
+            },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+        {
           $match: {
             $or: [
               {
@@ -208,11 +285,6 @@ async function getGroupProportion(groupId, year, semester) {
                 _id: "5",
               },
             ],
-          },
-        },
-        {
-          $sort: {
-            _id: 1,
           },
         },
       ])
@@ -261,24 +333,24 @@ async function getSubjectsbyGroup(groupId) {
   }
 }
 
-async function getSubjectProportion(groupId, year, semester) {
+async function getSubjectProportion(subjectCode, year, semester) {
   try {
     const collection = db.collection("cohorts");
     const groupProportion = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "subjects",
             localField: "codDisc",
-            foreignField: "materias",
-            as: "grupos",
+            foreignField: "codDisc",
+            as: "dadosMateria",
           },
         },
         {
           $match: {
-            "grupos._id": groupId,
-            "ano": parseInt(year),
-            "semestre": parseInt(semester),
+            ano: parseInt(year),
+            semestre: parseInt(semester),
+            codDisc: subjectCode,
           },
         },
         {

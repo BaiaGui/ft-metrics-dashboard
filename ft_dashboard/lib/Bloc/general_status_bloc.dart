@@ -7,16 +7,20 @@ import 'package:ft_dashboard/model/survey_overview_model.dart';
 import 'package:ft_dashboard/repository/dashboard_repository.dart';
 
 class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
-  GeneralStatusBloc() : super(GeneralStatusState()) {
+  GeneralStatusBloc()
+      : super(GeneralStatusState(currentView: ViewType.loading)) {
     on<GeneralStatusStarted>(_getInitialStatusData);
     on<GeneralStatusChangedTime>(_getDataFromPeriod);
-    on<CourseSelectedEvent>(_getCourseData);
+    on<ChartClicked>(_handleChartClick);
+    // on<CourseSelectedEvent>(_getCourseData);
+    // on<GroupSelectedEvent>(_getGroupData);
   }
 
   _getInitialStatusData(event, emit) async {
     //TODO: Remove hardcoded values
     try {
-      final dashboardData = await _getDashboardData("2022", "2");
+      final curView = state.currentView;
+      final dashboardData = await _getDashboardData(curView, "2022", "2");
       emit(dashboardData);
     } catch (e) {
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
@@ -26,11 +30,13 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   _getDataFromPeriod(event, emit) async {
     try {
       final curState = state;
+      final curView = state.currentView;
       var [year, semester] = event.year.split(".");
       print("current state: ${curState.selectedCourseId}");
 
-      emit(GeneralStatusState());
+      emit(GeneralStatusState(currentView: ViewType.loading));
       final dashboardData = await _getDashboardData(
+          curView,
           year,
           semester,
           curState.selectedCourseId,
@@ -43,27 +49,71 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
     }
   }
 
-  _getCourseData(event, emit) async {
+  _handleChartClick(event, emit) async {
     try {
-      emit(GeneralStatusState());
+      final nextView = _findNextView(state.currentView);
+      emit(GeneralStatusState(currentView: ViewType.loading));
 
       var [year, semester] = event.dataTime.split(".");
-      var courseId = event.dataSourceId;
+      var nextviewId = event.dataSourceId;
 
       if (event.dataSourceId == null || event.dataTime == null) {
-        throw Exception('Invalid course data provided');
+        throw Exception('Invalid data provided');
       }
 
-      final dashboardData = await _getDashboardData(year, semester, courseId);
+      final dashboardData =
+          await _getDashboardData(nextView, year, semester, nextviewId);
 
       emit(dashboardData);
     } catch (e) {
-      print('Error in _getCourseData: $e');
+      print('Error in _handleChartClick: $e');
       print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
     }
   }
 
+  // _getCourseData(event, emit) async {
+  //   try {
+  //     emit(GeneralStatusState(currentView: ViewType.loading));
+
+  //     var [year, semester] = event.dataTime.split(".");
+  //     var courseId = event.dataSourceId;
+
+  //     if (event.dataSourceId == null || event.dataTime == null) {
+  //       throw Exception('Invalid course data provided');
+  //     }
+
+  //     final dashboardData = await _getDashboardData(year, semester, courseId);
+
+  //     emit(dashboardData);
+  //   } catch (e) {
+  //     print('Error in _getCourseData: $e');
+  //     print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
+  //   }
+  // }
+
+  // _getGroupData(event, emit) async {
+  //   try {
+  //     emit(GeneralStatusState());
+//
+  //     var [year, semester] = event.dataTime.split(".");
+  //     var groupId = event.dataSourceId;
+//
+  //     if (event.dataSourceId == null || event.dataTime == null) {
+  //       throw Exception('Invalid course data provided');
+  //     }
+//
+  //     final dashboardData =
+  //         await _getDashboardData(year, semester, groupId, groupId);
+//
+  //     emit(dashboardData);
+  //   } catch (e) {
+  //     print('Error in _getCourseData: $e');
+  //     print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
+  //   }
+  // }
+
   Future<GeneralStatusState> _getDashboardData(
+    ViewType curView,
     String year,
     String semester, [
     String? courseId,
@@ -84,14 +134,31 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
     print(
         " mainChartData: $mainChartData,\n surveyData: $surveyData,\n semesterChartsData: $semesterChartsData,\n availableDates: $availableYears,\n selectedDate: $date,\n selectedCourseId: $courseId,\n selectedGroupId: $groupId,\n selectedSubjectId: $subjectId,");
     return GeneralStatusState(
-      mainChartData: mainChartData,
-      surveyData: surveyData,
-      semesterChartsData: semesterChartsData,
-      availableDates: availableYears,
-      selectedDate: date,
-      selectedCourseId: courseId,
-      selectedGroupId: groupId,
-      selectedSubjectId: subjectId,
-    );
+        mainChartData: mainChartData,
+        surveyData: surveyData,
+        semesterChartsData: semesterChartsData,
+        availableDates: availableYears,
+        selectedDate: date,
+        selectedCourseId: courseId,
+        selectedGroupId: groupId,
+        selectedSubjectId: subjectId,
+        currentView: curView);
+  }
+
+  ViewType _findNextView(ViewType currentView) {
+    switch (currentView) {
+      case ViewType.general:
+        return ViewType.course;
+      case ViewType.course:
+        return ViewType.subjectGroup;
+      case ViewType.subjectGroup:
+        return ViewType.subject;
+      case ViewType.subject:
+        return ViewType.subject;
+      case ViewType.error:
+        return ViewType.error;
+      case ViewType.loading:
+        return ViewType.loading;
+    }
   }
 }

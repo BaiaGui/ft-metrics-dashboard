@@ -42,7 +42,7 @@ class SemesterChart extends StatelessWidget {
         print("the date of this chart is: $dataTime");
         context
             .read<GeneralStatusBloc>()
-            .add(CourseSelectedEvent(dataTime, dataSourceId));
+            .add(ChartClicked(dataTime, dataSourceId));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),

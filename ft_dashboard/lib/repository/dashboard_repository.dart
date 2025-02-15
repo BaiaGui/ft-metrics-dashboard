@@ -30,8 +30,8 @@ class DashboardRepository {
           courseId != null &&
           groupId != null) {
         final allDashboardData = await Future.wait([
-          _dashboardProvider.getGroupIndex(courseId),
-          _dashboardProvider.getGroupSurveyOverview(year, semester, courseId),
+          _dashboardProvider.getGroupIndex(groupId),
+          _dashboardProvider.getGroupSurveyOverview(year, semester, groupId),
           _dashboardProvider.getSubjectsAnswerProportions(
               year, semester, groupId),
           _dashboardProvider.getAvailableYears(),

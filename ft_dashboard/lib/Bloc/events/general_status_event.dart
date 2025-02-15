@@ -8,9 +8,16 @@ class GeneralStatusChangedTime extends GeneralStatusEvent {
   GeneralStatusChangedTime(this.year);
 }
 
-class CourseSelectedEvent extends GeneralStatusEvent {
+class ChartClicked extends GeneralStatusEvent {
   final String? dataTime;
   final String? dataSourceId;
 
-  CourseSelectedEvent(this.dataTime, this.dataSourceId);
+  ChartClicked(this.dataTime, this.dataSourceId);
 }
+
+// class GroupSelectedEvent extends GeneralStatusEvent {
+//   final String? dataTime;
+//   final String? dataSourceId;
+
+//   GroupSelectedEvent(this.dataTime, this.dataSourceId);
+// }

@@ -54,10 +54,10 @@ async function getSubjectsProportionsByGroup(year, semester, courseId, groupId) 
   let proportionGroup = [];
 
   for (let subject of subjects) {
-    let proportion = await answerProportionData.getSubjectProportion(subject._id, year, semester);
+    let proportion = await answerProportionData.getSubjectProportion(subject.codDisc, year, semester);
     proportionGroup.push({
-      dataId: subject._id,
-      description: subject.descrição,
+      dataId: subject.codDisc,
+      description: subject.nome,
       proportion: proportion,
     });
   }

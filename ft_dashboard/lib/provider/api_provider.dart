@@ -61,7 +61,7 @@ class DashboardDataProvider {
 
       return MainChartModel.fromMap(response.data);
     } catch (e) {
-      throw Exception('Index request error: $e');
+      throw Exception('Provider::Error while trying to fetch course index: $e');
     }
   }
 
@@ -72,7 +72,8 @@ class DashboardDataProvider {
           "$baseURL/dashboard/surveyOverview/$courseId?year=$year&semester=$semester");
       return SurveyOverviewModel.fromMap(response.data);
     } catch (e) {
-      throw Exception('Survey info request error: $e');
+      throw Exception(
+          'Provider::Error while trying to fetch the course survey overview: $e');
     }
   }
 
@@ -81,9 +82,11 @@ class DashboardDataProvider {
     try {
       Response response = await _dio.get(
           "$baseURL/dashboard/answerProportion/$courseId?year=$year&semester=$semester");
+      print("ok");
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
-      throw Exception('\n\n\n Group data request error: $e\n\n\n');
+      throw Exception(
+          'Provider::Error while trying to fetch the course awnser proportions: $e');
     }
   }
 
@@ -91,7 +94,8 @@ class DashboardDataProvider {
 
   Future<MainChartModel> getGroupIndex(groupId) async {
     try {
-      Response response = await _dio.get("$baseURL/dashboard/indexes/$groupId");
+      Response response =
+          await _dio.get("$baseURL/dashboard/indexes/$groupId/$groupId");
 
       return MainChartModel.fromMap(response.data);
     } catch (e) {
@@ -103,7 +107,7 @@ class DashboardDataProvider {
       year, semester, groupId) async {
     try {
       Response response = await _dio.get(
-          "$baseURL/dashboard/surveyOverview/$groupId?year=$year&semester=$semester");
+          "$baseURL/dashboard/surveyOverview/$groupId/$groupId?year=$year&semester=$semester");
       return SurveyOverviewModel.fromMap(response.data);
     } catch (e) {
       throw Exception('Survey info request error: $e');
@@ -111,10 +115,10 @@ class DashboardDataProvider {
   }
 
   Future<List<SemesterChartModel>> getSubjectsAnswerProportions(
-      year, semester, courseId) async {
+      year, semester, groupId) async {
     try {
       Response response = await _dio.get(
-          "$baseURL/dashboard/answerProportion/$courseId?year=$year&semester=$semester");
+          "$baseURL/dashboard/answerProportion/$groupId/$groupId?year=$year&semester=$semester");
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
       throw Exception('\n\n\n Group data request error: $e\n\n\n');
