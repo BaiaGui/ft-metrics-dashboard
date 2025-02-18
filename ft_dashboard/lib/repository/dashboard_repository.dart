@@ -63,6 +63,52 @@ class DashboardRepository {
     }
   }
 
+/*TODO:
+  Continue this logic below with every vision of the dashaboard.
+  Then find a way of calling the corresponding function in the bloc layer bases only on
+  - the vision defined in the argument
+  - the id of the vision
+ */
+  Future<List<Object>> getGeneralData(year, semester) async {
+    final allDashboardData = await Future.wait([
+      _dashboardProvider.getIndex(),
+      _dashboardProvider.getSurveyOverview(year, semester),
+      _dashboardProvider.getSemesterCharts(year, semester),
+      _dashboardProvider.getAvailableYears(),
+    ]);
+    return allDashboardData;
+  }
+
+  Future<List<Object>> getCourseData(year, semester, courseId) async {
+    final allDashboardData = await Future.wait([
+      _dashboardProvider.getCourseIndex(courseId),
+      _dashboardProvider.getCourseSurveyOverview(year, semester, courseId),
+      _dashboardProvider.getGroupsAnswerProportions(year, semester, courseId),
+      _dashboardProvider.getAvailableYears(),
+    ]);
+    return allDashboardData;
+  }
+
+  Future<List<Object>> getSubjectGroupData(year, semester, groupId) async {
+    final allDashboardData = await Future.wait([
+      _dashboardProvider.getGroupIndex(groupId),
+      _dashboardProvider.getGroupSurveyOverview(year, semester, groupId),
+      _dashboardProvider.getSubjectsAnswerProportions(year, semester, groupId),
+      _dashboardProvider.getAvailableYears(),
+    ]);
+    return allDashboardData;
+  }
+
+  Future<List<Object>> getSubjectData(year, semester, subjectId) async {
+    final allDashboardData = await Future.wait([
+      _dashboardProvider.getSubjectIndex(subjectId),
+      _dashboardProvider.getSubjectSurveyOverview(year, semester, subjectId),
+      _dashboardProvider.getSubjectComments(year, semester, subjectId),
+      _dashboardProvider.getAvailableYears(),
+    ]);
+    return allDashboardData;
+  }
+
 //   Future<MainChartModel> getIndex() async {
 //     final mainChart = await _dashboardProvider.getIndex();
 //     return mainChart;

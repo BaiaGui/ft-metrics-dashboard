@@ -61,8 +61,8 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
         throw Exception('Invalid data provided');
       }
 
-      final dashboardData =
-          await _getDashboardData(nextView, year, semester, nextviewId);
+      final dashboardData = await _getDashboardData(
+          nextView, year, semester, nextviewId, nextviewId);
 
       emit(dashboardData);
     } catch (e) {
