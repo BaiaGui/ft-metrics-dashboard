@@ -1,6 +1,6 @@
 const express = require("express");
 const indexesController = require("../controllers/indexesController");
-
+const { validateIndexesParams } = require("../middlewares/validationMiddleware");
 const router = express.Router();
 
 //View options: general, course, subjectGroup and subject

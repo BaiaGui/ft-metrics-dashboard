@@ -1,4 +1,4 @@
-function validateIndexesParams(req, res) {
+function validateIndexesParams(req, res, next) {
   const { view, id } = req.params;
   availableViews = ["general", "course", "subjectGroup", "subject"];
 
@@ -13,3 +13,7 @@ function validateIndexesParams(req, res) {
 
   next();
 }
+
+module.exports = {
+  validateIndexesParams,
+};
