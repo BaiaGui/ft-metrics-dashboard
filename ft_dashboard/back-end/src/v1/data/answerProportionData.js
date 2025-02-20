@@ -390,6 +390,83 @@ async function getSubjectProportion(subjectCode, year, semester) {
           },
         },
         {
+          $facet: {
+            counts: [
+              {
+                $match: {},
+              },
+            ],
+            fixed: [
+              {
+                $project: {
+                  responses: [
+                    {
+                      _id: "0",
+                      count: 0,
+                    },
+                    {
+                      _id: "1",
+                      count: 0,
+                    },
+                    {
+                      _id: "2",
+                      count: 0,
+                    },
+                    {
+                      _id: "3",
+                      count: 0,
+                    },
+                    {
+                      _id: "4",
+                      count: 0,
+                    },
+                    {
+                      _id: "5",
+                      count: 0,
+                    },
+                  ],
+                },
+              },
+              {
+                $unwind: "$responses",
+              },
+              {
+                $replaceRoot: {
+                  newRoot: "$responses",
+                },
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            combined: {
+              $concatArrays: ["$counts", "$fixed"],
+            },
+          },
+        },
+        {
+          $unwind: "$combined",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$combined",
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            count: {
+              $max: "$count",
+            },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+        {
           $match: {
             $or: [
               {
@@ -411,11 +488,6 @@ async function getSubjectProportion(subjectCode, year, semester) {
                 _id: "5",
               },
             ],
-          },
-        },
-        {
-          $sort: {
-            _id: 1,
           },
         },
       ])

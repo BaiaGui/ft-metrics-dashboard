@@ -3,8 +3,12 @@ const indexesController = require("../controllers/indexesController");
 
 const router = express.Router();
 
-//router.get("/years", indexesController.findYearsInDB);
-router.get("/", indexesController.getIndex);
-router.get("/:courseId", indexesController.getCourseIndex);
-router.get("/:courseId/:groupId", indexesController.getSubjectGroupIndex);
+//View options: general, course, subjectGroup and subject
+
+// router.get("/general", indexesController.getIndex);
+// router.get("/course/:courseId", indexesController.getCourseIndex);
+// router.get("/subjectGroup/:groupId", indexesController.getSubjectGroupIndex);
+// router.get("/subject/:subjectId", indexesController.getSubjectIndex);
+router.get("/:view/:id", validateIndexesParams, indexesController.getIndexHistory);
+
 module.exports = router;

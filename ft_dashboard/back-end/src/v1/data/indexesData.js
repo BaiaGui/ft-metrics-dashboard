@@ -1,10 +1,25 @@
 const db = require("../../db_conn");
 
-async function getAnswerProportionByTime(year, semester) {
+/**
+ * IMPORTANTE!
+ * Para calcular o TIPO de resposta (concordo parcialmente, discordo totalmente, ...),
+ * a função considera o NÚMERO da resposta. Ou seja, 1 = DT, 2 = DP, ...
+ *
+ * A query irá agrupar as questões do mesmo GRUPO (EX:  Infraestrutura e Suporte às aulas)
+ * e irá contar a quantidade de cada TIPO de resposta do grupo
+ * (Ex: 50 respostas Concordo plenamente do grupo Infraestrutura e Suporte às aulas do semestre 2022.2)
+ *
+ * IMPORTANT!
+ * In order to calculate the TYPE of the answer (Strongly disagree, Disagree, ...),
+ * the function considers the NUMBER of the answer. For instance: 1 = Strongly Disagree, 2= Disagree
+ *
+ * The query will group together the questions that belong to the same GROUP and then it will count the total number of each answer TYPE
+ * (Ex: 50 'Agree' Answers of the group 'Student Participation' for the 2023.1 semester)
+ */
+
+async function getGeneralAnswerProportionByTime(year, semester) {
   //TODO: validate if params are int
   try {
-    //if (course) query.course = course;
-
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
       .aggregate([
@@ -48,12 +63,7 @@ async function getAnswerProportionByTime(year, semester) {
             path: "$questoes",
           },
         },
-        /**
-         * IMPORTANTE!
-         * Para calcular o TIPO de resposta (concordo parcialmente, discordo totalmente, ...),
-         * a função considera o NÚMERO da resposta. Ou seja, 1 = DT, 2 = DP, ...
-         *
-         */
+
         {
           $bucket: {
             groupBy: {
@@ -353,7 +363,7 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
   }
 }
 
-async function getAnswerProportionBySubGroup(year, semester, course, groupId) {
+async function getAnswerProportionBySubGroup(year, semester, groupId) {
   //TODO: validate if params are int
   try {
     const cohorts = db.collection("cohorts");
@@ -541,15 +551,9 @@ async function getAnswerProportionBySubGroup(year, semester, course, groupId) {
   }
 }
 
-async function getAnswerProportionBySubject(year, semester, course, subGroup, subject) {
+async function getAnswerProportionBySubject(year, semester, subjectId) {
   //TODO: validate if params are int
   try {
-    let query = {
-      year: year,
-      semester: semester,
-    };
-    //if (course) query.course = course;
-
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
       .aggregate([
@@ -558,6 +562,7 @@ async function getAnswerProportionBySubject(year, semester, course, subGroup, su
           $match: {
             ano: parseInt(year),
             semestre: parseInt(semester),
+            codDisc: subjectId,
           },
         },
         //stage 2: get related form data
@@ -593,12 +598,6 @@ async function getAnswerProportionBySubject(year, semester, course, subGroup, su
             path: "$questoes",
           },
         },
-        /**
-         * IMPORTANTE!
-         * Para calcular o TIPO de resposta (concordo parcialmente, discordo totalmente, ...),
-         * a função considera o NÚMERO da resposta. Ou seja, 1 = DT, 2 = DP, ...
-         *
-         */
         {
           $bucket: {
             groupBy: {
@@ -711,7 +710,7 @@ async function getAnswerProportionBySubject(year, semester, course, subGroup, su
 }
 
 module.exports = {
-  getAnswerProportionByTime,
+  getGeneralAnswerProportionByTime,
   getAnswerProportionByCourse,
   getAnswerProportionBySubGroup,
   getAnswerProportionBySubject,
