@@ -97,7 +97,6 @@ async function fetchHistoryByViewAndId(view, id) {
 
 //------------------
 async function fetchIndex(year, semester, view, id) {
-  console.log(year);
   let answerProportion;
   switch (view) {
     case "general":
@@ -133,7 +132,6 @@ async function fetchIndex(year, semester, view, id) {
   if (view == "subjectGroup") indexes.subjectGroupId = id;
   if (view == "subject") indexes.subjectId = id;
 
-  console.log(indexes);
   return indexes;
 }
 
@@ -154,4 +152,5 @@ module.exports = {
   // getIndex,
   // getSubjectGroupIndexes,
   fetchHistoryByViewAndId,
+  fetchIndex,
 };

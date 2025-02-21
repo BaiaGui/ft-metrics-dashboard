@@ -46,15 +46,14 @@ async function findLatestDate() {
         },
       ])
       .toArray();
-    console.log(latestDate[0]);
     return latestDate[0];
   } catch (e) {
-    console.log("SurveyOverview::Error getting latest date:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error while fetching the latest date in the database" + e);
+    throw { status: 500 };
   }
 }
 
-async function findTotalEnrolled(year, semester) {
+async function countEnrolledInGeneralByPeriod(year, semester) {
   try {
     const collection = db.collection("cohorts");
     const totalEnrolled = await collection
@@ -79,12 +78,12 @@ async function findTotalEnrolled(year, semester) {
       .toArray();
     return totalEnrolled[0].totalEnrolled;
   } catch (e) {
-    console.log("MainChartController::Error getting total enrolled:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countEnrolledInGeneralByPeriod" + e);
+    throw { status: 500 };
   }
 }
 
-async function findTotalRespondents(year, semester) {
+async function countGeneralResponsesByPeriod(year, semester) {
   try {
     const collection = db.collection("cohorts");
     const totalRespondents = await collection
@@ -134,12 +133,13 @@ async function findTotalRespondents(year, semester) {
       .toArray();
     return totalRespondents[0].totalRespondents;
   } catch (e) {
-    console.log("SurveyOverview::Error getting total respondents:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countGeneralResponsesByPeriod" + e);
+    throw { status: 500 };
   }
 }
 
-async function findEnrolledInCourseByTime(year, semester, courseId) {
+//courses------------------------------------------------------------------------
+async function countEnrolledInCourseByPeriod(year, semester, courseId) {
   try {
     const collection = db.collection("cohorts");
     const totalEnrolled = await collection
@@ -181,12 +181,12 @@ async function findEnrolledInCourseByTime(year, semester, courseId) {
       .toArray();
     return totalEnrolled[0].totalEnrolled;
   } catch (e) {
-    console.log("MainChartController::Error getting total enrolled:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countEnrolledInCourseByPeriod" + e);
+    throw { status: 500 };
   }
 }
 
-async function findRespondentsInCourseByTime(year, semester, courseId) {
+async function countResponsesForCourseByPeriod(year, semester, courseId) {
   try {
     const collection = db.collection("cohorts");
     const totalRespondents = await collection
@@ -245,12 +245,12 @@ async function findRespondentsInCourseByTime(year, semester, courseId) {
       .toArray();
     return totalRespondents[0].totalRespondents;
   } catch (e) {
-    console.log("SurveyOverview::Error getting total respondents:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countResponsesForCourseByPeriod" + e);
+    throw { status: 500 };
   }
 }
-
-async function findEnrolledInGroupByTime(year, semester, courseId, groupId) {
+//subject group------------------------------------------------------------------
+async function countEnrolledInGroupByPeriod(year, semester, groupId) {
   try {
     const collection = db.collection("cohorts");
     const totalEnrolled = await collection
@@ -292,12 +292,12 @@ async function findEnrolledInGroupByTime(year, semester, courseId, groupId) {
       .toArray();
     return totalEnrolled[0].totalEnrolled;
   } catch (e) {
-    console.log("MainChartController::Error getting total enrolled:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countEnrolledInGroupByPeriod" + e);
+    throw { status: 500 };
   }
 }
 
-async function findRespondentsInGroupByTime(year, semester, courseId, groupId) {
+async function countResponsesForGroupByPeriod(year, semester, groupId) {
   try {
     const collection = db.collection("cohorts");
     const totalRespondents = await collection
@@ -356,17 +356,106 @@ async function findRespondentsInGroupByTime(year, semester, courseId, groupId) {
       .toArray();
     return totalRespondents[0].totalRespondents;
   } catch (e) {
-    console.log("SurveyOverview::Error getting total respondents:" + e);
-    res.status(e.code || 500).json({ message: e.message });
+    console.log("SurveyOverviewData:: error on countResponsesForGroupByPeriod" + e);
+    throw { status: 500 };
+  }
+}
+//subject------------------------------------------------------------------------
+async function countEnrolledInSubjectByPeriod(year, semester, subjectId) {
+  try {
+    const collection = db.collection("cohorts");
+    const totalEnrolled = await collection
+      .aggregate([
+        {
+          $match: {
+            ano: parseInt(year),
+            semestre: parseInt(semester),
+            codDisc: subjectId,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $concat: [{ $toString: "$ano" }, ".", { $toString: "$semestre" }],
+            },
+            totalEnrolled: {
+              $sum: "$matriculas",
+            },
+          },
+        },
+      ])
+      .toArray();
+    return totalEnrolled[0].totalEnrolled;
+  } catch (e) {
+    console.log("SurveyOverviewData:: error on countEnrolledInSubjectByPeriod" + e);
+    throw { status: 500 };
+  }
+}
+
+async function countResponsesForSubjectByPeriod(year, semester, subjectId) {
+  try {
+    const collection = db.collection("cohorts");
+    const totalRespondents = await collection
+      .aggregate([
+        {
+          $match: {
+            ano: parseInt(year),
+            semestre: parseInt(semester),
+            codDisc: subjectId,
+          },
+        },
+        {
+          $lookup: {
+            from: "forms",
+            localField: "codTurma",
+            foreignField: "codTurma",
+            as: "forms",
+          },
+        },
+        {
+          $project: {
+            ano: "$ano",
+            semestre: "$semestre",
+            respondents: {
+              $size: "$forms",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $concat: [
+                {
+                  $toString: "$ano",
+                },
+                ".",
+                {
+                  $toString: "$semestre",
+                },
+              ],
+            },
+            totalRespondents: {
+              $sum: "$respondents",
+            },
+          },
+        },
+      ])
+      .toArray();
+    return totalRespondents[0].totalRespondents;
+  } catch (e) {
+    console.log("SurveyOverviewData:: error on countResponsesForSubjectByPeriod" + e);
+    throw { status: 500 };
   }
 }
 
 module.exports = {
   findLatestDate,
-  findTotalEnrolled,
-  findTotalRespondents,
-  findEnrolledInCourseByTime,
-  findRespondentsInCourseByTime,
-  findEnrolledInGroupByTime,
-  findRespondentsInGroupByTime,
+  countEnrolledInGeneralByPeriod,
+  countGeneralResponsesByPeriod,
+  countEnrolledInCourseByPeriod,
+  countResponsesForCourseByPeriod,
+  countEnrolledInGroupByPeriod,
+  countResponsesForGroupByPeriod,
+  countEnrolledInSubjectByPeriod,
+  countResponsesForSubjectByPeriod,
 };

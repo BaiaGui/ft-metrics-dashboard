@@ -32,7 +32,7 @@ const indexesService = require("../services/indexesService");
 //   }
 // }
 
-async function getIndexHistory(req, res) {
+async function fetchIndexHistory(req, res) {
   try {
     const { view, id } = req.params;
     const indexes = await indexesService.fetchHistoryByViewAndId(view, id);
@@ -47,5 +47,5 @@ module.exports = {
   // getIndex,
   // getCourseIndex,
   // getSubjectGroupIndex,
-  getIndexHistory,
+  fetchIndexHistory,
 };
