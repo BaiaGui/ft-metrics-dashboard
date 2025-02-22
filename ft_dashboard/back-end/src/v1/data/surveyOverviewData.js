@@ -52,7 +52,7 @@ async function findLatestDate() {
     throw { status: 500 };
   }
 }
-
+//general------------------------------------------------------------------------
 async function countEnrolledInGeneralByPeriod(year, semester) {
   try {
     const collection = db.collection("cohorts");
@@ -137,7 +137,6 @@ async function countGeneralResponsesByPeriod(year, semester) {
     throw { status: 500 };
   }
 }
-
 //courses------------------------------------------------------------------------
 async function countEnrolledInCourseByPeriod(year, semester, courseId) {
   try {

@@ -1,10 +1,9 @@
 const express = require("express");
 const answerProportionController = require("../controllers/answerProportionController");
+const { validateAnswerProportionParams } = require("../middlewares/validationMiddleware");
 
 const router = express.Router();
 
-router.get("/", answerProportionController.getCourseProportion);
-router.get("/:courseId", answerProportionController.getSubjectGroupProportion);
-router.get("/:courseId/:groupId", answerProportionController.getSubjectsProportion);
+router.get("/:view/:id", validateAnswerProportionParams, answerProportionController.fetchProportions);
 
 module.exports = router;

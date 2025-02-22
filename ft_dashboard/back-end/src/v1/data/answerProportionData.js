@@ -10,7 +10,7 @@ async function getCourses() {
   }
 }
 
-async function getCourseProportion(course, year, semester) {
+async function getCourseProportion(year, semester, courseId) {
   try {
     const collection = db.collection("cohorts");
     const courseProportion = await collection
@@ -25,7 +25,7 @@ async function getCourseProportion(course, year, semester) {
         },
         {
           $match: {
-            "curso._id": course,
+            "curso._id": courseId,
             "ano": parseInt(year),
             "semestre": parseInt(semester),
           },
@@ -103,7 +103,6 @@ async function getCourseProportion(course, year, semester) {
       ])
       .toArray();
 
-    console.log("coursProp:" + courseProportion);
     return courseProportion;
   } catch (e) {
     throw { status: 400, message: e };
@@ -333,7 +332,7 @@ async function getSubjectsbyGroup(groupId) {
   }
 }
 
-async function getSubjectProportion(subjectCode, year, semester) {
+async function getSubjectProportion(year, semester, subjectId) {
   try {
     const collection = db.collection("cohorts");
     const groupProportion = await collection
@@ -350,7 +349,7 @@ async function getSubjectProportion(subjectCode, year, semester) {
           $match: {
             ano: parseInt(year),
             semestre: parseInt(semester),
-            codDisc: subjectCode,
+            codDisc: subjectId,
           },
         },
         {
@@ -495,7 +494,92 @@ async function getSubjectProportion(subjectCode, year, semester) {
 
     return groupProportion;
   } catch (e) {
-    throw { status: 400, message: e };
+    throw { status: 400, message: "answerProportionData:" + e };
+  }
+}
+
+async function fetchComments(year, semester, subjectId) {
+  try {
+    const collection = db.collection("cohorts");
+    const subjectComments = await collection
+      .aggregate([
+        {
+          $match: {
+            ano: parseInt(year),
+            semestre: parseInt(semester),
+            codDisc: subjectId,
+          },
+        },
+        {
+          $lookup: {
+            from: "forms",
+            localField: "codTurma",
+            foreignField: "codTurma",
+            as: "forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$forms",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$questoes",
+          },
+        },
+        {
+          $match: {
+            "questoes.numero_pergunta": {
+              $in: ["25", "26"],
+            },
+            "questoes.resposta": {
+              $ne: "",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            question25: {
+              $push: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.numero_pergunta", "25"],
+                  },
+                  "$questoes.resposta",
+                  "$$REMOVE",
+                ],
+              },
+            },
+            question26: {
+              $push: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.numero_pergunta", "26"],
+                  },
+                  "$questoes.resposta",
+                  "$$REMOVE",
+                ],
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+          },
+        },
+      ])
+      .toArray();
+    return subjectComments[0];
+  } catch (e) {
+    throw { status: 400, message: "answerProportionData:" + e };
   }
 }
 
@@ -506,4 +590,5 @@ module.exports = {
   getGroupProportion,
   getSubjectsbyGroup,
   getSubjectProportion,
+  fetchComments,
 };

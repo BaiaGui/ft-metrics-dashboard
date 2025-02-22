@@ -1,73 +1,68 @@
 const answerProportionData = require("../data/answerProportionData");
 
-// async function answerProportions(courseId, year, semester) {
-//   const courses = answerProportionData.getAllCourses();
-//   courses.forEach((course) => {
-//     let proportion = {
-//       courseId: course._id,
-//       course: course.nomeCurso,
-//       proportion: answerProportionData.getCourseProportion(courseId, year, semester),
-//     };
-//   });
-
-//   return answerProportionData.getCourseProportion(courseId, year, semester);
-// }
-
-async function getCourseProportionsByTime(year, semester) {
-  const courses = await answerProportionData.getCourses();
+async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, id) {
+  const [year, semester] = await yearAndSemesterOrLatest(yearParam, semesterParam);
   let proportionGroup = [];
+  switch (view) {
+    case "general":
+      let courses = await answerProportionData.getCourses();
+      for (let course of courses) {
+        let proportion = await answerProportionData.getCourseProportion(year, semester, course._id);
+        proportionGroup.push({
+          dataId: course.codDisc,
+          description: course.nomeCurso,
+          proportion: proportion,
+        });
+      }
+      return { proportionGroup };
+      break;
+    case "course":
+      const groups = await answerProportionData.getGroupsbyCourse(id);
+      for (let group of groups) {
+        let proportion = await answerProportionData.getGroupProportion(group._id, year, semester);
+        proportionGroup.push({
+          dataId: group._id,
+          description: group.descrição,
+          proportion: proportion,
+        });
+      }
+      return { proportionGroup };
+      break;
+    case "subjectGroup":
+      const subjects = await answerProportionData.getSubjectsbyGroup(id);
 
-  for (let course of courses) {
-    let proportion = await answerProportionData.getCourseProportion(course._id, year, semester);
-    proportionGroup.push({
-      dataId: course._id,
-      description: course.nomeCurso,
-      proportion: proportion,
-    });
+      for (let subject of subjects) {
+        let proportion = await answerProportionData.getSubjectProportion(year, semester, subject.codDisc);
+        proportionGroup.push({
+          dataId: subject.codDisc,
+          description: subject.nome,
+          proportion: proportion,
+        });
+      }
+      return { proportionGroup };
+      break;
+    case "comments":
+      const comments = await answerProportionData.fetchComments(year, semester, id);
+      return comments;
+      break;
+    default:
+      throw { status: 400, message: `answerProportionService::Invalid view value '${view}'` };
   }
-
-  return { proportionGroup };
 }
 
-async function getGroupProportionsByCourse(year, semester, courseId) {
-  const groups = await answerProportionData.getGroupsbyCourse(courseId);
-  console.log("GRUPOS DO CURSO " + courseId);
-  console.log(groups);
-  let proportionGroup = [];
-
-  for (let group of groups) {
-    let proportion = await answerProportionData.getGroupProportion(group._id, year, semester);
-    proportionGroup.push({
-      dataId: group._id,
-      description: group.descrição,
-      proportion: proportion,
-    });
+async function yearAndSemesterOrLatest(selectedYear, selectedSemester) {
+  let year, semester;
+  if (selectedYear && selectedSemester) {
+    year = selectedYear;
+    semester = selectedSemester;
+  } else {
+    latestDate = await surveyOverviewData.findLatestDate();
+    year = latestDate.year;
+    semester = latestDate.semester;
   }
-
-  return { proportionGroup };
-}
-
-async function getSubjectsProportionsByGroup(year, semester, courseId, groupId) {
-  const subjects = await answerProportionData.getSubjectsbyGroup(groupId);
-  console.log("DISCIPLINAS DO GRUPO " + groupId);
-  console.log(subjects);
-  let proportionGroup = [];
-
-  for (let subject of subjects) {
-    let proportion = await answerProportionData.getSubjectProportion(subject.codDisc, year, semester);
-    proportionGroup.push({
-      dataId: subject.codDisc,
-      description: subject.nome,
-      proportion: proportion,
-    });
-  }
-
-  return { proportionGroup };
+  return [year, semester];
 }
 
 module.exports = {
-  //answerProportions,
-  getCourseProportionsByTime,
-  getGroupProportionsByCourse,
-  getSubjectsProportionsByGroup,
+  fetchProportionsByPeriodAndView,
 };
