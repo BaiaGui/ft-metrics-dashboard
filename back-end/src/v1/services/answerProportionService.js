@@ -9,7 +9,7 @@ async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, i
       for (let course of courses) {
         let proportion = await answerProportionData.getCourseProportion(year, semester, course._id);
         proportionGroup.push({
-          dataId: course.codDisc,
+          id: course._id,
           description: course.nomeCurso,
           proportion: proportion,
         });
@@ -21,7 +21,7 @@ async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, i
       for (let group of groups) {
         let proportion = await answerProportionData.getGroupProportion(group._id, year, semester);
         proportionGroup.push({
-          dataId: group._id,
+          id: group._id,
           description: group.descrição,
           proportion: proportion,
         });
@@ -34,7 +34,7 @@ async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, i
       for (let subject of subjects) {
         let proportion = await answerProportionData.getSubjectProportion(year, semester, subject.codDisc);
         proportionGroup.push({
-          dataId: subject.codDisc,
+          id: subject.codDisc,
           description: subject.nome,
           proportion: proportion,
         });

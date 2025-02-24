@@ -1,5 +1,5 @@
 test("GET general indexes", async () => {
-  const res = await fetch("http://localhost:3000/dashboard/indexes/general/0?year=2022&semester=2");
+  const res = await fetch("http://localhost:3000/dashboard/indexes/general/0");
   expect(res.status).toBe(200);
   const resData = await res.json();
   expect(resData).toHaveProperty("view");
@@ -10,7 +10,7 @@ test("GET general indexes", async () => {
 });
 
 test("GET course indexes", async () => {
-  const res = await fetch("http://localhost:3000/dashboard/indexes/course/0?year=2022&semester=2");
+  const res = await fetch("http://localhost:3000/dashboard/indexes/course/0");
   expect(res.status).toBe(200);
   const resData = await res.json();
   expect(resData).toHaveProperty("view");
@@ -21,7 +21,7 @@ test("GET course indexes", async () => {
 });
 
 test("GET subject group indexes", async () => {
-  const res = await fetch("http://localhost:3000/dashboard/indexes/subjectGroup/0?year=2022&semester=2");
+  const res = await fetch("http://localhost:3000/dashboard/indexes/subjectGroup/0");
   expect(res.status).toBe(200);
   const resData = await res.json();
   expect(resData).toHaveProperty("view");
@@ -32,7 +32,7 @@ test("GET subject group indexes", async () => {
 });
 
 test("GET subject indexes", async () => {
-  const res = await fetch("http://localhost:3000/dashboard/indexes/subject/SI700?year=2022&semester=2");
+  const res = await fetch("http://localhost:3000/dashboard/indexes/subject/SI700");
   expect(res.status).toBe(200);
   const resData = await res.json();
   expect(resData).toHaveProperty("view");

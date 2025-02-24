@@ -4,7 +4,7 @@ class SemesterChartModel {
   List<double> proportions = [];
 
   SemesterChartModel.fromMap(map) {
-    dataSourceId = map["dataId"];
+    dataSourceId = map["id"];
     chartName = map["description"];
     proportions = [];
     if (map["proportion"].isNotEmpty) {

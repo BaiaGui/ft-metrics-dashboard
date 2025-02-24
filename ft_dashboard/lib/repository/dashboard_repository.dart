@@ -1,6 +1,7 @@
 import 'package:ft_dashboard/model/main_chart_model.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 import 'package:ft_dashboard/model/survey_overview_model.dart';
+import 'package:ft_dashboard/model/view_type.dart';
 import 'package:ft_dashboard/provider/api_provider.dart';
 
 class DashboardRepository {
@@ -8,106 +9,66 @@ class DashboardRepository {
   DashboardRepository({DashboardDataProvider? dashboardProvider})
       : _dashboardProvider = dashboardProvider ?? DashboardDataProvider();
 
-//TODO: Change arguments of the functions to match endpoints
-  Future<List<Object>> getDashboardData(year, semester,
-      [courseId, groupId, subjectId]) async {
+  Future<List<Object>> getDashboardData(
+      ViewType view, dataId, year, semester) async {
     try {
-      if (year != null &&
-          semester != null &&
-          courseId != null &&
-          groupId != null &&
-          subjectId != null) {
-        final allDashboardData = await Future.wait([
-          _dashboardProvider.getSubjectIndex(subjectId),
-          _dashboardProvider.getSubjectSurveyOverview(
-              year, semester, subjectId),
-          _dashboardProvider.getSubjectComments(year, semester, subjectId),
-          _dashboardProvider.getAvailableYears(),
-        ]);
-        return allDashboardData;
-      } else if (year != null &&
-          semester != null &&
-          courseId != null &&
-          groupId != null) {
-        final allDashboardData = await Future.wait([
-          _dashboardProvider.getGroupIndex(groupId),
-          _dashboardProvider.getGroupSurveyOverview(year, semester, groupId),
-          _dashboardProvider.getSubjectsAnswerProportions(
-              year, semester, groupId),
-          _dashboardProvider.getAvailableYears(),
-        ]);
-        return allDashboardData;
-      } else if (year != null && semester != null && courseId != null) {
-        final allDashboardData = await Future.wait([
-          _dashboardProvider.getCourseIndex(courseId),
-          _dashboardProvider.getCourseSurveyOverview(year, semester, courseId),
-          _dashboardProvider.getGroupsAnswerProportions(
-              year, semester, courseId),
-          _dashboardProvider.getAvailableYears(),
-        ]);
-        return allDashboardData;
-      } else if (year != null && semester != null) {
-        final allDashboardData = await Future.wait([
-          _dashboardProvider.getIndex(),
-          _dashboardProvider.getSurveyOverview(year, semester),
-          _dashboardProvider.getSemesterCharts(year, semester),
-          _dashboardProvider.getAvailableYears(),
-        ]);
-        return allDashboardData;
-      } else {
-        throw Exception('Invalid arguments');
-      }
+      final allDashboardData = await Future.wait([
+        _dashboardProvider.getIndexHistory(view.name),
+        _dashboardProvider.getSurveyOverview(view.name, dataId, year, semester),
+        _dashboardProvider.getSemesterCharts(view.name, dataId, year, semester),
+        _dashboardProvider.getAvailableYears(),
+      ]);
+      return allDashboardData;
     } catch (e) {
-      print('\n\n\n\nERRO NO REPOSITORY: $e\n\n\n\n');
-      throw Exception('Error fetching dashboard data: $e');
+      rethrow;
     }
   }
 
 /*TODO:
   Continue this logic below with every vision of the dashaboard.
-  Then find a way of calling the corresponding function in the bloc layer bases only on
+  Then find a way of calling the corresponding function in the bloc layer based only on
   - the vision defined in the argument
   - the id of the vision
  */
-  Future<List<Object>> getGeneralData(year, semester) async {
-    final allDashboardData = await Future.wait([
-      _dashboardProvider.getIndex(),
-      _dashboardProvider.getSurveyOverview(year, semester),
-      _dashboardProvider.getSemesterCharts(year, semester),
-      _dashboardProvider.getAvailableYears(),
-    ]);
-    return allDashboardData;
-  }
+  // Future<List<Object>> getGeneralData(year, semester) async {
+  //   final allDashboardData = await Future.wait([
+  //     _dashboardProvider.getIndex(),
+  //     _dashboardProvider.getSurveyOverview(year, semester),
+  //     _dashboardProvider.getSemesterCharts(year, semester),
+  //     _dashboardProvider.getAvailableYears(),
+  //   ]);
+  //   return allDashboardData;
+  // }
 
-  Future<List<Object>> getCourseData(year, semester, courseId) async {
-    final allDashboardData = await Future.wait([
-      _dashboardProvider.getCourseIndex(courseId),
-      _dashboardProvider.getCourseSurveyOverview(year, semester, courseId),
-      _dashboardProvider.getGroupsAnswerProportions(year, semester, courseId),
-      _dashboardProvider.getAvailableYears(),
-    ]);
-    return allDashboardData;
-  }
+  // Future<List<Object>> getCourseData(year, semester, courseId) async {
+  //   final allDashboardData = await Future.wait([
+  //     _dashboardProvider.getCourseIndex(courseId),
+  //     _dashboardProvider.getCourseSurveyOverview(year, semester, courseId),
+  //     _dashboardProvider.getGroupsAnswerProportions(year, semester, courseId),
+  //     _dashboardProvider.getAvailableYears(),
+  //   ]);
+  //   return allDashboardData;
+  // }
 
-  Future<List<Object>> getSubjectGroupData(year, semester, groupId) async {
-    final allDashboardData = await Future.wait([
-      _dashboardProvider.getGroupIndex(groupId),
-      _dashboardProvider.getGroupSurveyOverview(year, semester, groupId),
-      _dashboardProvider.getSubjectsAnswerProportions(year, semester, groupId),
-      _dashboardProvider.getAvailableYears(),
-    ]);
-    return allDashboardData;
-  }
+  // Future<List<Object>> getSubjectGroupData(year, semester, groupId) async {
+  //   final allDashboardData = await Future.wait([
+  //     _dashboardProvider.getGroupIndex(groupId),
+  //     _dashboardProvider.getGroupSurveyOverview(year, semester, groupId),
+  //     _dashboardProvider.getSubjectsAnswerProportions(year, semester, groupId),
+  //     _dashboardProvider.getAvailableYears(),
+  //   ]);
+  //   return allDashboardData;
+  // }
 
-  Future<List<Object>> getSubjectData(year, semester, subjectId) async {
-    final allDashboardData = await Future.wait([
-      _dashboardProvider.getSubjectIndex(subjectId),
-      _dashboardProvider.getSubjectSurveyOverview(year, semester, subjectId),
-      _dashboardProvider.getSubjectComments(year, semester, subjectId),
-      _dashboardProvider.getAvailableYears(),
-    ]);
-    return allDashboardData;
-  }
+  // Future<List<Object>> getSubjectData(year, semester, subjectId) async {
+  //   final allDashboardData = await Future.wait([
+  //     _dashboardProvider.getSubjectIndex(subjectId),
+  //     _dashboardProvider.getSubjectSurveyOverview(year, semester, subjectId),
+  //     _dashboardProvider.getSubjectComments(year, semester, subjectId),
+  //     _dashboardProvider.getAvailableYears(),
+  //   ]);
+  //   return allDashboardData;
+  // }
 
 //   Future<MainChartModel> getIndex() async {
 //     final mainChart = await _dashboardProvider.getIndex();

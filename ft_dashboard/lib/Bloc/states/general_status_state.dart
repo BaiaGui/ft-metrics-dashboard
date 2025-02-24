@@ -1,8 +1,7 @@
 import 'package:ft_dashboard/model/main_chart_model.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
 import 'package:ft_dashboard/model/survey_overview_model.dart';
-
-enum ViewType { general, course, subjectGroup, subject, loading, error }
+import 'package:ft_dashboard/model/view_type.dart';
 
 class GeneralStatusState {
   List<String>? availableDates = [];
@@ -12,9 +11,10 @@ class GeneralStatusState {
   ViewType currentView;
 
   String? selectedDate;
-  String? selectedCourseId;
-  String? selectedGroupId;
-  String? selectedSubjectId;
+  String? dataId;
+  // String? selectedCourseId;
+  // String? selectedGroupId;
+  // String? selectedSubjectId;
 
   GeneralStatusState(
       {this.mainChartData,
@@ -22,8 +22,6 @@ class GeneralStatusState {
       this.semesterChartsData,
       this.availableDates,
       this.selectedDate,
-      this.selectedCourseId,
-      this.selectedGroupId,
-      this.selectedSubjectId,
+      this.dataId,
       required this.currentView});
 }

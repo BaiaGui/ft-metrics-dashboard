@@ -129,7 +129,7 @@ class DashboardDropdown extends StatelessWidget {
         final menuOptions = availableDates
             .map((date) => DropdownMenuEntry(value: date, label: date))
             .toList();
-        print("current state course: ${state.selectedCourseId}");
+        print("current state course: ${state.dataId}");
 
         return DropdownMenu(
           initialSelection: selectedDate,
