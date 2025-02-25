@@ -14,7 +14,7 @@ function validateIndexesParams(req, res, next) {
 
 function validateAnswerProportionParams(req, res, next) {
   const { view, id } = req.params;
-  availableViews = ["general", "course", "subjectGroup", "comments"];
+  availableViews = ["general", "course", "subjectGroup", "subject", "comments"];
 
   if (!availableViews.includes(view)) {
     console.log(`Invalid view parameter: "${view}". Accepted values are: general, course, subjectGroup, or subject. Please use one of these options.`);

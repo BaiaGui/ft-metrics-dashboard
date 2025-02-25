@@ -41,6 +41,11 @@ async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, i
       }
       return { proportionGroup };
       break;
+    case "subject":
+      proportionGroup = await answerProportionData.getQuestionsProportionOfSubject(year, semester, id);
+
+      return { proportionGroup };
+      break;
     case "comments":
       const comments = await answerProportionData.fetchComments(year, semester, id);
       return comments;

@@ -295,7 +295,7 @@ async function getGroupProportion(groupId, year, semester) {
   }
 }
 
-//-------------------------------------------------------
+//Subject-------------------------------------------------------
 async function getSubjectsbyGroup(groupId) {
   try {
     const collection = db.collection("subject_group");
@@ -497,6 +497,199 @@ async function getSubjectProportion(year, semester, subjectId) {
     throw { status: 400, message: "answerProportionData:" + e };
   }
 }
+//--------------------------------------------------------------
+
+async function getQuestionsProportionOfSubject(year, semester, subjectId) {
+  try {
+    const collection = db.collection("cohorts");
+    const questionProportion = await collection
+      .aggregate([
+        {
+          $lookup: {
+            from: "subjects",
+            localField: "codDisc",
+            foreignField: "codDisc",
+            as: "dadosMateria",
+          },
+        },
+        {
+          $match: {
+            ano: parseInt(year),
+            semestre: parseInt(semester),
+            codDisc: subjectId,
+          },
+        },
+        {
+          $project: {
+            codTurma: 1,
+          },
+        },
+        {
+          $lookup: {
+            from: "forms",
+            localField: "codTurma",
+            foreignField: "codTurma",
+            as: "forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$forms",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$forms",
+          },
+        },
+        {
+          $unwind: {
+            path: "$questoes",
+          },
+        },
+        {
+          $group: {
+            _id: "$questoes.numero_pergunta",
+            total: {
+              $sum: 1,
+            },
+            count0: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "0"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+            count1: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "1"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+            count2: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "2"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+            count3: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "3"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+            count4: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "4"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+            count5: {
+              $sum: {
+                $cond: [
+                  {
+                    $eq: ["$questoes.resposta", "5"],
+                  },
+                  1,
+                  0,
+                ],
+              },
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "form_questions",
+            localField: "_id",
+            foreignField: "_id",
+            as: "question",
+          },
+        },
+        {
+          $addFields: {
+            id: {
+              $toInt: "$_id",
+            },
+            description: {
+              $first: "$question.enunciado",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            id: 1,
+            description: 1,
+            proportion: [
+              {
+                _id: "0",
+                count: "$count0",
+              },
+              {
+                _id: "1",
+                count: "$count1",
+              },
+              {
+                _id: "2",
+                count: "$count2",
+              },
+              {
+                _id: "3",
+                count: "$count3",
+              },
+              {
+                _id: "4",
+                count: "$count4",
+              },
+              {
+                _id: "5",
+                count: "$count5",
+              },
+            ],
+          },
+        },
+        {
+          $sort: {
+            id: 1,
+          },
+        },
+        {
+          $addFields: {
+            id: {
+              $toString: "$id",
+            },
+          },
+        },
+      ])
+      .toArray();
+    console.log(questionProportion);
+    return questionProportion;
+  } catch (e) {}
+}
 
 async function fetchComments(year, semester, subjectId) {
   try {
@@ -591,4 +784,5 @@ module.exports = {
   getSubjectsbyGroup,
   getSubjectProportion,
   fetchComments,
+  getQuestionsProportionOfSubject,
 };
