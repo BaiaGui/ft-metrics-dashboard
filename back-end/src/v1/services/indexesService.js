@@ -11,9 +11,11 @@ async function fetchHistoryByViewAndId(view, id) {
   for (let year of uniqueYears) {
     let yearSemester = year.split(".");
     let index = await fetchIndex(yearSemester[0], yearSemester[1], view, id);
-    indexInfra.push([year, parseFloat(index.indexInfra.toFixed(5))]);
-    indexStudent.push([year, parseFloat(index.indexStudent.toFixed(5))]);
-    indexTeacher.push([year, parseFloat(index.indexTeacher.toFixed(5))]);
+    if (index != null) {
+      indexInfra.push([year, parseFloat(index.indexInfra.toFixed(5))]);
+      indexStudent.push([year, parseFloat(index.indexStudent.toFixed(5))]);
+      indexTeacher.push([year, parseFloat(index.indexTeacher.toFixed(5))]);
+    }
   }
 
   return {
@@ -40,29 +42,34 @@ async function fetchIndex(year, semester, view, id) {
       break;
     case "subject":
       answerProportion = await indexesData.getAnswerProportionBySubject(year, semester, id);
+
       break;
     default:
       throw { status: 400, message: `IndexesService::Invalid view value '${view}'` };
   }
 
-  const indexInfra = calculateIndexByAnswerProportion(answerProportion[0]);
-  const indexStudent = calculateIndexByAnswerProportion(answerProportion[1]);
-  const indexTeacher = calculateIndexByAnswerProportion(answerProportion[2]);
+  if (answerProportion.length != 0) {
+    const indexInfra = calculateIndexByAnswerProportion(answerProportion[0]);
+    const indexStudent = calculateIndexByAnswerProportion(answerProportion[1]);
+    const indexTeacher = calculateIndexByAnswerProportion(answerProportion[2]);
 
-  const indexes = {
-    year,
-    semester,
-    indexInfra,
-    indexStudent,
-    indexTeacher,
-  };
+    const indexes = {
+      year,
+      semester,
+      indexInfra,
+      indexStudent,
+      indexTeacher,
+    };
 
-  // Adiciona parâmetros opcionais ao resultado
-  if (view == "course") indexes.courseId = id;
-  if (view == "subjectGroup") indexes.subjectGroupId = id;
-  if (view == "subject") indexes.subjectId = id;
+    // Adiciona parâmetros opcionais ao resultado
+    if (view == "course") indexes.courseId = id;
+    if (view == "subjectGroup") indexes.subjectGroupId = id;
+    if (view == "subject") indexes.subjectId = id;
 
-  return indexes;
+    return indexes;
+  } else {
+    return null;
+  }
 }
 
 function calculateIndexByAnswerProportion(answerProportion) {

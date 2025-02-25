@@ -700,9 +700,10 @@ async function getAnswerProportionBySubject(year, semester, subjectId) {
         },
       ])
       .toArray();
-    if (formGroup.length == 0) {
-      throw { status: 400, message: "Data not found. Verify request values" };
-    }
+    console.log(formGroup);
+    // if (formGroup.length == 0) {
+    //   throw { status: 400, message: "Data not found. Verify request values" };
+    // }
     return formGroup;
   } catch (e) {
     throw e;
