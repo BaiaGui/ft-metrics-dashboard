@@ -25,7 +25,7 @@ class SemesterChartModel {
 
   static fromList(Map<String, dynamic> json) {
     List<dynamic> courseList = json["proportionGroup"];
-    print("courseList: $courseList");
+
     return courseList
         .map((courseProportion) => SemesterChartModel.fromMap(courseProportion))
         .toList();

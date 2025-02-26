@@ -12,9 +12,8 @@ class GeneralStatusState {
 
   String? selectedDate;
   String? dataId;
-  // String? selectedCourseId;
-  // String? selectedGroupId;
-  // String? selectedSubjectId;
+  List<String>? comments25;
+  List<String>? comments26;
 
   GeneralStatusState(
       {this.mainChartData,
@@ -23,5 +22,7 @@ class GeneralStatusState {
       this.availableDates,
       this.selectedDate,
       this.dataId,
+      this.comments25,
+      this.comments26,
       required this.currentView});
 }

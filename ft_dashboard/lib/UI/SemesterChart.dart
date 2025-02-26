@@ -38,11 +38,13 @@ class SemesterChart extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        print("cliquei");
-        print("the date of this chart is: $dataTime");
-        context
-            .read<GeneralStatusBloc>()
-            .add(ChartClicked(dataTime, dataSourceId));
+        if (values == [0, 0, 0, 0, 0, 0]) {
+          print("sou o gráfico vazio de nome $name");
+        } else {
+          context
+              .read<GeneralStatusBloc>()
+              .add(ChartClicked(dataTime, dataSourceId));
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),

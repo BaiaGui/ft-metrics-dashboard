@@ -15,7 +15,7 @@ class SemesterChartsCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -24,7 +24,6 @@ class SemesterChartsCell extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const CellHeader(),
             BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
               builder: (context, state) {
                 List<SemesterChartModel>? chartsData = state.semesterChartsData;
@@ -42,8 +41,13 @@ class SemesterChartsCell extends StatelessWidget {
                       )
                       .toList();
 
-                  return Wrap(
-                    children: charts,
+                  return Column(
+                    children: [
+                      CellHeader(title: state.currentView.name),
+                      Wrap(
+                        children: charts,
+                      ),
+                    ],
                   );
                 } else {
                   return const InfoSkeletons();
@@ -58,20 +62,20 @@ class SemesterChartsCell extends StatelessWidget {
 }
 
 class CellHeader extends StatelessWidget {
-  const CellHeader({
-    super.key,
-  });
+  const CellHeader({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Cursos",
+            title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -166,3 +170,8 @@ class InfoSkeletons extends StatelessWidget {
     );
   }
 }
+
+
+// String defineModuleTitle(view){
+
+// }

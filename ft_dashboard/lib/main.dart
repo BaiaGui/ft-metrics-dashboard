@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ft_dashboard/UI/CommentsCell.dart';
 import 'package:ft_dashboard/bloc/events/general_status_event.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
@@ -10,6 +11,7 @@ import 'package:ft_dashboard/UI/SideBar.dart';
 import 'package:ft_dashboard/UI/SurveyInfoCell.dart';
 import 'package:ft_dashboard/UI/MainChartCell.dart';
 import 'package:ft_dashboard/bloc/states/general_status_state.dart';
+import 'package:ft_dashboard/model/view_type.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -76,6 +78,7 @@ class DashboardContent extends StatelessWidget {
                     ),
                   ),
                   SemesterChartsCell(),
+                  CommentsCell(),
                 ],
               ),
             ),

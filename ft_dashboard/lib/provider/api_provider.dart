@@ -8,9 +8,10 @@ class DashboardDataProvider {
   //String baseURL = "https://dashboard-api-zocb.onrender.com";
   String baseURL = "http://localhost:3000";
 
-  Future<MainChartModel> getIndexHistory(view) async {
+  Future<MainChartModel> getIndexHistory(view, id) async {
     try {
-      Response response = await _dio.get("$baseURL/dashboard/indexes/$view/0");
+      Response response =
+          await _dio.get("$baseURL/dashboard/indexes/$view/$id");
       return MainChartModel.fromMap(response.data);
     } catch (e) {
       throw Exception(
@@ -53,145 +54,21 @@ class DashboardDataProvider {
     }
   }
 
-//   Future<MainChartModel> getIndex() async {
-//     try {
-//       Response response =
-//           await _dio.get("$baseURL/dashboard/indexes/general/0");
-//       return MainChartModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception(
-//           'Provider:: Error while fetching the general indexes: $e');
-//     }
-//   }
+//-----------------------------------------------------------------------------------------------------
+  Future<List<List<String>>> getSubjectComments(
+      year, semester, subjectId) async {
+    try {
+      Response response = await _dio.get(
+          "$baseURL/dashboard/answerProportion/comments/$subjectId?year=$year&semester=$semester");
+      List<dynamic> dynamic25 = response.data["question25"];
+      List<dynamic> dynamic26 = response.data["question26"];
+      List<String> comments25 = dynamic25.cast<String>();
+      List<String> comments26 = dynamic26.cast<String>();
 
-//   Future<SurveyOverviewModel> getSurveyOverview(year, semester) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/surveyOverview/general/0?year=$year&semester=$semester");
-//       return SurveyOverviewModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception(
-//           'Provider:: Error while fetching the general survey overview: $e');
-//     }
-//   }
-
-//   Future<List<SemesterChartModel>> getSemesterCharts(year, semester) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/answerProportion/general/0?year=$year&semester=$semester");
-//       return SemesterChartModel.fromList(response.data);
-//     } catch (e) {
-//       throw Exception(
-//           'Provider:: Error while fetching the course answer proportion charts: $e');
-//     }
-//   }
-
-//   /*Course Vision Data*/
-
-//   Future<MainChartModel> getCourseIndex(courseId) async {
-//     try {
-//       print("$baseURL/dashboard/indexes/course/$courseId");
-//       Response response =
-//           await _dio.get("$baseURL/dashboard/indexes/course/$courseId");
-
-//       return MainChartModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception('Provider::Error while trying to fetch course index: $e');
-//     }
-//   }
-
-//   Future<SurveyOverviewModel> getCourseSurveyOverview(
-//       year, semester, courseId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/surveyOverview/course/$courseId?year=$year&semester=$semester");
-//       return SurveyOverviewModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception(
-//           'Provider::Error while trying to fetch the course survey overview: $e');
-//     }
-//   }
-
-//   Future<List<SemesterChartModel>> getGroupsAnswerProportions(
-//       year, semester, courseId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/answerProportion/course/$courseId?year=$year&semester=$semester");
-//       print("ok");
-//       return SemesterChartModel.fromList(response.data);
-//     } catch (e) {
-//       throw Exception(
-//           'Provider::Error while trying to fetch the course awnser proportions: $e');
-//     }
-//   }
-
-// /*Subject Group Vision Data*/
-
-//   Future<MainChartModel> getGroupIndex(groupId) async {
-//     try {
-//       Response response =
-//           await _dio.get("$baseURL/dashboard/indexes/$groupId/$groupId");
-
-//       return MainChartModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception('Index request error: $e');
-//     }
-//   }
-
-//   Future<SurveyOverviewModel> getGroupSurveyOverview(
-//       year, semester, groupId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/surveyOverview/$groupId/$groupId?year=$year&semester=$semester");
-//       return SurveyOverviewModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception('Survey info request error: $e');
-//     }
-//   }
-
-//   Future<List<SemesterChartModel>> getSubjectsAnswerProportions(
-//       year, semester, groupId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/answerProportion/$groupId/$groupId?year=$year&semester=$semester");
-//       return SemesterChartModel.fromList(response.data);
-//     } catch (e) {
-//       throw Exception('\n\n\n Group data request error: $e\n\n\n');
-//     }
-//   }
-
-// /*Subject Vision Data*/
-
-//   Future<MainChartModel> getSubjectIndex(courseId) async {
-//     try {
-//       Response response =
-//           await _dio.get("$baseURL/dashboard/indexes/$courseId");
-
-//       return MainChartModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception('Index request error: $e');
-//     }
-//   }
-
-//   Future<SurveyOverviewModel> getSubjectSurveyOverview(
-//       year, semester, courseId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/surveyOverview/$courseId?year=$year&semester=$semester");
-//       return SurveyOverviewModel.fromMap(response.data);
-//     } catch (e) {
-//       throw Exception('Survey info request error: $e');
-//     }
-//   }
-
-//   Future<List<SemesterChartModel>> getSubjectComments(
-//       year, semester, courseId) async {
-//     try {
-//       Response response = await _dio.get(
-//           "$baseURL/dashboard/answerProportion/$courseId?year=$year&semester=$semester");
-//       return SemesterChartModel.fromList(response.data);
-//     } catch (e) {
-//       throw Exception('\n\n\n Group data request error: $e\n\n\n');
-//     }
-//   }
+      return [comments25, comments26];
+    } catch (e) {
+      throw Exception(
+          'Provider:: Error while fetching comments of the subject $subjectId: $e');
+    }
+  }
 }

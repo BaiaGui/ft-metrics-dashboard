@@ -22,19 +22,20 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       final dashboardData = await _getDashboardData(curView, "0", "2022", "2");
       emit(dashboardData);
     } catch (e) {
-      print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
+      print(e);
     }
   }
 
   _getDataFromPeriod(event, emit) async {
     try {
+      final curState = state;
       emit(GeneralStatusState(currentView: ViewType.loading));
       var [year, semester] = event.year.split(".");
       final dashboardData = await _getDashboardData(
-          state.currentView, state.dataId, year, semester);
+          curState.currentView, curState.dataId, year, semester);
       emit(dashboardData);
     } catch (e) {
-      print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
+      print(e);
     }
   }
 
@@ -55,8 +56,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
 
       emit(dashboardData);
     } catch (e) {
-      print('Error in _handleChartClick: $e');
-      print('\n\n\n\nERRO NO BLOC: $e\n\n\n\n');
+      print(e);
     }
   }
 
@@ -77,6 +77,12 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
     final availableYears = allDashboardData[3] as List<String>;
     final date = "$year.$semester";
 
+    List<String>? comments25, comments26;
+    if (curView == ViewType.subject) {
+      [comments25, comments26] =
+          await dashRep.fetchCommentsBySubject(year, semester, id);
+    }
+
     return GeneralStatusState(
         mainChartData: mainChartData,
         surveyData: surveyData,
@@ -84,6 +90,8 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
         availableDates: availableYears,
         selectedDate: date,
         dataId: id,
+        comments25: comments25,
+        comments26: comments26,
         currentView: curView);
   }
 
