@@ -4,7 +4,6 @@ require("dotenv").config();
 let client;
 
 async function connectDB() {
-  console.log("to aqui");
   try {
     if (!client) {
       client = new MongoClient(process.env.DB_URI);

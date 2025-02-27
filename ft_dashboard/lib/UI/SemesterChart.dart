@@ -41,9 +41,10 @@ class SemesterChart extends StatelessWidget {
         if (values == [0, 0, 0, 0, 0, 0]) {
           print("sou o gráfico vazio de nome $name");
         } else {
-          context
-              .read<GeneralStatusBloc>()
-              .add(ChartClicked(dataTime, dataSourceId));
+          context.read<GeneralStatusBloc>().add(ChartClicked(
+              dataTime: dataTime,
+              dataSourceId: dataSourceId,
+              dataSourceName: name));
         }
       },
       child: Padding(

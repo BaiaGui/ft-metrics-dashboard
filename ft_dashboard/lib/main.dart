@@ -72,6 +72,9 @@ class DashboardContent extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
                     height: 450,
                     child: Row(
                       children: [MainChartCell(), SurveyInfoCell()],
@@ -112,9 +115,41 @@ class DashboardHeader extends StatelessWidget {
             "Dashboard",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          DashboardBreadCrumb(),
           DashboardDropdown(),
         ],
       ),
+    );
+  }
+}
+
+class DashboardBreadCrumb extends StatelessWidget {
+  const DashboardBreadCrumb({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+      builder: (context, state) {
+        List<Widget> breadCrumbWidgets = state.path
+            .map((path) => TextButton(
+                onPressed: () {
+                  //onPressedCallback(path.id, path.name, path.view);
+                  context.read<GeneralStatusBloc>().add(BreadCrumbClicked(
+                      dataSourceId: path.id,
+                      dataSourceName: path.name,
+                      pathView: path.view,
+                      dataTime: state.selectedDate));
+                },
+                child: Text(path.name)))
+            .toList();
+        return Container(
+          //padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+
+          child: Row(
+            children: breadCrumbWidgets,
+          ),
+        );
+      },
     );
   }
 }

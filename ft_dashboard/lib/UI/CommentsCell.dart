@@ -88,7 +88,7 @@ Widget commentaryWidget(String commentText) {
               backgroundColor: Colors.grey[300],
               child: Icon(
                 Icons.person,
-                size: 20, // Tamanho ajustado para caber no círculo
+                size: 20,
                 color: Colors.grey[500],
               ),
             ),
