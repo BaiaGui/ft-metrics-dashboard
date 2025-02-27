@@ -1,4 +1,4 @@
-const db = require("../../db_conn");
+const connectDB = require("../../db_conn");
 
 /**
  * IMPORTANTE!
@@ -20,6 +20,7 @@ const db = require("../../db_conn");
 async function getGeneralAnswerProportionByTime(year, semester) {
   //TODO: validate if params are int
   try {
+    const db = await connectDB();
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
       .aggregate([
@@ -178,6 +179,7 @@ async function getGeneralAnswerProportionByTime(year, semester) {
 async function getAnswerProportionByCourse(year, semester, courseId) {
   //TODO: validate if params are int
   try {
+    const db = await connectDB();
     const cohorts = db.collection("cohorts");
     const proportion = await cohorts
       .aggregate([
@@ -366,6 +368,7 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
 async function getAnswerProportionBySubGroup(year, semester, groupId) {
   //TODO: validate if params are int
   try {
+    const db = await connectDB();
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
       .aggregate([
@@ -554,6 +557,7 @@ async function getAnswerProportionBySubGroup(year, semester, groupId) {
 async function getAnswerProportionBySubject(year, semester, subjectId) {
   //TODO: validate if params are int
   try {
+    const db = await connectDB();
     const cohorts = db.collection("cohorts");
     const formGroup = await cohorts
       .aggregate([

@@ -1,7 +1,8 @@
-const db = require("../../db_conn");
+const connectDB = require("../../db_conn");
 
 async function getCourses() {
   try {
+    const db = await connectDB();
     const collection = db.collection("courses");
     const courses = await collection.find({}).toArray();
     return courses;
@@ -12,6 +13,7 @@ async function getCourses() {
 
 async function getCourseProportion(year, semester, courseId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("cohorts");
     const courseProportion = await collection
       .aggregate([
@@ -113,6 +115,7 @@ async function getCourseProportion(year, semester, courseId) {
 
 async function getGroupsbyCourse(courseId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("subject_group");
     const groups = await collection.find({ curso_id: courseId }).sort({ _id: 1 }).toArray();
     return groups;
@@ -131,6 +134,7 @@ Para um resultado exclusivo talvez fosse necessário marcar com uma flag para qu
 */
 async function getGroupProportion(groupId, year, semester) {
   try {
+    const db = await connectDB();
     const collection = db.collection("cohorts");
     const groupProportion = await collection
       .aggregate([
@@ -298,6 +302,7 @@ async function getGroupProportion(groupId, year, semester) {
 //Subject-------------------------------------------------------
 async function getSubjectsbyGroup(groupId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("subject_group");
     const subjects = await collection
       .aggregate([
@@ -334,6 +339,7 @@ async function getSubjectsbyGroup(groupId) {
 
 async function getSubjectProportion(year, semester, subjectId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("cohorts");
     const groupProportion = await collection
       .aggregate([
@@ -501,6 +507,7 @@ async function getSubjectProportion(year, semester, subjectId) {
 
 async function getQuestionsProportionOfSubject(year, semester, subjectId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("cohorts");
     const questionProportion = await collection
       .aggregate([
@@ -693,6 +700,7 @@ async function getQuestionsProportionOfSubject(year, semester, subjectId) {
 
 async function fetchComments(year, semester, subjectId) {
   try {
+    const db = await connectDB();
     const collection = db.collection("cohorts");
     const subjectComments = await collection
       .aggregate([
