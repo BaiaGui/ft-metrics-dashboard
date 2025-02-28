@@ -691,6 +691,13 @@ async function getQuestionsProportionOfSubject(year, semester, subjectId) {
             },
           },
         },
+        {
+          $match: {
+            id: {
+              $nin: ["5", "6", "25", "26"],
+            },
+          },
+        },
       ])
       .toArray();
     console.log(questionProportion);
