@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,8 @@ class SemesterChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isClickable = values.toString() != [0, 0, 0, 0, 0, 0].toString();
+
     List<BarChartGroupData> chartBars = [];
 
     for (var i = 0; i < values.length; i++) {
@@ -37,16 +41,14 @@ class SemesterChart extends StatelessWidget {
     }
 
     return InkWell(
-      onTap: () {
-        if (values == [0, 0, 0, 0, 0, 0]) {
-          print("sou o gráfico vazio de nome $name");
-        } else {
-          context.read<GeneralStatusBloc>().add(ChartClicked(
-              dataTime: dataTime,
-              dataSourceId: dataSourceId,
-              dataSourceName: name));
-        }
-      },
+      onTap: isClickable
+          ? () {
+              context.read<GeneralStatusBloc>().add(ChartClicked(
+                  dataTime: dataTime,
+                  dataSourceId: dataSourceId,
+                  dataSourceName: name));
+            }
+          : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Container(

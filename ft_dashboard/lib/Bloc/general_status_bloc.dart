@@ -152,25 +152,4 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
         return ViewType.loading;
     }
   }
-
-  // _printPath(path) {
-  //   print(
-  //       "---------------------------------------- printando path ---------------------------");
-  //   try {
-  //     var value = "";
-  //     for (var pathSeg in path) {
-  //       value += "${pathSeg.name} / ";
-  //     }
-  //     print(value);
-  //     print("Agora cada elemento do path:");
-  //     for (var p in path) {
-  //       print("view: ${p.view}");
-  //       print("nome: ${p.name}");
-  //     }
-  //   } catch (e) {
-  //     print("erro ao printar: $e");
-  //   }
-  //   print(
-  //       "------------------------------------------------------- ---------------------------");
-  // }
 }
