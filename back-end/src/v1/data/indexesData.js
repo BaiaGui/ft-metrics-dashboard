@@ -21,7 +21,7 @@ async function getGeneralAnswerProportionByTime(year, semester) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("disciplinas");
+    const cohorts = db.collection("turmas");
     const formGroup = await cohorts
       .aggregate([
         //stage 1: find cohorts that match requirements
@@ -180,7 +180,7 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("disciplinas");
+    const cohorts = db.collection("turmas");
     const proportion = await cohorts
       .aggregate([
         {
@@ -369,7 +369,7 @@ async function getAnswerProportionBySubGroup(year, semester, groupId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("disciplinas");
+    const cohorts = db.collection("turmas");
     const formGroup = await cohorts
       .aggregate([
         {
@@ -558,7 +558,7 @@ async function getAnswerProportionBySubject(year, semester, subjectId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("disciplinas");
+    const cohorts = db.collection("turmas");
     const formGroup = await cohorts
       .aggregate([
         //stage 1: find cohorts that match requirements

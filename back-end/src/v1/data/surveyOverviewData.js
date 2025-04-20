@@ -3,7 +3,7 @@ const connectDB = require("../../db_conn");
 async function findLatestDate() {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     //minimalist way - returns a document instead
     //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
     const latestDate = await collection
@@ -57,7 +57,7 @@ async function findLatestDate() {
 async function countEnrolledInGeneralByPeriod(year, semester) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -88,7 +88,7 @@ async function countEnrolledInGeneralByPeriod(year, semester) {
 async function countGeneralResponsesByPeriod(year, semester) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalRespondents = await collection
       .aggregate([
         {
@@ -144,7 +144,7 @@ async function countGeneralResponsesByPeriod(year, semester) {
 async function countEnrolledInCourseByPeriod(year, semester, courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -192,7 +192,7 @@ async function countEnrolledInCourseByPeriod(year, semester, courseId) {
 async function countResponsesForCourseByPeriod(year, semester, courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalRespondents = await collection
       .aggregate([
         {
@@ -257,7 +257,7 @@ async function countResponsesForCourseByPeriod(year, semester, courseId) {
 async function countEnrolledInGroupByPeriod(year, semester, groupId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -305,7 +305,7 @@ async function countEnrolledInGroupByPeriod(year, semester, groupId) {
 async function countResponsesForGroupByPeriod(year, semester, groupId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalRespondents = await collection
       .aggregate([
         {
@@ -370,7 +370,7 @@ async function countResponsesForGroupByPeriod(year, semester, groupId) {
 async function countEnrolledInSubjectByPeriod(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -402,7 +402,7 @@ async function countEnrolledInSubjectByPeriod(year, semester, subjectId) {
 async function countResponsesForSubjectByPeriod(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("disciplinas");
+    const collection = db.collection("turmas");
     const totalRespondents = await collection
       .aggregate([
         {
