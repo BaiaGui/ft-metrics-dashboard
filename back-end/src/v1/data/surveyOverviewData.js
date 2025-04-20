@@ -3,7 +3,7 @@ const connectDB = require("../../db_conn");
 async function findLatestDate() {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     //minimalist way - returns a document instead
     //const latestDate = await collection.findOne({}, { sort: { ano: -1, semestre: -1 } });
     const latestDate = await collection
@@ -57,7 +57,7 @@ async function findLatestDate() {
 async function countEnrolledInGeneralByPeriod(year, semester) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -88,7 +88,7 @@ async function countEnrolledInGeneralByPeriod(year, semester) {
 async function countGeneralResponsesByPeriod(year, semester) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalRespondents = await collection
       .aggregate([
         {
@@ -99,7 +99,7 @@ async function countGeneralResponsesByPeriod(year, semester) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -144,12 +144,12 @@ async function countGeneralResponsesByPeriod(year, semester) {
 async function countEnrolledInCourseByPeriod(year, semester, courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalEnrolled = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "cursoData",
@@ -192,12 +192,12 @@ async function countEnrolledInCourseByPeriod(year, semester, courseId) {
 async function countResponsesForCourseByPeriod(year, semester, courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalRespondents = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "cursoData",
@@ -212,7 +212,7 @@ async function countResponsesForCourseByPeriod(year, semester, courseId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -257,12 +257,12 @@ async function countResponsesForCourseByPeriod(year, semester, courseId) {
 async function countEnrolledInGroupByPeriod(year, semester, groupId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalEnrolled = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "groupData",
@@ -305,12 +305,12 @@ async function countEnrolledInGroupByPeriod(year, semester, groupId) {
 async function countResponsesForGroupByPeriod(year, semester, groupId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalRespondents = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "groupData",
@@ -325,7 +325,7 @@ async function countResponsesForGroupByPeriod(year, semester, groupId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -370,7 +370,7 @@ async function countResponsesForGroupByPeriod(year, semester, groupId) {
 async function countEnrolledInSubjectByPeriod(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalEnrolled = await collection
       .aggregate([
         {
@@ -402,7 +402,7 @@ async function countEnrolledInSubjectByPeriod(year, semester, subjectId) {
 async function countResponsesForSubjectByPeriod(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("disciplinas");
     const totalRespondents = await collection
       .aggregate([
         {
@@ -414,7 +414,7 @@ async function countResponsesForSubjectByPeriod(year, semester, subjectId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
