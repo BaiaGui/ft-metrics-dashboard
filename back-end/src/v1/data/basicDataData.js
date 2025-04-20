@@ -3,7 +3,7 @@ const connectDB = require("../../db_conn");
 async function findYearsInDB() {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const uniqueYears = await collection
       .aggregate([
         {

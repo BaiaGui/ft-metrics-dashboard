@@ -21,7 +21,7 @@ async function getGeneralAnswerProportionByTime(year, semester) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("cohorts");
+    const cohorts = db.collection("disciplinas");
     const formGroup = await cohorts
       .aggregate([
         //stage 1: find cohorts that match requirements
@@ -34,7 +34,7 @@ async function getGeneralAnswerProportionByTime(year, semester) {
         //stage 2: get related form data
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "form",
@@ -180,12 +180,12 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("cohorts");
+    const cohorts = db.collection("disciplinas");
     const proportion = await cohorts
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "result",
@@ -224,7 +224,7 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
         //stage 2: get related form data
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "form",
@@ -369,12 +369,12 @@ async function getAnswerProportionBySubGroup(year, semester, groupId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("cohorts");
+    const cohorts = db.collection("disciplinas");
     const formGroup = await cohorts
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "result",
@@ -413,7 +413,7 @@ async function getAnswerProportionBySubGroup(year, semester, groupId) {
         //stage 2: get related form data
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "form",
@@ -558,7 +558,7 @@ async function getAnswerProportionBySubject(year, semester, subjectId) {
   //TODO: validate if params are int
   try {
     const db = await connectDB();
-    const cohorts = db.collection("cohorts");
+    const cohorts = db.collection("disciplinas");
     const formGroup = await cohorts
       .aggregate([
         //stage 1: find cohorts that match requirements
@@ -572,7 +572,7 @@ async function getAnswerProportionBySubject(year, semester, subjectId) {
         //stage 2: get related form data
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "form",
