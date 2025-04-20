@@ -11,7 +11,7 @@ async function connectDB() {
       console.log("Successfully connected to MongoDB!");
     }
 
-    return client.db("ft_feedback_bd");
+    return client.db("avaliacao_prof_tcc");
   } catch (e) {
     console.log("DB connection error:" + e);
   }

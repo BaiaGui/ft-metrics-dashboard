@@ -3,7 +3,7 @@ const connectDB = require("../../db_conn");
 async function getCourses() {
   try {
     const db = await connectDB();
-    const collection = db.collection("courses");
+    const collection = db.collection("cursos");
     const courses = await collection.find({}).toArray();
     return courses;
   } catch (e) {
@@ -14,12 +14,12 @@ async function getCourses() {
 async function getCourseProportion(year, semester, courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const courseProportion = await collection
       .aggregate([
         {
           $lookup: {
-            from: "courses",
+            from: "cursos",
             localField: "codDisc",
             foreignField: "cod_disciplinas",
             as: "curso",
@@ -39,7 +39,7 @@ async function getCourseProportion(year, semester, courseId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -116,7 +116,7 @@ async function getCourseProportion(year, semester, courseId) {
 async function getGroupsbyCourse(courseId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("subject_group");
+    const collection = db.collection("grupos_disciplinas");
     const groups = await collection.find({ curso_id: courseId }).sort({ _id: 1 }).toArray();
     return groups;
   } catch (e) {
@@ -135,12 +135,12 @@ Para um resultado exclusivo talvez fosse necessário marcar com uma flag para qu
 async function getGroupProportion(groupId, year, semester) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const groupProportion = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subject_group",
+            from: "grupo_materias",
             localField: "codDisc",
             foreignField: "materias",
             as: "grupos",
@@ -160,7 +160,7 @@ async function getGroupProportion(groupId, year, semester) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -303,12 +303,12 @@ async function getGroupProportion(groupId, year, semester) {
 async function getSubjectsbyGroup(groupId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("subject_group");
+    const collection = db.collection("grupos_disciplinas");
     const subjects = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subjects",
+            from: "disciplinas",
             localField: "materias",
             foreignField: "codDisc",
             as: "matches",
@@ -340,12 +340,12 @@ async function getSubjectsbyGroup(groupId) {
 async function getSubjectProportion(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const groupProportion = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subjects",
+            from: "disciplinas",
             localField: "codDisc",
             foreignField: "codDisc",
             as: "dadosMateria",
@@ -365,7 +365,7 @@ async function getSubjectProportion(year, semester, subjectId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -508,12 +508,12 @@ async function getSubjectProportion(year, semester, subjectId) {
 async function getQuestionsProportionOfSubject(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const questionProportion = await collection
       .aggregate([
         {
           $lookup: {
-            from: "subjects",
+            from: "disciplinas",
             localField: "codDisc",
             foreignField: "codDisc",
             as: "dadosMateria",
@@ -533,7 +533,7 @@ async function getQuestionsProportionOfSubject(year, semester, subjectId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
@@ -630,7 +630,7 @@ async function getQuestionsProportionOfSubject(year, semester, subjectId) {
         },
         {
           $lookup: {
-            from: "form_questions",
+            from: "questoes_formulario",
             localField: "_id",
             foreignField: "_id",
             as: "question",
@@ -708,7 +708,7 @@ async function getQuestionsProportionOfSubject(year, semester, subjectId) {
 async function fetchComments(year, semester, subjectId) {
   try {
     const db = await connectDB();
-    const collection = db.collection("cohorts");
+    const collection = db.collection("turmas");
     const subjectComments = await collection
       .aggregate([
         {
@@ -720,7 +720,7 @@ async function fetchComments(year, semester, subjectId) {
         },
         {
           $lookup: {
-            from: "forms",
+            from: "formularios",
             localField: "codTurma",
             foreignField: "codTurma",
             as: "forms",
