@@ -140,7 +140,7 @@ async function getGroupProportion(groupId, year, semester) {
       .aggregate([
         {
           $lookup: {
-            from: "grupo_materias",
+            from: "grupos_disciplinas",
             localField: "codDisc",
             foreignField: "materias",
             as: "grupos",
