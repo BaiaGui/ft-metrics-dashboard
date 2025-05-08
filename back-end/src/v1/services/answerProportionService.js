@@ -29,7 +29,7 @@ async function fetchProportionsByPeriodAndView(yearParam, semesterParam, view, i
       return { proportionGroup };
       break;
     case "subjectGroup":
-      const subjects = await answerProportionData.getSubjectsbyGroup(id);
+      const subjects = await answerProportionData.getSubjectsbyGroup(id, year, semester);
 
       for (let subject of subjects) {
         let proportion = await answerProportionData.getSubjectProportion(year, semester, subject.codDisc);

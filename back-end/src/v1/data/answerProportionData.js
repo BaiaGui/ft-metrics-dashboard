@@ -300,7 +300,7 @@ async function getGroupProportion(groupId, year, semester) {
 }
 
 //Subject-------------------------------------------------------
-async function getSubjectsbyGroup(groupId) {
+async function getSubjectsbyGroup(groupId, year, semester) {
   try {
     const db = await connectDB();
     const collection = db.collection("grupos_disciplinas");
@@ -327,6 +327,20 @@ async function getSubjectsbyGroup(groupId) {
         {
           $replaceRoot: {
             newRoot: "$matches",
+          },
+        },
+        {
+          $lookup: {
+            from: "turmas",
+            localField: "codDisc",
+            foreignField: "codDisc",
+            as: "turmas",
+          },
+        },
+        {
+          $match: {
+            "turmas.ano": parseInt(year),
+            "turmas.semestre": parseInt(semester),
           },
         },
       ])
@@ -785,6 +799,10 @@ async function fetchComments(year, semester, subjectId) {
         },
       ])
       .toArray();
+    console.log(subjectComments);
+    if (subjectComments.length == 0) {
+      return { question25: [], question26: [] };
+    }
     return subjectComments[0];
   } catch (e) {
     throw { status: 400, message: "answerProportionData:" + e };

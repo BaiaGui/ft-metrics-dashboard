@@ -360,9 +360,13 @@ async function countResponsesForGroupByPeriod(year, semester, groupId) {
         },
       ])
       .toArray();
+    if (!totalRespondents[0]) {
+      return 0;
+    }
     return totalRespondents[0].totalRespondents;
   } catch (e) {
     console.log("SurveyOverviewData:: error on countResponsesForGroupByPeriod" + e);
+    console.log(`groupId:${groupId}`);
     throw { status: 500 };
   }
 }
