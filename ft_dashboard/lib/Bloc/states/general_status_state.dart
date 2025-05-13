@@ -5,29 +5,34 @@ import 'package:ft_dashboard/model/view_type.dart';
 
 class GeneralStatusState {
   List<String>? availableDates = [];
+  String? selectedDate;
+
   MainChartModel? mainChartData;
   SurveyOverviewModel? surveyData;
   List<SemesterChartModel>? semesterChartsData;
-  ViewType currentView;
 
-  String? selectedDate;
   String? dataId;
   List<String>? comments25;
   List<String>? comments26;
+
+  ViewType currentView;
   List<PathSegment> path;
 
-  GeneralStatusState({
-    this.mainChartData,
-    this.surveyData,
-    this.semesterChartsData,
-    this.availableDates,
-    this.selectedDate,
-    this.dataId,
-    this.comments25,
-    this.comments26,
-    required this.currentView,
-    required this.path,
-  });
+  String? errorMessage;
+
+  GeneralStatusState(
+      {this.mainChartData,
+      this.surveyData,
+      this.semesterChartsData,
+      this.availableDates,
+      this.selectedDate,
+      this.dataId,
+      this.comments25,
+      this.comments26,
+      this.errorMessage,
+      this.currentView = ViewType.loading,
+      List<PathSegment>? path})
+      : path = path ?? [PathSegment()];
 }
 
 class PathSegment {

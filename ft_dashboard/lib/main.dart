@@ -68,22 +68,30 @@ class DashboardContent extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30),
             color: Colors.grey[200],
-            child: const SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 450,
-                    child: Row(
-                      children: [MainChartCell(), SurveyInfoCell()],
+            child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
+              builder: (context, state) {
+                if (state.currentView == ViewType.error) {
+                  return Text("${state.errorMessage}");
+                } else {
+                  return const SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 450,
+                          child: Row(
+                            children: [MainChartCell(), SurveyInfoCell()],
+                          ),
+                        ),
+                        SemesterChartsCell(),
+                        CommentsCell(),
+                      ],
                     ),
-                  ),
-                  SemesterChartsCell(),
-                  CommentsCell(),
-                ],
-              ),
+                  );
+                }
+              },
             ),
           ),
         ),
@@ -134,11 +142,33 @@ class DashboardBreadCrumb extends StatelessWidget {
             .map((path) => TextButton(
                 onPressed: () {
                   //onPressedCallback(path.id, path.name, path.view);
-                  context.read<GeneralStatusBloc>().add(BreadCrumbClicked(
-                      dataSourceId: path.id,
-                      dataSourceName: path.name,
-                      pathView: path.view,
-                      dataTime: state.selectedDate));
+                  if (state.selectedDate != null) {
+                    context.read<GeneralStatusBloc>().add(BreadCrumbClicked(
+                        dataSourceId: path.id,
+                        dataSourceName: path.name,
+                        pathView: path.view,
+                        dataTime: state.selectedDate!));
+                  } else {
+                    //Pop up
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Data não selecionada'),
+                          content: Text(
+                              'Por favor, selecione uma data antes de continuar.'),
+                          actions: [
+                            TextButton(
+                              child: Text('Ok'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Fecha o diálogo
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 child: Text(path.name)))
             .toList();
@@ -167,7 +197,6 @@ class DashboardDropdown extends StatelessWidget {
         final menuOptions = availableDates
             .map((date) => DropdownMenuEntry(value: date, label: date))
             .toList();
-        print("current state course: ${state.dataId}");
 
         return DropdownMenu(
           initialSelection: selectedDate,
@@ -182,9 +211,30 @@ class DashboardDropdown extends StatelessWidget {
             ),
           ),
           onSelected: (value) {
-            context
-                .read<GeneralStatusBloc>()
-                .add(GeneralStatusChangedTime(value));
+            if (value != null) {
+              context
+                  .read<GeneralStatusBloc>()
+                  .add(GeneralStatusChangedTime(value));
+            } else {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('A data selecionada não é válida'),
+                    content: Text(
+                        'Por favor, selecione uma data válida antes de continuar.'),
+                    actions: [
+                      TextButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Fecha o diálogo
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           },
           dropdownMenuEntries: menuOptions,
         );

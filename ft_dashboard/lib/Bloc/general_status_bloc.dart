@@ -9,9 +9,7 @@ import 'package:ft_dashboard/model/view_type.dart';
 import 'package:ft_dashboard/repository/dashboard_repository.dart';
 
 class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
-  GeneralStatusBloc()
-      : super(GeneralStatusState(
-            currentView: ViewType.loading, path: [PathSegment()])) {
+  GeneralStatusBloc() : super(GeneralStatusState()) {
     on<GeneralStatusStarted>(_getInitialStatusData);
     on<GeneralStatusChangedTime>(_getDataFromPeriod);
     on<ChartClicked>(_handleChartClick);
@@ -19,7 +17,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   }
 
   _getInitialStatusData(event, emit) async {
-    //TODO: Remove hardcoded values
+    //TODO: Remove hardcoded values To most recent date
     try {
       final curView = ViewType.general;
       final curpath = state.path;
@@ -28,23 +26,38 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       emit(dashboardData);
     } catch (e) {
       print(e);
+      emit(GeneralStatusState(
+          path: state.path,
+          availableDates: state.availableDates,
+          currentView: ViewType.error,
+          errorMessage: "Erro ao retornar dados iniciais $e"));
     }
   }
 
-  _getDataFromPeriod(event, emit) async {
+  _getDataFromPeriod(GeneralStatusChangedTime event, emit) async {
     try {
       final curState = state;
-      emit(GeneralStatusState(currentView: ViewType.loading, path: state.path));
+      emit(GeneralStatusState(
+          currentView: ViewType.loading,
+          path: state.path,
+          availableDates: curState.availableDates,
+          selectedDate: curState.selectedDate));
       var [year, semester] = event.year.split(".");
       final dashboardData = await _getDashboardData(
           curState.currentView, curState.dataId, year, semester, state.path);
       emit(dashboardData);
     } catch (e) {
       print(e);
+      emit(GeneralStatusState(
+          path: state.path,
+          availableDates: state.availableDates,
+          currentView: ViewType.error,
+          errorMessage:
+              "Erro ao recuperar dados para o período ${event.year} $e"));
     }
   }
 
-  _handleChartClick(event, emit) async {
+  _handleChartClick(ChartClicked event, emit) async {
     try {
       final nextView = _findNextView(state.currentView);
 
@@ -67,10 +80,16 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       emit(dashboardData);
     } catch (e) {
       print(e);
+      emit(GeneralStatusState(
+          path: state.path,
+          availableDates: state.availableDates,
+          currentView: ViewType.error,
+          errorMessage:
+              "Erro ao recuperar dados para ${event.dataSourceName} $e"));
     }
   }
 
-  _handleBreadCrumbNavigation(event, emit) async {
+  _handleBreadCrumbNavigation(BreadCrumbClicked event, emit) async {
     try {
       var newPath;
 
@@ -85,9 +104,9 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
 
       var nextviewId = event.dataSourceId;
       emit(GeneralStatusState(currentView: ViewType.loading, path: newPath));
-      if (event.dataSourceId == null || event.dataTime == null) {
-        throw Exception('Invalid data provided');
-      }
+      // if (event.dataSourceId == null || event.dataTime == null) {
+      //   throw Exception('Invalid data provided');
+      // }
 
       final dashboardData = await _getDashboardData(
           event.pathView, nextviewId, year, semester, state.path);
@@ -95,6 +114,11 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       emit(dashboardData);
     } catch (e) {
       print(e);
+      emit(GeneralStatusState(
+          path: state.path,
+          availableDates: state.availableDates,
+          currentView: ViewType.error,
+          errorMessage: "Erro ao navegar para  ${event.dataSourceName} $e"));
     }
   }
 

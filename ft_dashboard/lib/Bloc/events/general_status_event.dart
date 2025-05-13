@@ -5,27 +5,33 @@ class GeneralStatusEvent {}
 class GeneralStatusStarted extends GeneralStatusEvent {}
 
 class GeneralStatusChangedTime extends GeneralStatusEvent {
-  final String? year;
+  final String year;
 
   GeneralStatusChangedTime(this.year);
 }
 
 class ChartClicked extends GeneralStatusEvent {
-  final String? dataTime;
-  final String? dataSourceId;
-  final String? dataSourceName;
+  final String dataTime;
+  final String dataSourceId;
+  final String dataSourceName;
 
-  ChartClicked({this.dataTime, this.dataSourceId, this.dataSourceName});
+  ChartClicked(
+      {required this.dataTime,
+      required this.dataSourceId,
+      required this.dataSourceName});
 }
 
 class BreadCrumbClicked extends GeneralStatusEvent {
-  final ViewType? pathView;
-  final String? dataSourceId;
-  final String? dataSourceName;
-  final String? dataTime;
+  final ViewType pathView;
+  final String dataSourceId;
+  final String dataSourceName;
+  final String dataTime;
 
   BreadCrumbClicked(
-      {this.pathView, this.dataSourceId, this.dataSourceName, this.dataTime});
+      {required this.pathView,
+      required this.dataSourceId,
+      required this.dataSourceName,
+      required this.dataTime});
 }
 
 // class GroupSelectedEvent extends GeneralStatusEvent {
