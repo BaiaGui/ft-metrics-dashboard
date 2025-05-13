@@ -16,7 +16,7 @@ class CommentsCell extends StatelessWidget {
       List<Widget>? convertedComments25 = state.comments25
           ?.map((comment) => commentaryWidget(comment))
           .toList();
-
+      print("here in comment cell: $convertedComments25");
       List<Widget>? convertedComments26 = state.comments26
           ?.map((comment) => commentaryWidget(comment))
           .toList();

@@ -102,7 +102,7 @@ class Chart extends StatelessWidget {
           ),
         ],
         maxY: 1,
-        minY: 0.5,
+        //minY: 0.5,
       ),
     );
   }
