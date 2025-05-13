@@ -23,7 +23,7 @@ class MainChartCell extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Evolução do Índice",
+                "Histórico do índice",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               //Espaço para o gráfico principal:

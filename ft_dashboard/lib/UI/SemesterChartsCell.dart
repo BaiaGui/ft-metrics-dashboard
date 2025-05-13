@@ -6,6 +6,7 @@ import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 import 'package:ft_dashboard/UI/SemesterChart.dart';
 import 'package:ft_dashboard/bloc/states/general_status_state.dart';
 import 'package:ft_dashboard/model/semeter_chart_model.dart';
+import 'package:ft_dashboard/model/view_type.dart';
 
 class SemesterChartsCell extends StatelessWidget {
   const SemesterChartsCell({
@@ -66,6 +67,21 @@ class CellHeader extends StatelessWidget {
 
   final String title;
 
+  String cellTitle(title) {
+    switch (title) {
+      case "general":
+        return "Curso";
+      case "course":
+        return "Grupo de Matérias";
+      case "subjectGroup":
+        return "Matéria";
+      case "subject":
+        return "Questão ";
+      default:
+        return "Proporção de tipo de resposta";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,54 +91,12 @@ class CellHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            title,
+            "Proporção de resposta por ${cellTitle(title)}",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
-          // BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
-          //     builder: (context, state) {
-          //   List<String>? availableDates = state.availableDates;
-          //   List<DropdownMenuEntry> menuOptions = state.availableDates!
-          //       .map(
-          //         (date) => DropdownMenuEntry(
-          //           value: date,
-          //           label: date,
-          //         ),
-          //       )
-          //       .toList();
-          //   String latestDate = "";
-          //   if (availableDates != null) {
-          //     latestDate = availableDates.last;
-          //     print("latestDate: $latestDate");
-          //   }
-          //   return DropdownMenu(
-          //     initialSelection: latestDate,
-          //     //enableFilter: true,
-          //     textStyle: const TextStyle(
-          //       fontSize: 12,
-          //     ),
-          //     inputDecorationTheme: InputDecorationTheme(
-          //       contentPadding: const EdgeInsets.symmetric(
-          //         vertical: 0,
-          //         horizontal: 10,
-          //       ),
-          //       constraints: const BoxConstraints(maxHeight: 35),
-          //       isDense: true,
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(8),
-          //       ),
-          //     ),
-          //     onSelected: (value) {
-          //       print("mudei: $value");
-          //       context
-          //           .read<GeneralStatusBloc>()
-          //           .add(GeneralStatusChangedTime());
-          //     },
-          //     dropdownMenuEntries: menuOptions,
-          //   );
-          // }),
         ],
       ),
     );

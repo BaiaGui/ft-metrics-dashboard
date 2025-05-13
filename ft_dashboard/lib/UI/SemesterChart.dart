@@ -13,12 +13,13 @@ class SemesterChart extends StatelessWidget {
   final String name;
   final List<double> values;
 
-  const SemesterChart(
-      {super.key,
-      required this.dataSourceId,
-      required this.dataTime,
-      required this.name,
-      required this.values});
+  SemesterChart({
+    super.key,
+    required this.dataSourceId,
+    required this.dataTime,
+    required this.name,
+    required this.values,
+  });
 
   @override
   Widget build(BuildContext context) {
