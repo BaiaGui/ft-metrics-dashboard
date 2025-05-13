@@ -19,15 +19,16 @@ class SideBarBtn extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Row(
             children: [
-              // const Icon(
-              //   Icons.star,
-              //   size: 15,
-              // ),
+              const Icon(
+                Icons.home,
+                size: 15,
+                color: Colors.white,
+              ),
               const SizedBox(width: 10),
               Text(
                 '$name',
                 style: TextStyle(
-                  color: Colors.white.withAlpha(95),
+                  color: Colors.white,
                 ),
               ),
             ],

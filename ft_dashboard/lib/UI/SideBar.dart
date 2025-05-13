@@ -42,25 +42,25 @@ class SideBar extends StatelessWidget {
             ),
             const SideBarBtn(name: "Geral (FT)"),
             const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: const Text(
-                  "Cursos",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SideBarBtn(name: "Sistemas de Informação"),
-            const SideBarBtn(name: "TADS"),
-            const SideBarBtn(name: "Eng. Ambiental"),
-            const SideBarBtn(name: "Eng. de Telecomunicações"),
-            const SideBarBtn(name: "Eng. de Transportes"),
-            const SideBarBtn(name: "Saneamento Ambiental"),
+            // Padding(
+            //   padding: const EdgeInsets.all(15.0),
+            //   child: Container(
+            //     alignment: Alignment.centerLeft,
+            //     child: const Text(
+            //       "Cursos",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SideBarBtn(name: "Sistemas de Informação"),
+            // const SideBarBtn(name: "TADS"),
+            // const SideBarBtn(name: "Eng. Ambiental"),
+            // const SideBarBtn(name: "Eng. de Telecomunicações"),
+            // const SideBarBtn(name: "Eng. de Transportes"),
+            // const SideBarBtn(name: "Saneamento Ambiental"),
           ],
         ),
       ),
