@@ -36,6 +36,9 @@ class DashboardDataProvider {
     try {
       Response response = await _dio.get(
           "$baseURL/dashboard/answerProportion/$view/$id?year=$year&semester=$semester");
+      print(
+          "$baseURL/dashboard/answerProportion/$view/$id?year=$year&semester=$semester");
+      print(response);
       return SemesterChartModel.fromList(response.data);
     } catch (e) {
       throw Exception(
@@ -58,17 +61,27 @@ class DashboardDataProvider {
   Future<List<List<String>>> getSubjectComments(
       year, semester, subjectId) async {
     try {
+      print(
+          "$baseURL/dashboard/answerProportion/comments/$subjectId?year=$year&semester=$semester");
+
       Response response = await _dio.get(
           "$baseURL/dashboard/answerProportion/comments/$subjectId?year=$year&semester=$semester");
-      List<dynamic> dynamic25 = response.data["question25"];
-      List<dynamic> dynamic26 = response.data["question26"];
-      List<String> comments25 = dynamic25.cast<String>();
-      List<String> comments26 = dynamic26.cast<String>();
+
+      print("response: ${response.data}");
+      List<dynamic>? dynamic25 = response.data["question25"];
+      List<dynamic>? dynamic26 = response.data["question26"];
+
+      List<String> comments25 = dynamic25?.cast<String>() ?? [];
+      List<String> comments26 = dynamic26?.cast<String>() ?? [];
 
       return [comments25, comments26];
     } catch (e) {
-      throw Exception(
+      print(
           'Provider:: Error while fetching comments of the subject $subjectId: $e');
+      return [
+        [],
+        []
+      ]; // Retorna listas vazias para evitar quebra no consumo da função
     }
   }
 }

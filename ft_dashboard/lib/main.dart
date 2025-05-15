@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/UI/CommentsCell.dart';
+import 'package:ft_dashboard/UI/ErrorDisplay.dart';
 import 'package:ft_dashboard/bloc/events/general_status_event.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
 
@@ -71,7 +72,9 @@ class DashboardContent extends StatelessWidget {
             child: BlocBuilder<GeneralStatusBloc, GeneralStatusState>(
               builder: (context, state) {
                 if (state.currentView == ViewType.error) {
-                  return Text("${state.errorMessage}");
+                  return ErrorDisplay(
+                    errorMessage: "${state.errorMessage}",
+                  );
                 } else {
                   return const SingleChildScrollView(
                     child: Column(
