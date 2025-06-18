@@ -55,7 +55,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
           currentView: ViewType.error,
           selectedDate: state.selectedDate,
           errorMessage:
-              "Erro ao recuperar dados para o período ${event.year} $e"));
+              "Erro ao recuperar dados para o período ${event.year}"));
     }
   }
 

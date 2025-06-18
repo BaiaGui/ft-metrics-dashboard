@@ -38,7 +38,8 @@ class SemesterChartsCell extends StatelessWidget {
                             dataTime: date,
                             dataSourceId: chartData.dataSourceId,
                             name: chartData.chartName,
-                            values: chartData.proportions),
+                            values: chartData.proportions,
+                            curView: state.currentView),
                       )
                       .toList();
 

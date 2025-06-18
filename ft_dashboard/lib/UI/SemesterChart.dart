@@ -6,24 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ft_dashboard/bloc/events/general_status_event.dart';
 import 'package:ft_dashboard/bloc/general_status_bloc.dart';
+import 'package:ft_dashboard/model/view_type.dart';
 
 class SemesterChart extends StatelessWidget {
   final String dataTime;
   final String dataSourceId;
   final String name;
   final List<double> values;
+  final ViewType curView;
 
-  SemesterChart({
-    super.key,
-    required this.dataSourceId,
-    required this.dataTime,
-    required this.name,
-    required this.values,
-  });
+  SemesterChart(
+      {super.key,
+      required this.dataSourceId,
+      required this.dataTime,
+      required this.name,
+      required this.values,
+      required this.curView});
 
   @override
   Widget build(BuildContext context) {
     var isClickable = values.toString() != [0, 0, 0, 0, 0, 0].toString();
+    isClickable = curView != ViewType.subject;
 
     List<BarChartGroupData> chartBars = [];
 
