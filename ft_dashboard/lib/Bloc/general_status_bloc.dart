@@ -17,12 +17,13 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
   }
 
   _getInitialStatusData(event, emit) async {
-    //TODO: Remove hardcoded values To most recent date
     try {
+      final DashboardRepository dashRep = DashboardRepository();
       final curView = ViewType.general;
       final curpath = state.path;
-      final dashboardData =
-          await _getDashboardData(curView, "0", "2022", "2", curpath);
+      List<String> latestDate = await dashRep.fetchMostRecentDate();
+      final dashboardData = await _getDashboardData(
+          curView, "0", latestDate[0], latestDate[1], curpath);
       emit(dashboardData);
     } catch (e) {
       print(e);
@@ -65,7 +66,10 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
           id: event.dataSourceId, name: event.dataSourceName, view: nextView);
       state.path.add(currentPathSegment);
 
-      emit(GeneralStatusState(currentView: ViewType.loading, path: state.path));
+      emit(GeneralStatusState(
+          currentView: ViewType.loading,
+          path: state.path,
+          selectedDate: state.selectedDate));
 
       var [year, semester] = event.dataTime.split(".");
       var nextviewId = event.dataSourceId;
@@ -83,6 +87,7 @@ class GeneralStatusBloc extends Bloc<GeneralStatusEvent, GeneralStatusState> {
       emit(GeneralStatusState(
           path: state.path,
           availableDates: state.availableDates,
+          selectedDate: state.selectedDate,
           currentView: ViewType.error,
           errorMessage:
               "Erro ao recuperar dados para ${event.dataSourceName} $e"));

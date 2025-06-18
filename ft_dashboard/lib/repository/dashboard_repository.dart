@@ -34,4 +34,10 @@ class DashboardRepository {
       rethrow;
     }
   }
+
+  Future<List<String>> fetchMostRecentDate() async {
+    final availableYears = await _dashboardProvider.getAvailableYears();
+    final latestYear = availableYears.last;
+    return latestYear.split(".");
+  }
 }
