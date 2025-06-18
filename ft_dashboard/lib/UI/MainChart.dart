@@ -59,7 +59,7 @@ class Chart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               interval: 1,
-              reservedSize: 30,
+              reservedSize: 50,
             ),
           ),
           bottomTitles: AxisTitles(
@@ -126,6 +126,6 @@ List<FlSpot> getLine(line) {
     double xYear = transformYearStringToIntXcoord(coord[0]);
     coords.add(FlSpot(xYear, coord[1]));
   }
-  print("essas são as coordenadas da linha: $coords");
+
   return coords;
 }

@@ -98,7 +98,7 @@ class InfoCell extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 60,
-                color: Colors.grey[200],
+                color: Colors.grey[300],
               ),
             ),
             Column(
