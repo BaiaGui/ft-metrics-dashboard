@@ -74,12 +74,17 @@ async function fetchIndex(year, semester, view, id) {
 
 function calculateIndexByAnswerProportion(answerProportion) {
   //TODO: validate argument format
-  let { count_0, count_1, count_2, count_3, count_4, count_5 } = answerProportion.typeCount;
-  let sum = 5 * count_5 + 4 * count_4 + 3 * count_3 + 2 * count_2 + 1 * count_1;
-  let validAnswers = count_1 + count_2 + count_3 + count_4 + count_5;
-  let calculatedIndex = (sum / validAnswers - 1) / 4;
+  if (answerProportion != null) {
+    let { count_0, count_1, count_2, count_3, count_4, count_5 } = answerProportion.typeCount;
+    let sum = 5 * count_5 + 4 * count_4 + 3 * count_3 + 2 * count_2 + 1 * count_1;
+    let validAnswers = count_1 + count_2 + count_3 + count_4 + count_5;
+    let calculatedIndex = (sum / validAnswers - 1) / 4;
 
-  return calculatedIndex;
+    return calculatedIndex;
+  } else {
+    //if no data is found in a query, consider the index 0.
+    return 0;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------
 

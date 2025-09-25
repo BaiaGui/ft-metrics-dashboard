@@ -167,9 +167,9 @@ async function getGeneralAnswerProportionByTime(year, semester) {
         },
       ])
       .toArray();
-    if (formGroup.length == 0) {
-      throw { status: 400, message: "Data not found. Verify request values" };
-    }
+    // if (formGroup.length == 0) {
+    //   throw { status: 400, message: "Data not found. Verify request values" };
+    // }
     return formGroup;
   } catch (e) {
     throw e;
@@ -356,9 +356,9 @@ async function getAnswerProportionByCourse(year, semester, courseId) {
         },
       ])
       .toArray();
-    if (proportion.length == 0) {
-      throw { status: 400, message: "Data not found. Verify request values" };
-    }
+    // if (proportion.length == 0) {
+    //   throw { status: 400, message: "Data not found. Verify request values" };
+    // }
     return proportion;
   } catch (e) {
     throw e;
@@ -545,9 +545,9 @@ async function getAnswerProportionBySubGroup(year, semester, groupId) {
         },
       ])
       .toArray();
-    if (formGroup.length == 0) {
-      throw { status: 400, message: "Data not found. Verify request values" };
-    }
+    // if (proportion.length == 0) {
+    //   throw { status: 400, message: "Data not found. Verify request values" };
+    // }
     return formGroup;
   } catch (e) {
     throw e;
